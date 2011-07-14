@@ -1,0 +1,3 @@
+.waf-*
+build
+.lock-wscript
