@@ -1,0 +1,13 @@
+Simplistic and very much work in progress gnome shell extension for hamster.
+
+To install:
+
+pre. ./waf configure --prefix=/usr
+sudo ./waf install
+
+
+Few known issues: 
+
+* does not refresh sometimes (alt+f2 -> r  will restart shell and update info)
+* everything else (hah)
+
