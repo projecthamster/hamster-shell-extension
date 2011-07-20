@@ -25,7 +25,7 @@ def build(bld):
 
     # the gsettings schemas - TODO - use whatever default tools there are
     bld.install_files('${DATADIR}/glib-2.0/schemas',
-                      'data/hamster-applet.gschema.xml')
+                      'hamster-applet.gschema.xml')
 
 
     def post(ctx):
