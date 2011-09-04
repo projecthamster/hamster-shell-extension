@@ -282,11 +282,7 @@ HamsterButton.prototype = {
 
 
 			let activities = this._activityEntry.activities
-
-			// TODO - find remove_all or whatever the function is called
-			for each(var child in activities.get_children()) {
-				activities.remove_child(child);
-			}
+			activities.destroy_children() // remove previous entries
 
 			var i = 0;
 			for each (var fact in facts) {
