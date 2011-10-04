@@ -6,8 +6,18 @@ pre. ./waf configure --prefix=/usr
 sudo ./waf install
 
 
-Few known issues: 
+The extension now works with gnome 3.1+
+Note that now just installing doesn't do - the extension has to be
+apparently enabled. You can do that via gnome-tweak-tool (have to install from
+repos)
 
-* does not refresh sometimes (alt+f2 -> r  will restart shell and update info)
-* everything else (hah)
+NOTE: if you are running earlier version of shell, please use this revision:
+3ee20e1add8567b889b8fcf550b17c7088333e0b
 
+
+
+
+Known issues:
+
+* after reloading have to run main hamster app as this thing does not seem to be waking up the dbus thing
+* it's very minimal

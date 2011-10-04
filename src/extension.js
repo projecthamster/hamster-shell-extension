@@ -201,13 +201,6 @@ HamsterButton.prototype = {
 		this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
 		this.actor.set_child(this.panel_label);
 
-		if (this._settings.get_boolean("swap-with-calendar")) {
-			moveCalendar();
-			Main.panel._centerBox.add(this.actor);
-		} else {
-			Main.panel._rightBox.add(this.actor);
-		}
-
 
 		this.facts = null;
 		this.currentFact = null;
@@ -333,13 +326,40 @@ HamsterButton.prototype = {
 	}
 };
 
+let _extension; // a global variable, niiiice
 
-function main(extensionMeta) {
+function init(extensionMeta) {
 	/* Localization stuff */
 	let userExtensionLocalePath = extensionMeta.path + '/locale';
 	Gettext.bindtextdomain("hamster-applet", userExtensionLocalePath);
 	Gettext.textdomain("hamster-applet");
+}
 
-	/* Create our button */
-	new HamsterButton();
+function enable() {
+    _extension = new HamsterButton();
+
+	_settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
+	if (_settings.get_boolean("swap-with-calendar")) {
+		moveCalendar();
+
+		// if you go straight for the centerbox you fall into rightBox
+		// this little jiggle does the trick (and i have no clue why)
+		Main.panel._rightBox.add_actor(_extension.actor);
+		Main.panel._rightBox.remove_actor(_extension.actor);
+
+		Main.panel._centerBox.add_actor(_extension.actor);
+	} else {
+		Main.panel._rightBox.add_actor(_extension.actor);
+	}
+}
+
+function disable() {
+	_settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
+	if (_settings.get_boolean("swap-with-calendar")) {
+		Main.panel._centerBox.remove_actor(_extension.actor);
+	} else {
+		Main.panel._rightBox.remove_actor(_extension.actor);
+	}
+
+    _extension.destroy();
 }

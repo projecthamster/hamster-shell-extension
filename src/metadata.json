@@ -1,5 +1,5 @@
 {
-"shell-version": ["3.0.2"],
+"shell-version": ["3.1.91", "3.2"],
 "uuid": "hamster@gnome.org",
 "name": "Hamster Menu",
 "url": "http://projecthamster.wordpress.com/",
