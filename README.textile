@@ -16,6 +16,9 @@ NOTE: if you are running earlier version of shell, please use this revision:
 
 
 
+to have the hamster take up the place in the center, run this thing:
+@gsettings set org.gnome.hamster:/org/gnome/hamster swap-with-calendar true@
+
 
 Known issues:
 
