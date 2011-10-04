@@ -9,7 +9,6 @@ import os
 
 def configure(conf):
     conf.check_tool('gnome intltool dbus')
-    conf.check_cfg(package='gnome-keybindings', variables='keysdir', mandatory=True)
 
     conf.define('ENABLE_NLS', 1)
     conf.define('HAVE_BIND_TEXTDOMAIN_CODESET', 1)
