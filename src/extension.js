@@ -199,7 +199,7 @@ HamsterButton.prototype = {
 		this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 
 		this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
-		this.actor.set_child(this.panel_label);
+		this.actor.add_actor(this.panel_label);
 
 
 		this.facts = null;
