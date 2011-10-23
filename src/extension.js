@@ -310,12 +310,9 @@ HamsterButton.prototype = {
 
 	_onActivityEntry: function() {
 		let text = this._activityEntry._textEntry.get_text();
-
-		let date = new Date()
-		date = new Date(date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset())); // getting back to UTC
-		let epochSeconds = Math.floor(date.getTime() / 1000);
-
-		this._proxy.AddFactRemote(text, epochSeconds, 0, false)
+		this._proxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, err) {
+			// not interested in the new id - this shuts up the warning
+		}));
 	},
 
 	_onGlobalKeyBinding: function() {
