@@ -14,13 +14,10 @@ repos)
 NOTE: if you are running earlier version of shell, please use this revision:
 3ee20e1add8567b889b8fcf550b17c7088333e0b
 
-
-
-to have the hamster take up the place in the center, run this thing:
+to have the hamster take the place in the center, run this thing:
 @gsettings set org.gnome.hamster swap-with-calendar true@
 
 
 Known issues:
 
-* after reloading have to run main hamster app as this thing does not seem to be waking up the dbus thing
 * it's very minimal

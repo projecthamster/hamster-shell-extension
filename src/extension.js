@@ -29,12 +29,13 @@ const _ = Gettext.gettext;
 const _hamsterKeyBinding = 'run_command_12';
 
 
-
+// this is plain stupid - why are we not using dbus introspection here or something?
 const HamsterIface = {
     name: 'org.gnome.Hamster',
     methods: [
 		{ name: 'GetTodaysFacts', inSignature: '', outSignature: 'a(iiissisasii)'},
 		{ name: 'StopTracking', inSignature: 'i'},
+		{ name: 'Toggle', inSignature: ''},
 		{ name: 'AddFact', inSignature: 'siib', outSignature: 'i'},
     ],
     signals: [
@@ -220,11 +221,8 @@ HamsterButton.prototype = {
 
 
 		/* This one make the hamster applet appear */
-		item = new PopupMenu.PopupMenuItem(_("Show Hamster"));
-		item.connect('activate', function() {
-			let app = Shell.AppSystem.get_default().get_app('hamster-time-tracker.desktop');
-			app.activate(-1);
-		});
+		item = new PopupMenu.PopupMenuItem(_("Show Overview"));
+		item.connect('activate', Lang.bind(this, this._onShowHamsterActivate));
 		this.menu.addMenuItem(item);
 
 		/* To stop tracking the current activity */
@@ -257,7 +255,7 @@ HamsterButton.prototype = {
 
 
 	refresh: function() {
-    	this._proxy.GetTodaysFactsRemote(Lang.bind(this, function(response, err) {
+    	this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
 			let facts = fromDbusFacts(response);
 
     	    let fact = null;
@@ -310,6 +308,12 @@ HamsterButton.prototype = {
 		this._proxy.StopTrackingRemote(epochSeconds);
 	},
 
+	_onShowHamsterActivate: function() {
+		let app = Shell.AppSystem.get_default().lookup_app('hamster-time-tracker-overview.desktop');
+		app.activate(-1);
+	},
+
+
 	_onActivityEntry: function() {
 		let text = this._activityEntry._textEntry.get_text();
 
@@ -338,7 +342,7 @@ function init(extensionMeta) {
 function enable() {
     _extension = new HamsterButton();
 
-	_settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
+	let _settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 	if (_settings.get_boolean("swap-with-calendar")) {
 		moveCalendar();
 
@@ -354,7 +358,7 @@ function enable() {
 }
 
 function disable() {
-	_settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
+	let _settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 	if (_settings.get_boolean("swap-with-calendar")) {
 		Main.panel._centerBox.remove_actor(_extension.actor);
 	} else {
