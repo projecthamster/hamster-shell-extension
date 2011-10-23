@@ -310,7 +310,7 @@ HamsterButton.prototype = {
 		date = new Date(date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset())); // getting back to UTC
 
 		let epochSeconds = Math.floor(date.getTime() / 1000);
-		this._proxy.StopTrackingRemote(epochSeconds);
+		this._proxy.StopTrackingRemote(epochSeconds, DBus.CALL_FLAG_START);
 	},
 
 	_onShowHamsterActivate: function() {
@@ -321,7 +321,7 @@ HamsterButton.prototype = {
 
 	_onActivityEntry: function() {
 		let text = this._activityEntry._textEntry.get_text();
-		this._proxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, err) {
+		this._proxy.AddFactRemote(text, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
 			// not interested in the new id - this shuts up the warning
 		}));
 	},
