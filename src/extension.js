@@ -202,23 +202,10 @@ HamsterButton.prototype = {
 		this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
 		this.actor.add_actor(this.panel_label);
 
-
-		this.facts = null;
-		this.currentFact = null;
-
-		// refresh the label every 60 secs
-		GLib.timeout_add_seconds(0, 60, Lang.bind(this, function () {this.refresh(); return true}))
-		this.refresh();
-
-
-		let item;
-
-		item = new HamsterBox()
+		let item = new HamsterBox()
 		item.connect('activate', Lang.bind(this, this._onActivityEntry));
 		this._activityEntry = item;
-
 		this.menu.addMenuItem(item);
-
 
 		/* This one make the hamster applet appear */
 		item = new PopupMenu.PopupMenuItem(_("Show Overview"));
@@ -238,7 +225,14 @@ HamsterButton.prototype = {
 		let shellwm = global.window_manager;
 		shellwm.takeover_keybinding(_hamsterKeyBinding);
 		shellwm.connect('keybinding::' + _hamsterKeyBinding,
-			Lang.bind(this, this._onGlobalKeyBinding));
+		Lang.bind(this, this._onGlobalKeyBinding));
+
+		// load data
+		this.facts = null;
+		this.currentFact = null;
+		// refresh the label every 60 secs
+		GLib.timeout_add_seconds(0, 60, Lang.bind(this, function () {this.refresh(); return true}))
+		this.refresh();
 	},
 
 	onTagsChanged: function() {
