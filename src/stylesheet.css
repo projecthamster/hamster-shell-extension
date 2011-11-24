@@ -16,3 +16,12 @@
 	padding: 3px;
 	color: #aaa;
 }
+
+.clickable:hover {
+	background-color: #4c4c4c;
+}
+
+.clickable:hover .cell-label {
+	color: #fff;
+}
+
