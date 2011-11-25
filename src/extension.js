@@ -164,9 +164,6 @@ HamsterBox.prototype = {
 		this.activities = new St.Table({ style_class: 'hamster-activities'})
 		box.add(this.activities)
 
-
-
-
 		this.addActor(box);
 	},
 
@@ -200,6 +197,7 @@ HamsterButton.prototype = {
 		this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 
 		this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
+		this.current_activity = false; 
 		this.actor.add_actor(this.panel_label);
 
 		let item = new HamsterBox()
@@ -260,9 +258,11 @@ HamsterButton.prototype = {
     	    if (fact && !fact.endTime) {
 				this.currentFact = fact;
 
-        	    this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta))
+        	    this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
+ 				this.current_activity = true;
     	    } else {
         	    this.panel_label.text = "No activity";
+				this.current_activity = false;
     	    }
 
 
@@ -281,9 +281,20 @@ HamsterButton.prototype = {
 				label.set_text(text)
 				activities.add(label, { row: i, col: 0, x_expand: false});
 
+ 				button = new St.Button({ style_class: 'clickable'});
 				label = new St.Label({ style_class: 'cell-label'});
 				label.set_text(fact.name)
-				activities.add(label, { row: i, col: 1});
+				button.set_child(label);
+				activities.add(button, { row: i, col: 1});
+
+				button.connect('clicked', Lang.bind(this, function(actor, event) {
+ 					let text = actor.get_child().get_text();
+					if (!this.current_activity) {
+						this._proxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, err) {
+ 							// not interested in the new id - this shuts up the warning
+						}));
+					}
+ 				}));
 
 				label = new St.Label({style_class: 'cell-label'});
 				label.set_text(formatDurationHuman(fact.delta))
