@@ -36,8 +36,7 @@ const HamsterIface = {
 		{ name: 'GetTodaysFacts', inSignature: '', outSignature: 'a(iiissisasii)'},
 		{ name: 'StopTracking', inSignature: 'i'},
 		{ name: 'Toggle', inSignature: ''},
-		{ name: 'AddFact', inSignature: 'siib', outSignature: 'i'},
-    ],
+        { name: 'AddFact', inSignature: 'ssiib', outSignature: 'i'},    ],
     signals: [
         {name: 'TagsChanged', inSignature: ''},
         {name: 'FactsChanged', inSignature: ''},
@@ -205,14 +204,43 @@ HamsterButton.prototype = {
 		this._activityEntry = item;
 		this.menu.addMenuItem(item);
 
+        /* This one make the hamster add earlier activity window appear */
+        item = new PopupMenu.PopupMenuItem(_("Add Earlier Activity"));
+        item.connect('activate', Lang.bind(this, this._onShowHamsterEdit));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
 		/* This one make the hamster applet appear */
-		item = new PopupMenu.PopupMenuItem(_("Show Overview"));
+		item = new PopupMenu.PopupMenuItem(_("Open Applet"));
 		item.connect('activate', Lang.bind(this, this._onShowHamsterActivate));
 		this.menu.addMenuItem(item);
 
 		/* To stop tracking the current activity */
 		item = new PopupMenu.PopupMenuItem(_("Stop tracking"));
 		item.connect('activate', Lang.bind(this, this._onStopTracking));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
+        /* This one make the hamster overview appear */
+        item = new PopupMenu.PopupMenuItem(_("Show Overview"));
+        item.connect('activate', Lang.bind(this, this._onShowHamsterOverview));
+        this.menu.addMenuItem(item);
+
+        /* This one make the hamster statistics appear */
+        item = new PopupMenu.PopupMenuItem(_("Show Statistics"));
+        item.connect('activate', Lang.bind(this, this._onShowHamsterStatistics));
+        this.menu.addMenuItem(item);
+
+        item = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(item);
+
+        /* To edit hamster preferences */
+        item = new PopupMenu.PopupMenuItem(_("Preferences"));
+        item.connect('activate', Lang.bind(this, this._onEditPreferences));
 		this.menu.addMenuItem(item);
 
 		/* Integrate previously defined menu to panel */
@@ -290,7 +318,7 @@ HamsterButton.prototype = {
 				button.connect('clicked', Lang.bind(this, function(actor, event) {
  					let text = actor.get_child().get_text();
 					if (!this.current_activity) {
-						this._proxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, err) {
+                        this._proxy.AddFactRemote(text, '', 0, 0, false, Lang.bind(this, function(response, err) {
  							// not interested in the new id - this shuts up the warning
 						}));
 					}
@@ -314,14 +342,29 @@ HamsterButton.prototype = {
 	},
 
 	_onShowHamsterActivate: function() {
-		let app = Shell.AppSystem.get_default().lookup_app('hamster-time-tracker-overview.desktop');
+		let app = Shell.AppSystem.get_default().lookup_app('hamster-time-tracker.desktop');
 		app.activate(-1);
 	},
 
+    _onShowHamsterEdit: function() {
+        Main.Util.spawnCommandLine('/usr/bin/hamster-time-tracker edit');
+    },
+
+    _onShowHamsterOverview: function() {
+        Main.Util.spawnCommandLine('/usr/bin/hamster-time-tracker overview');
+    },
+
+    _onShowHamsterStatistics: function() {
+        Main.Util.spawnCommandLine('/usr/bin/hamster-time-tracker statistics');
+    },
+
+    _onEditPreferences: function() {
+        Main.Util.spawnCommandLine('/usr/bin/hamster-time-tracker preferences');
+    },
 
 	_onActivityEntry: function() {
 		let text = this._activityEntry._textEntry.get_text();
-		this._proxy.AddFactRemote(text, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+		this._proxy.AddFactRemote(text, '', 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
 			// not interested in the new id - this shuts up the warning
 		}));
 	},
