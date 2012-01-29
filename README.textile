@@ -1,5 +1,9 @@
 Simplistic and very much work in progress gnome shell extension for hamster.
 
+NOTE: this extension works with the hamster applet version built from sources.
+the process is rather simple and described here:
+http://projecthamster.wordpress.com/building-and-running/
+
 To install:
 
 pre. ./waf configure --prefix=/usr
