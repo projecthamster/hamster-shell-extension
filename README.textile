@@ -15,7 +15,7 @@ Note that now just installing doesn't do - the extension has to be
 apparently enabled. You can do that via gnome-tweak-tool (have to install from
 repos)
 
-NOTE: if you are running earlier version of shell, please use this revision:
+*NOTE*: if you are running earlier version of shell, please use this revision:
 3ee20e1add8567b889b8fcf550b17c7088333e0b
 
 to have the hamster take the place in the center, run this thing:
