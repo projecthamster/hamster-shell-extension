@@ -192,14 +192,16 @@ HamsterBox.prototype = {
 
 /* Panel button */
 function HamsterButton() {
-    this._init();
+    this._init(extensionMeta);
 }
 
 HamsterButton.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
-    _init: function() {
+    _init: function(extensionMeta) {
+        this.extensionMeta = extensionMeta;
         PanelMenu.Button.prototype._init.call(this, 0.0);
+
 
         this._proxy = new HamsterProxy(DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
         this._proxy.connect('FactsChanged', Lang.bind(this, this.onFactsChanged));
@@ -213,9 +215,25 @@ HamsterButton.prototype = {
 
         this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 
+
+        this.panel_container = new St.BoxLayout();
+        this.actor.add_actor(this.panel_container);
+
+
         this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
         this.current_activity = false;
-        this.actor.add_actor(this.panel_label);
+
+
+        this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-tracking-symbolic.svg");
+        this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-idle-symbolic.svg");
+
+        this._icon = new St.Icon({gicon: this._trackingIcon,
+                                  icon_type: St.IconType.SYMBOLIC,
+                                  icon_size: 16,
+                                  style_class: "panel-icon"})
+
+        this.panel_container.add(this._icon);
+        this.panel_container.add(this.panel_label);
 
         let item = new HamsterBox()
         item.connect('activate', Lang.bind(this, this._onActivityEntry));
@@ -268,6 +286,50 @@ HamsterButton.prototype = {
         this.refresh();
     },
 
+    updatePanel: function(fact) {
+        // 0 = show label, 1 = show icon + duration, 2 = just icon
+        let appearance = this._settings.get_int("panel-appearance");
+
+        if (appearance == 1 || appearance == 2) {
+            this._icon.show();
+        } else {
+            this._icon.hide()
+        }
+
+        if (!appearance || appearance == 0 || appearance == 1) {
+            this.panel_label.show();
+        } else {
+            this.panel_label.hide();
+        }
+
+        // updates panel label. if fact is none, will set panel status to "no activity"
+        if (fact && !fact.endTime) {
+            this.currentFact = fact;
+
+            if (appearance == 0) {
+                this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
+            } else {
+                this.panel_label.text = formatDuration(fact.delta);
+            }
+            this.current_activity = fact;
+
+            this._icon.gicon = this._trackingIcon;
+        } else {
+            if (appearance == 0) {
+                this.panel_label.text = "No activity";
+            } else {
+                this.panel_label.text = "--:--";
+            }
+            this.current_activity = false;
+
+            // change to idle icon only if there is no label. otherwise it looks bad
+            if (appearance == 2)
+                this._icon.gicon = this._idleIcon;
+            else
+                this._icon.gicon = this._trackingIcon;
+        }
+    },
+
 
     refresh: function() {
         this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
@@ -277,17 +339,7 @@ HamsterButton.prototype = {
             if (facts.length) {
                 fact = facts[facts.length - 1];
             }
-
-            if (fact && !fact.endTime) {
-                this.currentFact = fact;
-
-                this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
-                this.current_activity = fact;
-            } else {
-                this.panel_label.text = "No activity";
-                this.current_activity = false;
-            }
-
+            this.updatePanel(fact);
 
             let activities = this._activityEntry.activities
             activities.destroy_children() // remove previous entries
@@ -391,15 +443,17 @@ HamsterButton.prototype = {
 };
 
 let _extension; // a global variable, niiiice
+let extensionMeta;
 
-function init(extensionMeta) {
+function init(meta) {
     /* Localization stuff */
+    extensionMeta = meta;
     let userExtensionLocalePath = extensionMeta.path + '/locale';
     Gettext.bindtextdomain("hamster-applet", userExtensionLocalePath);
     Gettext.textdomain("hamster-applet");
 }
 
-function enable() {
+function enable(extensionMeta) {
     _extension = new HamsterButton();
 
     let _settings = new Gio.Settings({ schema: 'org.gnome.hamster' });

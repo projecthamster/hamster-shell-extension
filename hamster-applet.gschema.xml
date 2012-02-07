@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.gnome.hamster" path="/org/gnome/hamster/">
-    <key name="swap-with-calendar" type="b">
-      <default>false</default>
-      <summary>Placement</summary>
-      <description>When enabled, time tracker extension will occupy calendar's place and move calendar to the right</description>
-    </key>
-  </schema>
+    <schema id="org.gnome.hamster" path="/org/gnome/hamster/">
+        <key name="swap-with-calendar" type="b">
+            <default>false</default>
+            <summary>Placement</summary>
+            <description>When enabled, time tracker extension will occupy calendar's place and move calendar to the right</description>
+        </key>
+        <key name="panel-appearance" type="i">
+            <default>0</default>
+            <summary>Appearance in the panel</summary>
+            <description>0 - show label with current activity and duration, 1 - show icon and just the duration, 2 - show just the icon</description>
+        </key>
+    </schema>
 </schemalist>

@@ -25,3 +25,9 @@
 	color: #fff;
 }
 
+.panel-icon {
+	padding-right: 5px;
+}
+.panel-icon:lat-child {
+	padding-right: 0;
+}

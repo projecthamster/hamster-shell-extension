@@ -22,6 +22,10 @@ def build(bld):
     bld.install_files('${DATADIR}/gnome-shell/extensions/hamster@gnome.org',
                       'src/*')
 
+    # icons
+    bld.install_files('${DATADIR}/gnome-shell/extensions/hamster@gnome.org/data',
+                      'data/*')
+
     # the gsettings schemas - TODO - use whatever default tools there are
     bld.install_files('${DATADIR}/glib-2.0/schemas',
                       'hamster-applet.gschema.xml')
