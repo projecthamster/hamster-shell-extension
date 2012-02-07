@@ -29,8 +29,8 @@ const _ = Gettext.gettext;
 const _hamsterKeyBinding = 'run_command_12';
 
 
-// this is plain stupid - why are we not using dbus introspection here or something?
-const HamsterIface = {
+// TODO - why are we not using dbus introspection here or something?
+let ApiProxy = DBus.makeProxyClass({
     name: 'org.gnome.Hamster',
     methods: [
         { name: 'GetTodaysFacts', inSignature: '', outSignature: 'a(iiissisasii)'},
@@ -44,11 +44,10 @@ const HamsterIface = {
         {name: 'ActivitiesChanged', inSignature: ''},
         {name: 'ToggleCalled', inSignature: ''},
     ]
-};
-let HamsterProxy = DBus.makeProxyClass(HamsterIface);
+});
 
 
-const HamsterWindowsIface = {
+let WindowsProxy = DBus.makeProxyClass({
     name: 'org.gnome.Hamster.WindowServer',
     methods: [
         { name: 'edit', inSignature: 'i'},
@@ -57,8 +56,7 @@ const HamsterWindowsIface = {
         { name: 'statistics', inSignature: ''},
         { name: 'preferences', inSignature: ''},
     ]
-};
-let HamsterWindowsProxy = DBus.makeProxyClass(HamsterWindowsIface);
+});
 
 
 
@@ -116,28 +114,6 @@ function fromDbusFacts(facts) {
 };
 
 
-function moveCalendar() {
-    // moving calendar to the left side (hummm....)
-    let calendar = Main.panel._dateMenu.actor;
-    let calendarFound = false;
-    for each(var elem in Main.panel._centerBox.get_children()) {
-        if (elem == calendar) {
-            calendarFound = true;
-        }
-    }
-
-    if (calendarFound) {
-        Main.panel._centerBox.remove_actor(calendar)
-        Main.panel._rightBox.add_actor(calendar)
-    }
-}
-
-
-/* Popup */
-function HamsterPopupMenuEntry() {
-    this._init.apply(this, arguments);
-}
-
 
 /* a little box or something */
 function HamsterBox() {
@@ -191,27 +167,26 @@ HamsterBox.prototype = {
 
 
 /* Panel button */
-function HamsterButton() {
+function HamsterExtension(extensionMeta) {
     this._init(extensionMeta);
 }
 
-HamsterButton.prototype = {
+HamsterExtension.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
     _init: function(extensionMeta) {
-        this.extensionMeta = extensionMeta;
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
+        this.extensionMeta = extensionMeta;
+        this._proxy = new ApiProxy(DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
+        this._proxy.connect('FactsChanged',      Lang.bind(this, this.refresh));
+        this._proxy.connect('ActivitiesChanged', Lang.bind(this, this.refresh));
+        this._proxy.connect('TagsChanged',       Lang.bind(this, this.refresh));
 
-        this._proxy = new HamsterProxy(DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
-        this._proxy.connect('FactsChanged', Lang.bind(this, this.onFactsChanged));
-        this._proxy.connect('ActivitiesChanged', Lang.bind(this, this.onActivitiesChanged));
-        this._proxy.connect('TagsChanged', Lang.bind(this, this.onTagsChanged));
 
-
-        this._windowsProxy = new HamsterWindowsProxy(DBus.session,
-                                                     "org.gnome.Hamster.WindowServer",
-                                                     "/org/gnome/Hamster/WindowServer")
+        this._windowsProxy = new WindowsProxy(DBus.session,
+                                              "org.gnome.Hamster.WindowServer",
+                                              "/org/gnome/Hamster/WindowServer")
 
         this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 
@@ -224,9 +199,9 @@ HamsterButton.prototype = {
         this.current_activity = false;
 
 
+        // panel icon
         this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-tracking-symbolic.svg");
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-idle-symbolic.svg");
-
         this._icon = new St.Icon({gicon: this._trackingIcon,
                                   icon_type: St.IconType.SYMBOLIC,
                                   icon_size: 16,
@@ -256,9 +231,6 @@ HamsterButton.prototype = {
         item.connect('activate', Lang.bind(this, this._onShowSettingsActivate));
         this.menu.addMenuItem(item);
 
-        /* Integrate previously defined menu to panel */
-        Main.panel._rightBox.insert_actor(this.actor, 0);
-        Main.panel._menus.addMenu(this.menu);
 
         /* Install global keybinding to log something */
         let shellwm = global.window_manager;
@@ -268,62 +240,42 @@ HamsterButton.prototype = {
 
         // load data
         this.facts = null;
-        this.currentFact = null;
         // refresh the label every 60 secs
         GLib.timeout_add_seconds(0, 60, Lang.bind(this, function () {this.refresh(); return true}))
         this.refresh();
     },
 
-    onTagsChanged: function() {
-        this.refresh();
-    },
 
-    onFactsChanged: function() {
-        this.refresh();
-    },
-
-    onActivitiesChanged: function() {
-        this.refresh();
-    },
-
-    updatePanel: function(fact) {
+    updatePanelDisplay: function(fact) {
         // 0 = show label, 1 = show icon + duration, 2 = just icon
         let appearance = this._settings.get_int("panel-appearance");
 
-        if (appearance == 1 || appearance == 2) {
-            this._icon.show();
-        } else {
-            this._icon.hide()
-        }
 
-        if (!appearance || appearance == 0 || appearance == 1) {
+        if (appearance == 0) {
             this.panel_label.show();
-        } else {
-            this.panel_label.hide();
-        }
+            this._icon.hide()
 
-        // updates panel label. if fact is none, will set panel status to "no activity"
-        if (fact && !fact.endTime) {
-            this.currentFact = fact;
-
-            if (appearance == 0) {
+            if (fact && !fact.endTime) {
                 this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
             } else {
-                this.panel_label.text = formatDuration(fact.delta);
-            }
-            this.current_activity = fact;
-
-            this._icon.gicon = this._trackingIcon;
-        } else {
-            if (appearance == 0) {
                 this.panel_label.text = "No activity";
+            }
+        } else {
+            this._icon.show();
+            if (appearance == 1)
+                this.panel_label.show();
+            else
+                this.panel_label.hide();
+
+
+            // updates panel label. if fact is none, will set panel status to "no activity"
+            if (fact && !fact.endTime) {
+                this.panel_label.text = formatDuration(fact.delta);
+                this._icon.gicon = this._trackingIcon;
             } else {
                 this.panel_label.text = "";
+                this._icon.gicon = this._idleIcon;
             }
-            this.current_activity = false;
-
-            // change to idle icon only if there is no label. otherwise it looks bad
-            this._icon.gicon = this._idleIcon;
         }
     },
 
@@ -336,7 +288,7 @@ HamsterButton.prototype = {
             if (facts.length) {
                 fact = facts[facts.length - 1];
             }
-            this.updatePanel(fact);
+            this.updatePanelDisplay(fact);
 
             let activities = this._activityEntry.activities
             activities.destroy_children() // remove previous entries
@@ -442,39 +394,70 @@ HamsterButton.prototype = {
 let _extension; // a global variable, niiiice
 let extensionMeta;
 
-function init(meta) {
-    /* Localization stuff */
-    extensionMeta = meta;
+
+function ExtensionController(extensionMeta) {
+    return {
+        extensionMeta: extensionMeta,
+        extension: null,
+        settings: null,
+
+        _checkCalendar: function(container) {
+            if (this.settings.get_boolean("swap-with-calendar") == false)
+                return;
+
+            let calendar = Main.panel._dateMenu.actor;
+            let extension = this.extension.actor;
+            let calendarFound = false;
+            for each(var elem in container.get_children()) {
+                if (elem == calendar) {
+                    calendarFound = true;
+                }
+            }
+
+            if (!calendarFound)
+                return;
+
+            let source, target;
+
+            if (container == Main.panel._centerBox) {
+                target = Main.panel._rightBox;
+            } else {
+                target = Main.panel._centerBox;
+            }
+
+
+            container.remove_actor(calendar);
+            target.add_actor(calendar);
+
+            target.remove_actor(extension);
+            container.add_actor(extension);
+        },
+
+        enable: function() {
+            this.settings = new Gio.Settings({schema: 'org.gnome.hamster'});
+            this.extension = new HamsterExtension(this.extensionMeta);
+
+            Main.panel._rightBox.add_actor(this.extension.actor);
+            Main.panel._menus.addMenu(this.extension.menu);
+            this._checkCalendar(Main.panel._centerBox);
+        },
+
+        disable: function() {
+            this._checkCalendar(Main.panel._rightBox);
+            Main.panel._rightBox.remove_actor(this.extension.actor);
+            Main.panel._menus.removeMenu(this.extension.menu);
+            this.extension.actor.destroy();
+        }
+    }
+}
+
+
+function init(extensionMeta) {
+    // Localization
     let userExtensionLocalePath = extensionMeta.path + '/locale';
     Gettext.bindtextdomain("hamster-applet", userExtensionLocalePath);
     Gettext.textdomain("hamster-applet");
+
+    return new ExtensionController(extensionMeta);
 }
 
-function enable(extensionMeta) {
-    _extension = new HamsterButton();
-
-    let _settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
-    if (_settings.get_boolean("swap-with-calendar")) {
-        moveCalendar();
-
-        // if you go straight for the centerbox you fall into rightBox
-        // this little jiggle does the trick (and i have no clue why)
-        Main.panel._rightBox.add_actor(_extension.actor);
-        Main.panel._rightBox.remove_actor(_extension.actor);
-
-        Main.panel._centerBox.add_actor(_extension.actor);
-    } else {
-        Main.panel._rightBox.add_actor(_extension.actor);
-    }
-}
-
-function disable() {
-    let _settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
-    if (_settings.get_boolean("swap-with-calendar")) {
-        Main.panel._centerBox.remove_actor(_extension.actor);
-    } else {
-        Main.panel._rightBox.remove_actor(_extension.actor);
-    }
-
-    _extension.destroy();
-}
