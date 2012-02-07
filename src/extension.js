@@ -318,15 +318,12 @@ HamsterButton.prototype = {
             if (appearance == 0) {
                 this.panel_label.text = "No activity";
             } else {
-                this.panel_label.text = "--:--";
+                this.panel_label.text = "";
             }
             this.current_activity = false;
 
             // change to idle icon only if there is no label. otherwise it looks bad
-            if (appearance == 2)
-                this._icon.gicon = this._idleIcon;
-            else
-                this._icon.gicon = this._trackingIcon;
+            this._icon.gicon = this._idleIcon;
         }
     },
 
