@@ -28,6 +28,6 @@
 .panel-icon {
 	padding-right: 5px;
 }
-.panel-icon:lat-child {
+.panel-icon:last-child {
 	padding-right: 0;
 }
