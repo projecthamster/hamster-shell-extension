@@ -437,7 +437,7 @@ function ExtensionController(extensionMeta) {
             this.settings = new Gio.Settings({schema: 'org.gnome.hamster'});
             this.extension = new HamsterExtension(this.extensionMeta);
 
-            Main.panel._rightBox.add_actor(this.extension.actor);
+            Main.panel._rightBox.insert_actor(this.extension.actor, 0);
             Main.panel._menus.addMenu(this.extension.menu);
             this._checkCalendar(Main.panel._centerBox);
         },
@@ -460,4 +460,3 @@ function init(extensionMeta) {
 
     return new ExtensionController(extensionMeta);
 }
-
