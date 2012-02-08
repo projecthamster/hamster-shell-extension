@@ -1,7 +1,9 @@
 /*
  * Simple Hamster extension for gnome-shell
  * Copyright (c) 2011 Jerome Oufella <jerome@oufella.com>
- * Copyright (c) 2011 Toms Baugis <toms.baugis@gmail.com>
+ * Copyright (c) 2011-2012 Toms Baugis <toms.baugis@gmail.com>
+ * Icons Artwork Copyright (c) 2012 Reda Lazri <the.red.shortcut@gmail.com>
+ *
  * Portions originate from the gnome-shell source code, Copyright (c)
  * its respectives authors.
  * This project is released under the GNU GPL License.
