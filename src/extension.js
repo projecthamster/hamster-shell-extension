@@ -262,7 +262,7 @@ HamsterExtension.prototype = {
             let fact = null;
             if (facts.length) {
                 fact = facts[facts.length - 1];
-                if (!fact.end_time)
+                if (!fact.endTime)
                     this.currentActivity = fact;
             }
             this.updatePanelDisplay(fact);
