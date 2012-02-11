@@ -191,28 +191,28 @@ HamsterExtension.prototype = {
         this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
 
 
-        this.panel_container = new St.BoxLayout();
-        this.actor.add_actor(this.panel_container);
+        this.panelContainer = new St.BoxLayout();
+        this.actor.add_actor(this.panelContainer);
 
 
-        this.panel_label = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
-        this.current_activity = false;
+        this.panelLabel = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
+        this.currentActivity = null;
 
 
         // panel icon
         this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-tracking-symbolic.svg");
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-idle-symbolic.svg");
-        this._icon = new St.Icon({gicon: this._trackingIcon,
+        this.icon = new St.Icon({gicon: this._trackingIcon,
                                   icon_type: St.IconType.SYMBOLIC,
                                   icon_size: 16,
                                   style_class: "panel-icon"})
 
-        this.panel_container.add(this._icon);
-        this.panel_container.add(this.panel_label);
+        this.panelContainer.add(this.icon);
+        this.panelContainer.add(this.panelLabel);
 
         let item = new HamsterBox()
         item.connect('activate', Lang.bind(this, this._onActivityEntry));
-        this._activityEntry = item;
+        this.activityEntry = item;
         this.menu.addMenuItem(item);
 
         /* This one make the hamster applet appear */
@@ -237,7 +237,7 @@ HamsterExtension.prototype = {
         this.menu.connect('open-state-changed', Lang.bind(this,
             function(menu, open) {
                 if (open) {
-                    this._activityEntry.focus();
+                    this.activityEntry.focus();
                 }
             }
         ));
@@ -258,13 +258,16 @@ HamsterExtension.prototype = {
         this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             let facts = fromDbusFacts(response);
 
+            this.currentActivity = null;
             let fact = null;
             if (facts.length) {
                 fact = facts[facts.length - 1];
+                if (!fact.end_time)
+                    this.currentActivity = fact;
             }
             this.updatePanelDisplay(fact);
 
-            let activities = this._activityEntry.activities
+            let activities = this.activityEntry.activities
             activities.destroy_children() // remove previous entries
 
             var i = 0;
@@ -305,7 +308,7 @@ HamsterExtension.prototype = {
                 activities.add(button, { row: i, col: 3});
 
 
-                if (this.current_activity.name != fact.name) {
+                if (!this.currentActivity || this.currentActivity.name != fact.name) {
                     button = new St.Button({ style_class: 'clickable'});
 
                     icon = new St.Icon({ icon_name: "media-playback-start",
@@ -335,29 +338,29 @@ HamsterExtension.prototype = {
 
 
         if (appearance == 0) {
-            this.panel_label.show();
-            this._icon.hide()
+            this.panelLabel.show();
+            this.icon.hide()
 
             if (fact && !fact.endTime) {
-                this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
+                this.panelLabel.text = "%s %s".format(fact.name, formatDuration(fact.delta));
             } else {
-                this.panel_label.text = "No activity";
+                this.panelLabel.text = "No activity";
             }
         } else {
-            this._icon.show();
+            this.icon.show();
             if (appearance == 1)
-                this.panel_label.show();
+                this.panelLabel.show();
             else
-                this.panel_label.hide();
+                this.panelLabel.hide();
 
 
             // updates panel label. if fact is none, will set panel status to "no activity"
             if (fact && !fact.endTime) {
-                this.panel_label.text = formatDuration(fact.delta);
-                this._icon.gicon = this._trackingIcon;
+                this.panelLabel.text = formatDuration(fact.delta);
+                this.icon.gicon = this._trackingIcon;
             } else {
-                this.panel_label.text = "";
-                this._icon.gicon = this._idleIcon;
+                this.panelLabel.text = "";
+                this.icon.gicon = this._idleIcon;
             }
         }
     },
@@ -385,7 +388,7 @@ HamsterExtension.prototype = {
 
 
     _onActivityEntry: function() {
-        let text = this._activityEntry._textEntry.get_text();
+        let text = this.activityEntry._textEntry.get_text();
         this._proxy.AddFactRemote(text, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             // not interested in the new id - this shuts up the warning
         }));
