@@ -24,12 +24,6 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext;
 const _ = Gettext.gettext;
 
-/* We use keybindings provided by default in the metacity GConf tree, and which
- * are supported by default.
- * Most probably not the smartest choice, time will tell.
- */
-const _hamsterKeyBinding = 'run_command_12';
-
 
 // TODO - why are we not using dbus introspection here or something?
 let ApiProxy = DBus.makeProxyClass({
@@ -159,6 +153,10 @@ HamsterBox.prototype = {
         this.addActor(box);
     },
 
+    focus: function() {
+        global.stage.set_key_focus(this._textEntry);
+    },
+
 
     _onEntryActivated: function() {
         this.emit('activate');
@@ -234,11 +232,16 @@ HamsterExtension.prototype = {
         this.menu.addMenuItem(item);
 
 
-        /* Install global keybinding to log something */
-        let shellwm = global.window_manager;
-        shellwm.takeover_keybinding(_hamsterKeyBinding);
-        shellwm.connect('keybinding::' + _hamsterKeyBinding,
-        Lang.bind(this, this._onGlobalKeyBinding));
+        // ConsoleKit doesn't send notifications when shutdown/reboot
+        // are disabled, so we update the menu item each time the menu opens
+        this.menu.connect('open-state-changed', Lang.bind(this,
+            function(menu, open) {
+                if (open) {
+                    this._activityEntry.focus();
+                }
+            }
+        ));
+
 
         // load data
         this.facts = null;
@@ -247,40 +250,9 @@ HamsterExtension.prototype = {
         this.refresh();
     },
 
-
-    updatePanelDisplay: function(fact) {
-        // 0 = show label, 1 = show icon + duration, 2 = just icon
-        let appearance = this._settings.get_int("panel-appearance");
-
-
-        if (appearance == 0) {
-            this.panel_label.show();
-            this._icon.hide()
-
-            if (fact && !fact.endTime) {
-                this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
-            } else {
-                this.panel_label.text = "No activity";
-            }
-        } else {
-            this._icon.show();
-            if (appearance == 1)
-                this.panel_label.show();
-            else
-                this.panel_label.hide();
-
-
-            // updates panel label. if fact is none, will set panel status to "no activity"
-            if (fact && !fact.endTime) {
-                this.panel_label.text = formatDuration(fact.delta);
-                this._icon.gicon = this._trackingIcon;
-            } else {
-                this.panel_label.text = "";
-                this._icon.gicon = this._idleIcon;
-            }
-        }
+    show: function() {
+        this.menu.open();
     },
-
 
     refresh: function() {
         this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
@@ -351,13 +323,45 @@ HamsterExtension.prototype = {
                     activities.add(button, { row: i, col: 4});
                 }
 
-
-
                 i += 1;
             }
-
         }));
     },
+
+
+    updatePanelDisplay: function(fact) {
+        // 0 = show label, 1 = show icon + duration, 2 = just icon
+        let appearance = this._settings.get_int("panel-appearance");
+
+
+        if (appearance == 0) {
+            this.panel_label.show();
+            this._icon.hide()
+
+            if (fact && !fact.endTime) {
+                this.panel_label.text = "%s %s".format(fact.name, formatDuration(fact.delta));
+            } else {
+                this.panel_label.text = "No activity";
+            }
+        } else {
+            this._icon.show();
+            if (appearance == 1)
+                this.panel_label.show();
+            else
+                this.panel_label.hide();
+
+
+            // updates panel label. if fact is none, will set panel status to "no activity"
+            if (fact && !fact.endTime) {
+                this.panel_label.text = formatDuration(fact.delta);
+                this._icon.gicon = this._trackingIcon;
+            } else {
+                this.panel_label.text = "";
+                this._icon.gicon = this._idleIcon;
+            }
+        }
+    },
+
 
     _onStopTracking: function() {
         let date = new Date()
@@ -385,16 +389,8 @@ HamsterExtension.prototype = {
         this._proxy.AddFactRemote(text, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             // not interested in the new id - this shuts up the warning
         }));
-    },
-
-    _onGlobalKeyBinding: function() {
-        this.menu.toggle();
-        this._activityEntry._textEntry.grab_key_focus();
     }
 };
-
-let _extension; // a global variable, niiiice
-let extensionMeta;
 
 
 function ExtensionController(extensionMeta) {
@@ -442,12 +438,22 @@ function ExtensionController(extensionMeta) {
             Main.panel._rightBox.insert_actor(this.extension.actor, 0);
             Main.panel._menus.addMenu(this.extension.menu);
             this._checkCalendar(Main.panel._centerBox);
+
+
+            /* FIXME - none of these works right now
+            Main.wm.setKeybindingHandler('activate_hamster_window', this.extension.show);
+            Meta.keybindings_set_custom_handler('activate_hamster_window',
+                                         this.extension.show);
+            */
+
         },
 
         disable: function() {
             this._checkCalendar(Main.panel._rightBox);
             Main.panel._rightBox.remove_actor(this.extension.actor);
             Main.panel._menus.removeMenu(this.extension.menu);
+
+
             this.extension.actor.destroy();
         }
     }
