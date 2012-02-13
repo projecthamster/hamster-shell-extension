@@ -14,7 +14,12 @@
 
 .cell-label {
 	padding: 3px;
+	padding-right: 15px;
 	color: #aaa;
+}
+
+.cell-button {
+	padding: 3px 5px;
 }
 
 .clickable:hover {

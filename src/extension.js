@@ -29,10 +29,10 @@ const _ = Gettext.gettext;
 let ApiProxy = DBus.makeProxyClass({
     name: 'org.gnome.Hamster',
     methods: [
-        { name: 'GetTodaysFacts', inSignature: '', outSignature: 'a(iiissisasii)'},
-        { name: 'StopTracking', inSignature: 'i'},
-        { name: 'Toggle', inSignature: ''},
-        { name: 'AddFact', inSignature: 'siib', outSignature: 'i'},
+        {name: 'GetTodaysFacts', inSignature: '', outSignature: 'a(iiissisasii)'},
+        {name: 'StopTracking', inSignature: 'i'},
+        {name: 'Toggle', inSignature: ''},
+        {name: 'AddFact', inSignature: 'siib', outSignature: 'i'},
     ],
     signals: [
         {name: 'TagsChanged', inSignature: ''},
@@ -46,11 +46,11 @@ let ApiProxy = DBus.makeProxyClass({
 let WindowsProxy = DBus.makeProxyClass({
     name: 'org.gnome.Hamster.WindowServer',
     methods: [
-        { name: 'edit', inSignature: 'i'},
-        { name: 'overview', inSignature: ''},
-        { name: 'about', inSignature: ''},
-        { name: 'statistics', inSignature: ''},
-        { name: 'preferences', inSignature: ''},
+        {name: 'edit', inSignature: 'i'},
+        {name: 'overview', inSignature: ''},
+        {name: 'about', inSignature: ''},
+        {name: 'statistics', inSignature: ''},
+        {name: 'preferences', inSignature: ''},
     ]
 });
 
@@ -125,7 +125,7 @@ HamsterBox.prototype = {
         let box = new St.BoxLayout({style_class: 'hamster-box'});
         box.set_vertical(true);
 
-        let label = new St.Label({ style_class: 'hamster-box-label'});
+        let label = new St.Label({style_class: 'hamster-box-label'});
         label.set_text("What are you doing?")
         box.add(label);
 
@@ -137,17 +137,17 @@ HamsterBox.prototype = {
         box.add(this._textEntry);
 
 
-        let scrollbox = new St.ScrollView({ x_fill: true, y_fill: true });
+        let scrollbox = new St.ScrollView({x_fill: true, y_fill: true});
         scrollbox.get_hscroll_bar().hide();
         //box.add(scrollbox, {expand: true})
 
 
-        label = new St.Label({ style_class: 'hamster-box-label'});
+        label = new St.Label({style_class: 'hamster-box-label'});
         label.set_text("Todays activities")
         box.add(label);
 
 
-        this.activities = new St.Table({ style_class: 'hamster-activities'})
+        this.activities = new St.Table({style_class: 'hamster-activities'})
         box.add(this.activities)
 
         this.addActor(box);
@@ -188,14 +188,14 @@ HamsterExtension.prototype = {
                                               "org.gnome.Hamster.WindowServer",
                                               "/org/gnome/Hamster/WindowServer")
 
-        this._settings = new Gio.Settings({ schema: 'org.gnome.hamster' });
+        this._settings = new Gio.Settings({schema: 'org.gnome.hamster'});
 
 
         this.panelContainer = new St.BoxLayout();
         this.actor.add_actor(this.panelContainer);
 
 
-        this.panelLabel = new St.Label({ style_class: 'hamster-label', text: _("Loading...") });
+        this.panelLabel = new St.Label({style_class: 'hamster-label', text: _("Loading...")});
         this.currentActivity = null;
 
 
@@ -274,30 +274,30 @@ HamsterExtension.prototype = {
             for each (var fact in facts) {
                 let label;
 
-                label = new St.Label({ style_class: 'cell-label'});
+                label = new St.Label({style_class: 'cell-label'});
                 let text = "%02d:%02d - ".format(fact.startTime.getHours(), fact.startTime.getMinutes());
                 if (fact.endTime) {
                     text += "%02d:%02d".format(fact.endTime.getHours(), fact.endTime.getMinutes());
                 }
                 label.set_text(text)
-                activities.add(label, { row: i, col: 0, x_expand: false});
+                activities.add(label, {row: i, col: 0, x_expand: false});
 
                 label = new St.Label({style_class: 'cell-label'});
                 label.set_text(fact.name)
-                activities.add(label, { row: i, col: 1});
+                activities.add(label, {row: i, col: 1});
 
                 label = new St.Label({style_class: 'cell-label'});
                 label.set_text(formatDurationHuman(fact.delta))
-                activities.add(label, { row: i, col: 2, x_expand: false});
+                activities.add(label, {row: i, col: 2, x_expand: false});
 
 
                 let icon;
                 let button;
 
-                button = new St.Button({ style_class: 'clickable'});
-                icon = new St.Icon({ icon_name: "document-open",
-                             icon_type: St.IconType.SYMBOLIC,
-                             icon_size: 16 })
+                button = new St.Button({style_class: 'clickable cell-button'});
+                icon = new St.Icon({icon_name: "document-open",
+                                    icon_type: St.IconType.SYMBOLIC,
+                                    icon_size: 16})
                 button.set_child(icon);
                 button.fact = fact;
                 button.connect('clicked', Lang.bind(this, function(button, event) {
@@ -305,15 +305,15 @@ HamsterExtension.prototype = {
                         // TODO - handle exceptions perhaps
                     }));
                 }));
-                activities.add(button, { row: i, col: 3});
+                activities.add(button, {row: i, col: 3});
 
 
                 if (!this.currentActivity || this.currentActivity.name != fact.name) {
-                    button = new St.Button({ style_class: 'clickable'});
+                    button = new St.Button({style_class: 'clickable cell-button'});
 
-                    icon = new St.Icon({ icon_name: "media-playback-start",
+                    icon = new St.Icon({icon_name: "media-playback-start",
                                  icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: 16 })
+                                 icon_size: 16})
                     button.set_child(icon);
                     button.fact = fact;
 
@@ -323,7 +323,7 @@ HamsterExtension.prototype = {
                         }));
                     }));
 
-                    activities.add(button, { row: i, col: 4});
+                    activities.add(button, {row: i, col: 4});
                 }
 
                 i += 1;
