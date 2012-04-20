@@ -268,7 +268,7 @@ HamsterExtension.prototype = {
             this.updatePanelDisplay(fact);
 
             let activities = this.activityEntry.activities
-            activities.destroy_children() // remove previous entries
+            activities.destroy_all_children() // remove previous entries
 
             var i = 0;
             for each (var fact in facts) {
@@ -438,7 +438,7 @@ function ExtensionController(extensionMeta) {
             this.settings = new Gio.Settings({schema: 'org.gnome.hamster'});
             this.extension = new HamsterExtension(this.extensionMeta);
 
-            Main.panel._rightBox.insert_actor(this.extension.actor, 0);
+            Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);
             Main.panel._menus.addMenu(this.extension.menu);
             this._checkCalendar(Main.panel._centerBox);
 
