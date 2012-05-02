@@ -11,6 +11,9 @@
  *
  */
 
+// TODO - investigate usage of third party libs (d3/underscore/whatever)
+//        otherwise even most primitive operations are hardcore
+
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib
 const Lang = imports.lang;
@@ -76,6 +79,14 @@ function formatDurationHuman(minutes) {
     }
 
     return res;
+}
+
+function formatDurationHours(minutes) {
+    if (minutes / 60.1 < 0.1) {
+        return new Number(minutes / 60) + "h";
+    } else {
+        return new Number(minutes / 60.0).toFixed(1) + "h";
+    }
 }
 
 function fromDbusFact(fact) {
@@ -149,6 +160,10 @@ HamsterBox.prototype = {
 
         this.activities = new St.Table({style_class: 'hamster-activities'})
         box.add(this.activities)
+
+        this.summaryLabel = new St.Label({style_class: 'summary-label'});
+        box.add(this.summaryLabel);
+
 
         this.addActor(box);
     },
@@ -304,6 +319,7 @@ HamsterExtension.prototype = {
                     this._windowsProxy.editRemote(button.fact.id, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
                         // TODO - handle exceptions perhaps
                     }));
+                    this.menu.close();
                 }));
                 activities.add(button, {row: i, col: 3});
 
@@ -321,6 +337,7 @@ HamsterExtension.prototype = {
                         this._proxy.AddFactRemote(button.fact.name, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
                             // not interested in the new id - this shuts up the warning
                         }));
+                        this.menu.close();
                     }));
 
                     activities.add(button, {row: i, col: 4});
@@ -328,6 +345,23 @@ HamsterExtension.prototype = {
 
                 i += 1;
             }
+
+            let byCategory = {};
+            let categories = [];
+            for each (var fact in facts) {
+                byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
+                if (categories.indexOf(fact.category) == -1)
+                    categories.push(fact.category)
+            };
+            global.log(byCategory)
+
+            let label = "";
+            for each (var category in categories) {
+                label += category + ": " + formatDurationHours(byCategory[category]) +  ", ";
+            }
+            label = label.slice(0, label.length - 2); // strip trailing comma
+            this.activityEntry.summaryLabel.set_text(label);
+
         }));
     },
 
