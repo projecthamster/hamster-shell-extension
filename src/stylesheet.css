@@ -18,6 +18,11 @@
 	color: #aaa;
 }
 
+.summary-label {
+	color: #aaa;
+	text-align: right;
+}
+
 .cell-button {
 	padding: 3px 5px;
 }
