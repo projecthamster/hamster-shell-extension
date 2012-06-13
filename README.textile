@@ -1,5 +1,18 @@
 Simplistic and very much work in progress gnome shell extension for hamster.
 
+*WHICH VERSION*
+
+Gnome Shell fame keeps breaking APIs on every release. That means that if you
+have an older Shell version (like 3.0+ or 3.2+), you will have to pick an
+older hamster shell extension too. The branches are unmaintained but should work
+with the specified version.
+"pick your tag here":https://github.com/tbaugis/hamster-shell-extension/tags
+
+Also, if a new major release of gnome just came out, please give me bit of time
+to update to it - i'm generally lagging a month behind.
+Let's hope that they stop breaking the API!
+
+
 *NOTE*: this extension works with the hamster applet version built from sources.
 the process is rather simple and described here:
 "http://projecthamster.wordpress.com/building-and-running/":http://projecthamster.wordpress.com/building-and-running/
@@ -10,19 +23,16 @@ pre. ./waf configure --prefix=/usr
 sudo ./waf install
 
 
-The extension now works with gnome 3.1+
 Note that now just installing doesn't do - the extension has to be
 apparently enabled. You can do that via gnome-tweak-tool (have to install from
 repos)
 
-*NOTE*: if you are running earlier version of shell, please use this revision:
-3ee20e1add8567b889b8fcf550b17c7088333e0b
 
-to have the hamster take the place in the center, run this thing:
+To have the hamster take the place in the center, run this thing:
 @gsettings set org.gnome.hamster swap-with-calendar true@
 
 
-you can also change appearance in the panel.
+You can also change appearance in the panel.
 0 = label, 1 = icon + duration, 2 = just icon
 @gsettings set org.gnome.hamster panel-appearance 0@
 
