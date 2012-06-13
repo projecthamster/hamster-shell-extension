@@ -334,7 +334,9 @@ HamsterExtension.prototype = {
                     button.fact = fact;
 
                     button.connect('clicked', Lang.bind(this, function(button, event) {
-                        this._proxy.AddFactRemote(button.fact.name, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+                        let d = new Date();
+                        let stamp = Math.round((d.getTime() / 1000) - (d.getTimezoneOffset()*60));
+                        this._proxy.AddFactRemote(button.fact.name, stamp, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
                             // not interested in the new id - this shuts up the warning
                         }));
                         this.menu.close();
@@ -423,7 +425,9 @@ HamsterExtension.prototype = {
 
     _onActivityEntry: function() {
         let text = this.activityEntry._textEntry.get_text();
-        this._proxy.AddFactRemote(text, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+        let d = new Date();
+        let stamp = Math.round((d.getTime() / 1000) - (d.getTimezoneOffset()*60));
+        this._proxy.AddFactRemote(text, stamp, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             // not interested in the new id - this shuts up the warning
         }));
     }
