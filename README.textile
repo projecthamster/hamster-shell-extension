@@ -6,7 +6,13 @@ Gnome Shell fame keeps breaking APIs on every release. That means that if you
 have an older Shell version (like 3.0+ or 3.2+), you will have to pick an
 older hamster shell extension too. The branches are unmaintained but should work
 with the specified version.
-"pick your tag here":https://github.com/tbaugis/hamster-shell-extension/tags
+
+* If you are runngin Gnome Shell 3.4, use master branch
+* "Here is Gnome Shell 3.2+":https://github.com/tbaugis/hamster-shell-extension/tree/gnome-3.2 branch
+* "Here is Gnome Shell 3.0+":https://github.com/tbaugis/hamster-shell-extension/tree/gnome-3.0 branch
+
+Patches are welcome if you are running an elder version and were successful at
+backporting a feature.
 
 Also, if a new major release of gnome just came out, please give me bit of time
 to update to it - i'm generally lagging a month behind.
