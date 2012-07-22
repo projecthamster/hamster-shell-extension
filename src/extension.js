@@ -82,11 +82,7 @@ function formatDurationHuman(minutes) {
 }
 
 function formatDurationHours(minutes) {
-    if (minutes / 60.1 < 0.1) {
-        return new Number(minutes / 60) + "h";
-    } else {
-        return new Number(minutes / 60.0).toFixed(1) + "h";
-    }
+    return new Number(minutes / 60.0).toFixed(1) + "h";
 }
 
 function fromDbusFact(fact) {
