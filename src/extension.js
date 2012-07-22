@@ -14,6 +14,7 @@
 // TODO - investigate usage of third party libs (d3/underscore/whatever)
 //        otherwise even most primitive operations are hardcore
 
+const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib
 const Lang = imports.lang;
@@ -36,6 +37,7 @@ let ApiProxy = DBus.makeProxyClass({
         {name: 'StopTracking', inSignature: 'i'},
         {name: 'Toggle', inSignature: ''},
         {name: 'AddFact', inSignature: 'siib', outSignature: 'i'},
+        {name: 'GetActivities', inSignature: '', outSignature: 'a(ss)'},
     ],
     signals: [
         {name: 'TagsChanged', inSignature: ''},
@@ -141,13 +143,16 @@ HamsterBox.prototype = {
                                         track_hover: false,
                                         hint_text: _("Enter activity...")});
         this._textEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
+        this._textEntry.clutter_text.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
+
+
         box.add(this._textEntry);
 
+        // autocomplete popup - couldn't spark it up just yet
+        //this._popup = new PopupMenu.PopupComboMenu(this._textEntry)
 
         let scrollbox = new St.ScrollView({x_fill: true, y_fill: true});
         scrollbox.get_hscroll_bar().hide();
-        //box.add(scrollbox, {expand: true})
-
 
         label = new St.Label({style_class: 'hamster-box-label'});
         label.set_text("Todays activities")
@@ -162,6 +167,9 @@ HamsterBox.prototype = {
 
 
         this.addActor(box);
+
+        this.autocompleteActivities = [];
+        this.runningActivitiesQuery = null;
     },
 
     focus: function() {
@@ -172,6 +180,44 @@ HamsterBox.prototype = {
     _onEntryActivated: function() {
         this.emit('activate');
         this._textEntry.set_text('');
+    },
+
+
+    _getActivities: function() {
+        if (this.runningActivitiesQuery)
+            return this.autocompleteActivities
+
+        this.runningActivitiesQuery = true;
+        this.proxy.GetActivitiesRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+            this.runningActivitiesQuery = false;
+            this.autocompleteActivities = response;
+        }));
+
+        return this.autocompleteActivities;
+    },
+
+
+    _onKeyReleaseEvent: function(textItem, evt) {
+        let symbol = evt.get_key_symbol();
+        if (symbol == Clutter.BackSpace || symbol == Clutter.Delete) {
+            // do not autocomplete on delete
+            return;
+        }
+
+
+        let text = this._textEntry.get_text();
+        let allActivities = this._getActivities();
+
+        for each (var rec in allActivities) {
+            if (rec[0].substring(0, text.length) == text) {
+                this.prevText = text;
+
+                this._textEntry.set_text(rec[0]);
+                this._textEntry.clutter_text.set_selection(text.length, rec[0].length)
+
+                return;
+            }
+        }
     }
 };
 
@@ -209,7 +255,6 @@ HamsterExtension.prototype = {
         this.panelLabel = new St.Label({style_class: 'hamster-label', text: _("Loading...")});
         this.currentActivity = null;
 
-
         // panel icon
         this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-tracking-symbolic.svg");
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-idle-symbolic.svg");
@@ -224,19 +269,22 @@ HamsterExtension.prototype = {
         let item = new HamsterBox()
         item.connect('activate', Lang.bind(this, this._onActivityEntry));
         this.activityEntry = item;
+        this.activityEntry.proxy = this._proxy; // lazy proxying
+
+
         this.menu.addMenuItem(item);
 
-        /* This one make the hamster applet appear */
+        // overview
         item = new PopupMenu.PopupMenuItem(_("Show Overview"));
         item.connect('activate', Lang.bind(this, this._onShowHamsterActivate));
         this.menu.addMenuItem(item);
 
-        /* To stop tracking the current activity */
+        // stop tracking
         item = new PopupMenu.PopupMenuItem(_("Stop tracking"));
         item.connect('activate', Lang.bind(this, this._onStopTracking));
         this.menu.addMenuItem(item);
 
-        /* This one make the hamster applet appear */
+        // settings
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         item = new PopupMenu.PopupMenuItem(_("Tracking Settings"));
         item.connect('activate', Lang.bind(this, this._onShowSettingsActivate));
