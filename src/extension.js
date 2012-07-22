@@ -205,11 +205,11 @@ HamsterBox.prototype = {
         }
 
 
-        let text = this._textEntry.get_text();
+        let text = this._textEntry.get_text().toLowerCase();
         let allActivities = this._getActivities();
 
         for each (var rec in allActivities) {
-            if (rec[0].substring(0, text.length) == text) {
+            if (rec[0].toLowerCase().substring(0, text.length) == text) {
                 this.prevText = text;
 
                 this._textEntry.set_text(rec[0]);
