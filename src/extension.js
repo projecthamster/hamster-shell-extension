@@ -237,7 +237,7 @@ HamsterExtension.prototype = {
         this.extensionMeta = extensionMeta;
         this._proxy = new ApiProxy(DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
         this._proxy.connect('FactsChanged',      Lang.bind(this, this.refresh));
-        this._proxy.connect('ActivitiesChanged', Lang.bind(this, this.refresh));
+        this._proxy.connect('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
         this._proxy.connect('TagsChanged',       Lang.bind(this, this.refresh));
 
 
@@ -311,6 +311,11 @@ HamsterExtension.prototype = {
 
     show: function() {
         this.menu.open();
+    },
+
+    refreshActivities: function() {
+        this.activityEntry.autocompleteActivities = [];
+        this.refresh();
     },
 
     refresh: function() {
