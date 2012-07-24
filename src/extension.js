@@ -170,6 +170,8 @@ HamsterBox.prototype = {
 
         this.autocompleteActivities = [];
         this.runningActivitiesQuery = null;
+
+        this._prevText = "";
     },
 
     focus: function() {
@@ -196,24 +198,35 @@ HamsterBox.prototype = {
         return this.autocompleteActivities;
     },
 
-
     _onKeyReleaseEvent: function(textItem, evt) {
         let symbol = evt.get_key_symbol();
-        if (symbol == Clutter.BackSpace || symbol == Clutter.Delete) {
-            // do not autocomplete on delete
+        let text = this._textEntry.get_text().toLowerCase();
+
+        // if nothing has changed or we still have selection then that means
+        // that special keys are at play and we don't attempt to autocomplete
+        if (this._prevText == text ||
+            this._textEntry.clutter_text.get_selection()) {
             return;
+        }
+        this._prevText = text;
+
+        // ignore deletions
+        let ignoreKeys = [Clutter.BackSpace, Clutter.Delete, Clutter.Escape]
+        for each (var key in ignoreKeys) {
+            if (symbol == key)
+                return;
         }
 
 
-        let text = this._textEntry.get_text().toLowerCase();
         let allActivities = this._getActivities();
-
         for each (var rec in allActivities) {
             if (rec[0].toLowerCase().substring(0, text.length) == text) {
                 this.prevText = text;
 
                 this._textEntry.set_text(rec[0]);
                 this._textEntry.clutter_text.set_selection(text.length, rec[0].length)
+
+                this._prevText = rec[0].toLowerCase();
 
                 return;
             }
