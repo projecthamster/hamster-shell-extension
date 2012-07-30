@@ -119,6 +119,18 @@ function fromDbusFacts(facts) {
 };
 
 
+function parseFactString(input) {
+    let res = {
+        "time": null,
+        "activity": input,
+        "category": null,
+        "description": null,
+        "tags": null,
+    }
+
+
+}
+
 
 /* a little box or something */
 function HamsterBox() {
@@ -386,7 +398,9 @@ HamsterExtension.prototype = {
                 activities.add(button, {row: i, col: 3});
 
 
-                if (!this.currentActivity || this.currentActivity.name != fact.name) {
+                if (!this.currentActivity ||
+                    this.currentActivity.name != fact.name ||
+                    this.currentActivity.category != fact.category ) {
                     button = new St.Button({style_class: 'clickable cell-button'});
 
                     icon = new St.Icon({icon_name: "media-playback-start",
@@ -396,7 +410,9 @@ HamsterExtension.prototype = {
                     button.fact = fact;
 
                     button.connect('clicked', Lang.bind(this, function(button, event) {
-                        this._proxy.AddFactRemote(button.fact.name, 0, 0, false, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+                        this._proxy.AddFactRemote(button.fact.name +"@" + button.fact.category,
+                                                  0, 0, false, DBus.CALL_FLAG_START,
+                                                  Lang.bind(this, function(response, err) {
                             // not interested in the new id - this shuts up the warning
                         }));
                         this.menu.close();
