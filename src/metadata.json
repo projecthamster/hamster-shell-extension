@@ -1,7 +1,16 @@
 {
-"shell-version": ["3.4.1"],
-"uuid": "hamster@gnome.org",
-"name": "Hamster Menu",
-"url": "http://projecthamster.wordpress.com/",
-"description": "Shell extension for project hamster - the GNOME time tracker"
+    "description": "Shell extension for project hamster - the GNOME time tracker",
+    "extension-id": "project-hamster",
+    "name": "Project Hamster Extension",
+    "original-authors": [
+        "jerome@oufella.com",
+        "toms.baugis@gmail.com"
+    ],
+    "settings-schema": "org.gnome.shell.extensions.project-hamster",
+    "shell-version": [
+        "3.4"
+    ],
+    "url": "https://github.com/tbaugis/hamster-shell-extension",
+    "uuid": "hamster@gnome.org",
+    "version": 1
 }

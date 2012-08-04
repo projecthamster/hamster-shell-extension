@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <enum id="org.gnome.shell.extensions.project-hamster.DisplayMode">
+        <value value="0" nick="just_label"/>
+        <value value="1" nick="label_and_icon"/>
+        <value value="2" nick="just_icon"/>
+    </enum>
+    <schema id="org.gnome.shell.extensions.project-hamster" path="/org/gnome/shell/extensions/project-hamster/">
+        <key name="swap-with-calendar" type="b">
+            <default>false</default>
+            <summary>Placement</summary>
+            <description>When enabled, time tracker extension will occupy calendar's place and move calendar to the right</description>
+        </key>
+
+        <key name="panel-appearance" enum="org.gnome.shell.extensions.project-hamster.DisplayMode">
+            <default>'just_label'</default>
+            <summary>Appearance in the panel.</summary>
+            <description>Sets the panel appearance. Possible values are: just_label, label_and_icon and just_icon. See the configuration dialogs for details.</description>
+        </key>
+    </schema>
+</schemalist>
