@@ -19,7 +19,7 @@ def configure(conf):
 
 def build(bld):
     # gnome shell applet
-    bld.install_files('${DATADIR}/gnome-shell/extensions/hamster@gnome.org',
+    bld.install_files('${DATADIR}/gnome-shell/extensions/hamster@projecthamster.wordpress.com',
                       'src/*')
 
     bld.add_post_fun(post)
