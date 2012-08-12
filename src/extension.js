@@ -28,6 +28,10 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext;
 const _ = Gettext.gettext;
 
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Convenience = Me.imports.convenience;
+
 
 // TODO - why are we not using dbus introspection here or something?
 let ApiProxy = DBus.makeProxyClass({
@@ -270,7 +274,7 @@ HamsterExtension.prototype = {
                                               "org.gnome.Hamster.WindowServer",
                                               "/org/gnome/Hamster/WindowServer")
 
-        this._settings = new Gio.Settings({schema: 'org.gnome.hamster'});
+        this._settings = Convenience.getSettings();
 
 
         this.panelContainer = new St.BoxLayout();
@@ -281,8 +285,8 @@ HamsterExtension.prototype = {
         this.currentActivity = null;
 
         // panel icon
-        this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-tracking-symbolic.svg");
-        this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/data/hamster-idle-symbolic.svg");
+        this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-tracking-symbolic.svg");
+        this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-idle-symbolic.svg");
         this.icon = new St.Icon({gicon: this._trackingIcon,
                                   icon_type: St.IconType.SYMBOLIC,
                                   icon_size: 16,
@@ -461,9 +465,9 @@ HamsterExtension.prototype = {
         } else {
             this.icon.show();
             if (appearance == 1)
-                this.panelLabel.show();
-            else
                 this.panelLabel.hide();
+            else
+                this.panelLabel.show();
 
 
             // updates panel label. if fact is none, will set panel status to "no activity"
@@ -547,7 +551,7 @@ function ExtensionController(extensionMeta) {
         },
 
         enable: function() {
-            this.settings = new Gio.Settings({schema: 'org.gnome.hamster'});
+            this.settings = Convenience.getSettings();
             this.extension = new HamsterExtension(this.extensionMeta);
 
             Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);

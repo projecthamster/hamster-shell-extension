@@ -11,22 +11,80 @@ const Convenience = Me.imports.convenience;
 const HamsterSettingsWidget = new GObject.Class({
     Name: 'ProjectHamster.Prefs.HamsterSettingsWidget',
     GTypeName: 'HamsterSettingsWidget',
-    Extends: Gtk.Grid,
+    Extends: Gtk.VBox,
 
     _init : function(params) {
         this.parent(params);
-        this.column_spacing = 10;
         this.margin = 10;
 
         this._settings = Convenience.getSettings();
 
-        let top = 1;
-        let radio = null;
+        let vbox, label;
+
+
+        label = new Gtk.Label();
+        label.set_markup("<b>Positioning</b>")
+        label.set_alignment(0, 0.5)
+        this.add(label);
+
+        vbox = new Gtk.VBox({margin: 10});
+        this.add(vbox);
+        let checkbox = new Gtk.CheckButton({label: "Swap clock with the hamster button",
+                                            margin_bottom: 10,
+                                            margin_top: 5})
+        checkbox.set_alignment(0, 0.5)
+        vbox.add(checkbox)
+        checkbox.connect('toggled', Lang.bind(this, this._onPositionChange));
+        checkbox.set_active(this._settings.get_boolean("swap-with-calendar"));
+
+
+        label = new Gtk.Label({margin_top: 20});
+        label.set_markup("<b>Appearance in panel</b>")
+        label.set_alignment(0, 0.5)
+        this.add(label);
+
+        vbox = new Gtk.VBox({margin: 10});
+        this.add(vbox);
+
+        let appearanceOptions = new Gtk.ListStore();
+        appearanceOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
+
+        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Label", 0]);
+        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Icon", 1]);
+        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Label and icon", 2]);
+
+        let appearanceCombo = new Gtk.ComboBox({model: appearanceOptions});
+
+        let renderer = new Gtk.CellRendererText();
+        appearanceCombo.pack_start(renderer, true);
+        appearanceCombo.add_attribute(renderer, 'text', 0);
+        appearanceCombo.connect('changed', Lang.bind(this, this._onAppearanceChange));
+        appearanceCombo.set_active(this._settings.get_int("panel-appearance"))
+
+        vbox.add(appearanceCombo);
+
+        vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
+                                margin_top: 70}));
     },
 
-    _updateSensitivity: function(widget, active) {
-        for (let i = 0; i < widget._extra.length; i++)
-            widget._extra[i].sensitive = active;
+    _onPositionChange: function(widget) {
+        let newVal = widget.get_active();
+        if (this._settings.get_boolean("swap-with-calendar") == newVal)
+            return;
+
+        this._settings.set_boolean("swap-with-calendar", newVal)
+    },
+    _onAppearanceChange: function(widget) {
+        let [success, iter] = widget.get_active_iter();
+        if (!success)
+            return;
+
+        let newAppearance = widget.get_model().get_value(iter, 1);
+
+        if (this._settings.get_int("panel-appearance") == newAppearance)
+            return;
+
+        this._settings.set_int("panel-appearance", newAppearance)
     },
 });
 
