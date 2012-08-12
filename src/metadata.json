@@ -1,5 +1,5 @@
 {
-    "description": "Shell extension for project hamster - the GNOME time tracker",
+    "description": "Shell extension for project hamster - the GNOME time tracker. The extension requires hamster to be installed from sources. Please see http://projecthamster.wordpress.com/building-and-running/ for details",
     "extension-id": "project-hamster",
     "name": "Project Hamster Extension",
     "original-authors": [
@@ -12,5 +12,5 @@
     ],
     "url": "https://github.com/tbaugis/hamster-shell-extension",
     "uuid": "hamster@projecthamster.wordpress.com",
-    "version": 1
+    "version": 2
 }
