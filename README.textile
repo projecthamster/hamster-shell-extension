@@ -23,24 +23,16 @@ Let's hope that they stop breaking the API!
 the process is rather simple and described here:
 "http://projecthamster.wordpress.com/building-and-running/":http://projecthamster.wordpress.com/building-and-running/
 
-To install:
+To install just symlink @src@ into @~/.local/share/gnome-shell/extensions/@
+as hamster@projecthamster.wordpress.com.
+It looks something like this:
 
-pre. ./waf configure --prefix=/usr
-sudo ./waf install
+pre.
+cd ~/.local/share/gnome-shell/extensions/
+ln -s /path/to/the/checkout/src hamster@projecthamster.wordpress.com
 
-
-Note that now just installing doesn't do - the extension has to be
-apparently enabled. You can do that via gnome-tweak-tool (have to install from
-repos)
-
-
-To have the hamster take the place in the center, run this thing:
-@gsettings set org.gnome.hamster swap-with-calendar true@
-
-
-You can also change appearance in the panel.
-0 = label, 1 = icon + duration, 2 = just icon
-@gsettings set org.gnome.hamster panel-appearance 0@
+After that you can head to the extensions page to enable it and edit prefs at
+https://extensions.gnome.org/local/
 
 
 Known issues:
