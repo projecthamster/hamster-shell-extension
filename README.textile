@@ -27,8 +27,7 @@ To install just symlink @src@ into @~/.local/share/gnome-shell/extensions/@
 as hamster@projecthamster.wordpress.com.
 It looks something like this:
 
-pre.
-cd ~/.local/share/gnome-shell/extensions/
+pre. cd ~/.local/share/gnome-shell/extensions/
 ln -s /path/to/the/checkout/src hamster@projecthamster.wordpress.com
 
 After that you can head to the extensions page to enable it and edit prefs at
