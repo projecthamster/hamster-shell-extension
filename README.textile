@@ -21,14 +21,14 @@ Let's hope that they stop breaking the API!
 
 *NOTE*: this extension works with the hamster applet version built from sources.
 the process is rather simple and described here:
-"http://projecthamster.wordpress.com/building-and-running/":http://projecthamster.wordpress.com/building-and-running/
+http://projecthamster.wordpress.com/building-and-running/
 
-To install just symlink @src@ into @~/.local/share/gnome-shell/extensions/@
+To install just symlink checkout folder into @~/.local/share/gnome-shell/extensions/@
 as hamster@projecthamster.wordpress.com.
 It looks something like this:
 
 pre. cd ~/.local/share/gnome-shell/extensions/
-ln -s /path/to/the/checkout/src hamster@projecthamster.wordpress.com
+ln -s /path/to/the/checkout hamster@projecthamster.wordpress.com
 
 After that you can head to the extensions page to enable it and edit prefs at
 https://extensions.gnome.org/local/
