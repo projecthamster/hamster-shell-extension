@@ -20,6 +20,7 @@ const GLib = imports.gi.GLib
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
+const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
 const PopupMenu = imports.ui.popupMenu;
@@ -272,6 +273,10 @@ HamsterExtension.prototype = {
         this.menu.open();
     },
 
+    toggle: function() {
+        this.menu.toggle();
+    },
+
     refreshActivities: function() {
         this.activityEntry.autocompleteActivities = [];
         this.refresh();
@@ -489,19 +494,20 @@ function ExtensionController(extensionMeta) {
             this._checkCalendar(Main.panel._centerBox);
 
 
-            /* FIXME - none of these works right now
-            Main.wm.setKeybindingHandler('activate_hamster_window', this.extension.show);
-            Meta.keybindings_set_custom_handler('activate_hamster_window',
-                                         this.extension.show);
-            */
 
+            global.display.add_keybinding("show-hamster-dropdown",
+                this.extension._settings,
+                Meta.KeyBindingFlags.NONE,
+                Lang.bind(this.extension, this.extension.toggle)
+            );
         },
 
         disable: function() {
+            global.display.remove_keybinding("show-hamster-dropdown");
+
             this._checkCalendar(Main.panel._rightBox);
             Main.panel._rightBox.remove_actor(this.extension.actor);
             Main.panel._menus.removeMenu(this.extension.menu);
-
 
             this.extension.actor.destroy();
         }

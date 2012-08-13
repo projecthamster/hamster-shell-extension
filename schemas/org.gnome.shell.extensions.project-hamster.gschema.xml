@@ -12,5 +12,10 @@
             <summary>Appearance in the panel.</summary>
             <description>Sets the panel appearance. 0 - label, 1 - icon, 2 - label and icon.</description>
         </key>
+
+		<key type="as" name="show-hamster-dropdown">
+			<default><![CDATA[['<Super>h']]]></default>
+			<summary>Global key combination to show the drop-down.</summary>
+		</key>
     </schema>
 </schemalist>

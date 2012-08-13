@@ -63,6 +63,21 @@ const HamsterSettingsWidget = new GObject.Class({
 
         vbox.add(appearanceCombo);
 
+
+
+        label = new Gtk.Label({margin_top: 20});
+        label.set_markup("<b>Global hotkey</b>")
+        label.set_alignment(0, 0.5)
+        this.add(label);
+
+        vbox = new Gtk.VBox({margin: 10});
+        this.add(vbox);
+        let entry = new Gtk.Entry({margin_bottom: 10,
+                                   margin_top: 5,
+                                   text: this._settings.get_strv("show-hamster-dropdown")[0]})
+        vbox.add(entry)
+        entry.connect('changed', Lang.bind(this, this._onHotkeyChange));
+
         vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
                                 margin_top: 70}));
     },
@@ -86,6 +101,18 @@ const HamsterSettingsWidget = new GObject.Class({
 
         this._settings.set_int("panel-appearance", newAppearance)
     },
+
+    _onHotkeyChange: function(widget, bananas) {
+        //global.log(widget, bananas)
+        let hotkey = widget.get_text()
+        let [key, mods] = Gtk.accelerator_parse(hotkey);
+
+        if (key != 0) {
+            let parsedName = Gtk.accelerator_name(key, mods);
+            this._settings.set_strv("show-hamster-dropdown", [parsedName]);
+        }
+
+    }
 });
 
 function init() {
