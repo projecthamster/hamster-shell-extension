@@ -82,7 +82,7 @@ HamsterBox.prototype = {
         box.set_vertical(true);
 
         let label = new St.Label({style_class: 'hamster-box-label'});
-        label.set_text("What are you doing?")
+        label.set_text(_("What are you doing?"))
         box.add(label);
 
         this._textEntry = new St.Entry({name: 'searchEntry',
@@ -102,7 +102,7 @@ HamsterBox.prototype = {
         scrollbox.get_hscroll_bar().hide();
 
         label = new St.Label({style_class: 'hamster-box-label'});
-        label.set_text("Todays activities")
+        label.set_text(_("Todays activities"))
         box.add(label);
 
 
@@ -395,7 +395,7 @@ HamsterExtension.prototype = {
             if (fact && !fact.endTime) {
                 this.panelLabel.text = "%s %s".format(fact.name, Stuff.formatDuration(fact.delta));
             } else {
-                this.panelLabel.text = "No activity";
+                this.panelLabel.text = _("No activity");
             }
         } else {
             this.icon.show();
