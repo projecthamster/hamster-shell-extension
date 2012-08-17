@@ -518,8 +518,8 @@ function ExtensionController(extensionMeta) {
 function init(extensionMeta) {
     // Localization
     let userExtensionLocalePath = extensionMeta.path + '/locale';
-    Gettext.bindtextdomain("hamster-applet", userExtensionLocalePath);
-    Gettext.textdomain("hamster-applet");
+    Gettext.bindtextdomain("hamster-shell-extension", userExtensionLocalePath);
+    Gettext.textdomain("hamster-shell-extension");
 
     return new ExtensionController(extensionMeta);
 }
