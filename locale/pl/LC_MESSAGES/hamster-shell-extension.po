@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: hamster-applet\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-15 22:53+0100\n"
-"PO-Revision-Date: 2012-08-15 22:58+0100\n"
+"PO-Revision-Date: 2012-08-17 16:34+0100\n"
 "Last-Translator: Piotr Plenik <piotr.plenik@teamlab.pl>\n"
 "Language-Team: Piotr Plenik <piotr.plenik@teamlab.pl>\n"
 "Language: \n"
@@ -24,7 +24,7 @@ msgstr "Co robisz?"
 
 #: /home/jupeter/workspaces/hamster/gnome-shell-hamster/extension.js:91
 msgid "Enter activity..."
-msgstr "Podaj aktywność..."
+msgstr "Wpisz aktywność..."
 
 #: /home/jupeter/workspaces/hamster/gnome-shell-hamster/extension.js:105
 msgid "Todays activities"
@@ -36,7 +36,7 @@ msgstr "Ładowanie..."
 
 #: /home/jupeter/workspaces/hamster/gnome-shell-hamster/extension.js:238
 msgid "Show Overview"
-msgstr "Pokaż Sprawozdanie"
+msgstr "Przegląd sprawozdania"
 
 #: /home/jupeter/workspaces/hamster/gnome-shell-hamster/extension.js:243
 msgid "Stop tracking"
