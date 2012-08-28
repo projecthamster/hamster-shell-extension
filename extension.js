@@ -16,7 +16,8 @@
 
 const Clutter = imports.gi.Clutter;
 const DBus = imports.dbus;
-const GLib = imports.gi.GLib
+const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -98,16 +99,22 @@ HamsterBox.prototype = {
         // autocomplete popup - couldn't spark it up just yet
         //this._popup = new PopupMenu.PopupComboMenu(this._textEntry)
 
-        let scrollbox = new St.ScrollView({x_fill: true, y_fill: true});
-        scrollbox.get_hscroll_bar().hide();
-
         label = new St.Label({style_class: 'hamster-box-label'});
         label.set_text(_("Todays activities"))
         box.add(label);
 
+        let scrollbox = new St.ScrollView({'hscrollbar-policy': Gtk.PolicyType.NEVER,
+                                           'vscrollbar-policy': Gtk.PolicyType.AUTOMATIC,
+                                           'height': 200});
+        box.add(scrollbox);
+
+        // Since St.Table does not implement StScrollable, we create a
+        // container object that does.
+        let container = new St.BoxLayout({});
+        scrollbox.add_actor(container);
 
         this.activities = new St.Table({style_class: 'hamster-activities'})
-        box.add(this.activities)
+        container.add(this.activities)
 
         this.summaryLabel = new St.Label({style_class: 'summary-label'});
         box.add(this.summaryLabel);
