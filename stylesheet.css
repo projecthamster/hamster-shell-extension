@@ -12,6 +12,10 @@
 	border: 1px solid #333;
 }
 
+.hamster-scrollbox {
+    max-height: 200px;
+}
+
 .cell-label {
 	padding: 3px;
 	padding-right: 15px;
