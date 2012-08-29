@@ -103,9 +103,7 @@ HamsterBox.prototype = {
         label.set_text(_("Todays activities"))
         box.add(label);
 
-        let scrollbox = new St.ScrollView({style_class: 'hamster-scrollbox',
-                                           'hscrollbar-policy': Gtk.PolicyType.NEVER,
-                                           'vscrollbar-policy': Gtk.PolicyType.AUTOMATIC});
+        let scrollbox = new St.ScrollView({style_class: 'hamster-scrollbox'});
         box.add(scrollbox);
 
         // Since St.Table does not implement StScrollable, we create a
