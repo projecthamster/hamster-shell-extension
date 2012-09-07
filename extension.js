@@ -109,6 +109,7 @@ HamsterBox.prototype = {
         // Since St.Table does not implement StScrollable, we create a
         // container object that does.
         let container = new St.BoxLayout({});
+        container.set_vertical(true);
         scrollbox.add_actor(container);
 
         this.activities = new St.Table({style_class: 'hamster-activities'})
