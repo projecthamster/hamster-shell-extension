@@ -241,18 +241,18 @@ HamsterExtension.prototype = {
         this.menu.addMenuItem(item);
 
         // overview
-        item = new PopupMenu.PopupMenuItem(_("Show overview"));
+        item = new PopupMenu.PopupMenuItem(_("Show Overview"));
         item.connect('activate', Lang.bind(this, this._onShowHamsterActivate));
         this.menu.addMenuItem(item);
 
         // stop tracking
-        item = new PopupMenu.PopupMenuItem(_("Stop tracking"));
+        item = new PopupMenu.PopupMenuItem(_("Stop Tracking"));
         item.connect('activate', Lang.bind(this, this._onStopTracking));
         this.menu.addMenuItem(item);
 
         // settings
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        item = new PopupMenu.PopupMenuItem(_("Tracking settings"));
+        item = new PopupMenu.PopupMenuItem(_("Tracking Settings"));
         item.connect('activate', Lang.bind(this, this._onShowSettingsActivate));
         this.menu.addMenuItem(item);
 

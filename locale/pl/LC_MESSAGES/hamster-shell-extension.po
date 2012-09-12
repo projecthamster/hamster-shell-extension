@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-17 16:42+0100\n"
-"PO-Revision-Date: 2012-09-12 12:04+0100\n"
+"PO-Revision-Date: 2012-09-12 14:26+0100\n"
 "Last-Translator: Daniel Craig <daniel@danielcraig.me>\n"
 "Language-Team: Piotr Plenik <piotr.plenik@teamlab.pl>\n"
 "Language: \n"
@@ -31,15 +31,15 @@ msgid "Loading..."
 msgstr "Ładowanie..."
 
 #: extension.js:238
-msgid "Show overview"
+msgid "Show Overview"
 msgstr "Przegląd sprawozdania"
 
 #: extension.js:243
-msgid "Stop tracking"
+msgid "Stop Tracking"
 msgstr "Zatrzymaj śledzenie"
 
 #: extension.js:249
-msgid "Tracking settings"
+msgid "Tracking Settings"
 msgstr "Preferencje programu"
 
 #: extension.js:398
