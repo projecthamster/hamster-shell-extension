@@ -8,10 +8,8 @@ h1. Available on extensions site
 Install from sources for testing or development purposes.
 
 *NOTE*: this extension works with the hamster applet version built from sources.
-See "https://github.com/projecthamster/hamster":https://github.com/projecthamster/hamster
-for details.
-There are reports that it also works just fine on debian testing or some such
-but you never know.
+See "https://github.com/projecthamster/hamster":https://github.com/projecthamster/hamster for details.
+There are reports that it also works just fine on debian testing or some such but you never know.
 
 
 h1. Installing
