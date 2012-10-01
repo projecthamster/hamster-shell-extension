@@ -251,7 +251,7 @@ HamsterExtension.prototype = {
         this.menu.addMenuItem(item);
 
         // add new task
-        item = new PopupMenu.PopupMenuItem(_("Add new task"));
+        item = new PopupMenu.PopupMenuItem(_("Add Earlier Activity"));
         item.connect('activate', Lang.bind(this, this._onNewFact));
         this.menu.addMenuItem(item);
 
