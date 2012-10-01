@@ -250,6 +250,11 @@ HamsterExtension.prototype = {
         item.connect('activate', Lang.bind(this, this._onStopTracking));
         this.menu.addMenuItem(item);
 
+        // add new task
+        item = new PopupMenu.PopupMenuItem(_("Add Earlier Activity"));
+        item.connect('activate', Lang.bind(this, this._onNewFact));
+        this.menu.addMenuItem(item);
+
         // settings
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         item = new PopupMenu.PopupMenuItem(_("Tracking Settings"));
@@ -433,6 +438,12 @@ HamsterExtension.prototype = {
 
     _onShowHamsterActivate: function() {
         this._windowsProxy.overviewRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
+            // TODO - handle exceptions perhaps
+        }));
+    },
+
+    _onNewFact: function() {
+        this._windowsProxy.editRemote(0, DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             // TODO - handle exceptions perhaps
         }));
     },
