@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-17 16:42+0100\n"
-"PO-Revision-Date: 2012-09-12 14:26+0100\n"
+"PO-Revision-Date: 2012-10-01 11:14+0100\n"
 "Last-Translator: Daniel Craig <daniel@danielcraig.me>\n"
 "Language-Team: Piotr Plenik <piotr.plenik@teamlab.pl>\n"
 "Language: \n"
@@ -45,4 +45,8 @@ msgstr "Preferencje programu"
 #: extension.js:398
 msgid "No activity"
 msgstr "Brak aktywności"
+
+#: extension.js:254
+msgid "Add Earlier Activity"
+msgstr "Dodaj wcześniejszą czynność"
 
