@@ -429,10 +429,14 @@ HamsterExtension.prototype = {
 
 
     _onStopTracking: function() {
-        let date = new Date()
-        date = new Date(date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset())); // getting back to UTC
-
-        let epochSeconds = Math.floor(date.getTime() / 1000);
+        let now = new Date();
+        let epochSeconds = Date.UTC(now.getFullYear(),
+                                    now.getMonth(),
+                                    now.getDate(),
+                                    now.getHours(),
+                                    now.getMinutes(),
+                                    now.getSeconds());
+        epochSeconds = Math.floor(epochSeconds / 1000);
         this._proxy.StopTrackingRemote(epochSeconds, DBus.CALL_FLAG_START);
     },
 
