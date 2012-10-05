@@ -360,7 +360,14 @@ HamsterExtension.prototype = {
                     button.fact = fact;
 
                     button.connect('clicked', Lang.bind(this, function(button, event) {
-                        this._proxy.AddFactRemote(button.fact.name +"@" + button.fact.category + "," + button.fact.description,
+                        let factStr = button.fact.name
+                                      + "@" + button.fact.category
+                                      + ", " + (button.fact.description);
+                        if (button.fact.tags) {
+                            factStr += " #" + button.fact.tags.join(", #");
+                        }
+
+                        this._proxy.AddFactRemote(factStr,
                                                   0, 0, false, DBus.CALL_FLAG_START,
                                                   Lang.bind(this, function(response, err) {
                             // not interested in the new id - this shuts up the warning
