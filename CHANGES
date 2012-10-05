@@ -1,0 +1,14 @@
+======================
+Build 3 (Oct 4, 2012)
+======================
+
+  * "Add earlier activity" now back in the dropdown
+  * reactivating task via extension now also includes tags and the description
+  * global hotkey is back - tweak it via extension preferences page
+
+
+=======================
+Build 2 (Aug 13, 2012)
+=======================
+
+  * initial push to extensions.gnome.org
