@@ -15,6 +15,7 @@
 //        otherwise even most primitive operations are hardcore
 
 const Clutter = imports.gi.Clutter;
+const Config = imports.misc.config;
 const DBus = imports.dbus;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -198,6 +199,9 @@ HamsterExtension.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
     _init: function(extensionMeta) {
+        // Retrieve shell version.
+        this._shellVersion = Config.PACKAGE_VERSION;
+
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
         this.extensionMeta = extensionMeta;
@@ -224,11 +228,16 @@ HamsterExtension.prototype = {
         // panel icon
         this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-tracking-symbolic.svg");
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-idle-symbolic.svg");
-        this.icon = new St.Icon({gicon: this._trackingIcon,
-                                  icon_type: St.IconType.SYMBOLIC,
-                                  icon_size: 16,
-                                  style_class: "panel-icon"})
-
+        if (this._shellVersion == "3.4") {
+             this.icon = new St.Icon({gicon: this._trackingIcon,
+                                       icon_type: St.IconType.SYMBOLIC,
+                                       icon_size: 16,
+                                       style_class: "panel-icon"})
+        } else {
+            this.icon = new St.Icon({gicon: this._trackingIcon,
+                                      icon_size: 16,
+                                      style_class: "panel-icon"});
+        }
         this.panelContainer.add(this.icon);
         this.panelContainer.add(this.panelLabel);
 
@@ -334,9 +343,14 @@ HamsterExtension.prototype = {
                 let button;
 
                 button = new St.Button({style_class: 'clickable cell-button'});
-                icon = new St.Icon({icon_name: "document-open",
-                                    icon_type: St.IconType.SYMBOLIC,
-                                    icon_size: 16})
+                if (this._shellVersion == "3.4") {
+                   icon = new St.Icon({icon_name: "document-open",
+                                       icon_type: St.IconType.SYMBOLIC,
+                                       icon_size: 16});
+                } else {
+                    icon = new St.Icon({icon_name: "document-open-symbolic",
+                                        icon_size: 16});
+                }
                 button.set_child(icon);
                 button.fact = fact;
                 button.connect('clicked', Lang.bind(this, function(button, event) {
@@ -353,9 +367,14 @@ HamsterExtension.prototype = {
                     this.currentActivity.category != fact.category ) {
                     button = new St.Button({style_class: 'clickable cell-button'});
 
-                    icon = new St.Icon({icon_name: "media-playback-start",
-                                 icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: 16})
+                    if (this._shellVersion == "3.4"){
+                        icon = new St.Icon({icon_name: "media-playback-start",
+                                            icon_type: St.IconType.SYMBOLIC,
+                                            icon_size: 16})
+                    } else {
+                        icon = new St.Icon({icon_name: "media-playback-start-symbolic",
+                                            icon_size: 16});
+                    }
                     button.set_child(icon);
                     button.fact = fact;
 
@@ -517,8 +536,13 @@ function ExtensionController(extensionMeta) {
             this.settings = Convenience.getSettings();
             this.extension = new HamsterExtension(this.extensionMeta);
 
-            Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);
-            Main.panel._menus.addMenu(this.extension.menu);
+            if (this._shellVersion == "3.4"){
+                Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);
+                Main.panel._menus.addMenu(this.extension.menu);
+            }else{
+                Main.panel.addToStatusArea("hamster", this.extension, 0, "right");
+                Main.panel.menuManager.addMenu(this.extension.menu);
+            }
             this._checkCalendar(Main.panel._centerBox);
 
 
@@ -535,7 +559,11 @@ function ExtensionController(extensionMeta) {
 
             this._checkCalendar(Main.panel._rightBox);
             Main.panel._rightBox.remove_actor(this.extension.actor);
-            Main.panel._menus.removeMenu(this.extension.menu);
+            if (this._shellVersion == "3.4"){
+                Main.panel._menus.removeMenu(this.extension.menu);
+            } else {
+                Main.panel.menuManager.removeMenu(this.extension.menu);
+            }
 
             this.extension.actor.destroy();
         }
