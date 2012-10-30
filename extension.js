@@ -199,9 +199,6 @@ HamsterExtension.prototype = {
     __proto__: PanelMenu.Button.prototype,
 
     _init: function(extensionMeta) {
-        // Retrieve shell version.
-        this._shellVersion = Config.PACKAGE_VERSION;
-
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
         this.extensionMeta = extensionMeta;
@@ -228,16 +225,11 @@ HamsterExtension.prototype = {
         // panel icon
         this._trackingIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-tracking-symbolic.svg");
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-idle-symbolic.svg");
-        if (this._shellVersion == "3.4") {
-             this.icon = new St.Icon({gicon: this._trackingIcon,
-                                       icon_type: St.IconType.SYMBOLIC,
-                                       icon_size: 16,
-                                       style_class: "panel-icon"})
-        } else {
-            this.icon = new St.Icon({gicon: this._trackingIcon,
-                                      icon_size: 16,
-                                      style_class: "panel-icon"});
-        }
+
+        this.icon = new St.Icon({gicon: this._trackingIcon,
+                                  icon_size: 16,
+                                  style_class: "panel-icon"});
+
         this.panelContainer.add(this.icon);
         this.panelContainer.add(this.panelLabel);
 
@@ -285,7 +277,7 @@ HamsterExtension.prototype = {
         // load data
         this.facts = null;
         // refresh the label every 60 secs
-        GLib.timeout_add_seconds(0, 60, Lang.bind(this, function () {this.refresh(); return true}))
+        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh))
         this.refresh();
     },
 
@@ -303,6 +295,12 @@ HamsterExtension.prototype = {
     },
 
     refresh: function() {
+        if (!this.timeout) {
+            // upon destroy the timeout will still come back one more time
+            // XXX - look up how to simply kill it
+            return false;
+        }
+
         this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             let facts = Stuff.fromDbusFacts(response);
 
@@ -343,14 +341,10 @@ HamsterExtension.prototype = {
                 let button;
 
                 button = new St.Button({style_class: 'clickable cell-button'});
-                if (this._shellVersion == "3.4") {
-                   icon = new St.Icon({icon_name: "document-open",
-                                       icon_type: St.IconType.SYMBOLIC,
-                                       icon_size: 16});
-                } else {
-                    icon = new St.Icon({icon_name: "document-open-symbolic",
-                                        icon_size: 16});
-                }
+
+                icon = new St.Icon({icon_name: "document-open-symbolic",
+                                    icon_size: 16});
+
                 button.set_child(icon);
                 button.fact = fact;
                 button.connect('clicked', Lang.bind(this, function(button, event) {
@@ -367,14 +361,9 @@ HamsterExtension.prototype = {
                     this.currentActivity.category != fact.category ) {
                     button = new St.Button({style_class: 'clickable cell-button'});
 
-                    if (this._shellVersion == "3.4"){
-                        icon = new St.Icon({icon_name: "media-playback-start",
-                                            icon_type: St.IconType.SYMBOLIC,
-                                            icon_size: 16})
-                    } else {
-                        icon = new St.Icon({icon_name: "media-playback-start-symbolic",
-                                            icon_size: 16});
-                    }
+                    icon = new St.Icon({icon_name: "media-playback-start-symbolic",
+                                        icon_size: 16});
+
                     button.set_child(icon);
                     button.fact = fact;
 
@@ -407,7 +396,6 @@ HamsterExtension.prototype = {
                 if (categories.indexOf(fact.category) == -1)
                     categories.push(fact.category)
             };
-            global.log(byCategory)
 
             let label = "";
             for each (var category in categories) {
@@ -417,6 +405,8 @@ HamsterExtension.prototype = {
             this.activityEntry.summaryLabel.set_text(label);
 
         }));
+
+        return true;
     },
 
 
@@ -495,56 +485,27 @@ HamsterExtension.prototype = {
 
 
 function ExtensionController(extensionMeta) {
+    let dateMenu = Main.panel.statusArea.dateMenu;
+
     return {
         extensionMeta: extensionMeta,
         extension: null,
         settings: null,
 
-        _checkCalendar: function(container) {
-            if (this.settings.get_boolean("swap-with-calendar") == false)
-                return;
-
-            let calendar = Main.panel._dateMenu.actor;
-            let extension = this.extension.actor;
-            let calendarFound = false;
-            for each(var elem in container.get_children()) {
-                if (elem == calendar) {
-                    calendarFound = true;
-                }
-            }
-
-            if (!calendarFound)
-                return;
-
-            let source, target;
-
-            if (container == Main.panel._centerBox) {
-                target = Main.panel._rightBox;
-            } else {
-                target = Main.panel._centerBox;
-            }
-
-
-            container.remove_actor(calendar);
-            target.add_actor(calendar);
-
-            target.remove_actor(extension);
-            container.add_actor(extension);
-        },
-
         enable: function() {
             this.settings = Convenience.getSettings();
             this.extension = new HamsterExtension(this.extensionMeta);
 
-            if (this._shellVersion == "3.4"){
-                Main.panel._rightBox.insert_child_at_index(this.extension.actor, 0);
-                Main.panel._menus.addMenu(this.extension.menu);
-            }else{
-                Main.panel.addToStatusArea("hamster", this.extension, 0, "right");
-                Main.panel.menuManager.addMenu(this.extension.menu);
-            }
-            this._checkCalendar(Main.panel._centerBox);
+            if (this.settings.get_boolean("swap-with-calendar")) {
+                Main.panel.addToStatusArea("hamster", this.extension, 0, "center");
 
+                Main.panel._centerBox.remove_actor(dateMenu.container);
+                Main.panel._addToPanelBox('dateMenu', dateMenu, -1, Main.panel._rightBox);
+            } else {
+                Main.panel.addToStatusArea("hamster", this.extension, 0, "right");
+            }
+
+            Main.panel.menuManager.addMenu(this.extension.menu);
 
 
             global.display.add_keybinding("show-hamster-dropdown",
@@ -557,15 +518,18 @@ function ExtensionController(extensionMeta) {
         disable: function() {
             global.display.remove_keybinding("show-hamster-dropdown");
 
-            this._checkCalendar(Main.panel._rightBox);
-            Main.panel._rightBox.remove_actor(this.extension.actor);
-            if (this._shellVersion == "3.4"){
-                Main.panel._menus.removeMenu(this.extension.menu);
-            } else {
-                Main.panel.menuManager.removeMenu(this.extension.menu);
+
+            if (this.settings.get_boolean("swap-with-calendar")) {
+                Main.panel._rightBox.remove_actor(dateMenu.container);
+                Main.panel._addToPanelBox('dateMenu', dateMenu, Main.sessionMode.panel.center.indexOf('dateMenu'), Main.panel._centerBox);
             }
 
+            Main.panel.menuManager.removeMenu(this.extension.menu);
+
             this.extension.actor.destroy();
+            this.extension.timeout = null;
+            this.extension.destroy();
+            this.extension = null;
         }
     }
 }
