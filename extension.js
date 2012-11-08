@@ -277,7 +277,7 @@ HamsterExtension.prototype = {
         // load data
         this.facts = null;
         // refresh the label every 60 secs
-        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh))
+        this.timeout = GLib.timeout_add_seconds(60, 1, Lang.bind(this, this.refresh))
         this.refresh();
     },
 
@@ -295,12 +295,6 @@ HamsterExtension.prototype = {
     },
 
     refresh: function() {
-        if (!this.timeout) {
-            // upon destroy the timeout will still come back one more time
-            // XXX - look up how to simply kill it
-            return false;
-        }
-
         this._proxy.GetTodaysFactsRemote(DBus.CALL_FLAG_START, Lang.bind(this, function(response, err) {
             let facts = Stuff.fromDbusFacts(response);
 
@@ -526,8 +520,8 @@ function ExtensionController(extensionMeta) {
 
             Main.panel.menuManager.removeMenu(this.extension.menu);
 
+            GLib.source_remove(this.extension.timeout);
             this.extension.actor.destroy();
-            this.extension.timeout = null;
             this.extension.destroy();
             this.extension = null;
         }
