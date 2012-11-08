@@ -277,7 +277,7 @@ HamsterExtension.prototype = {
         // load data
         this.facts = null;
         // refresh the label every 60 secs
-        this.timeout = GLib.timeout_add_seconds(60, 1, Lang.bind(this, this.refresh))
+        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh))
         this.refresh();
     },
 
