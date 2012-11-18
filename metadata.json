@@ -10,7 +10,7 @@
     "shell-version": [
         "3.6", "3.6.1"
     ],
-    "url": "https://github.com/tbaugis/hamster-shell-extension",
+    "url": "https://github.com/projecthamster/shell-extension.git",
     "uuid": "hamster@projecthamster.wordpress.com",
     "version": 4.3
 }
