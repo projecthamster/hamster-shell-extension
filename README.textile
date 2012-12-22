@@ -5,11 +5,11 @@ h1. Available on extensions site
 *The extension is now up in extensions.gnome.org:*
 "https://extensions.gnome.org/extension/425/project-hamster-extension/":https://extensions.gnome.org/extension/425/project-hamster-extension/
 
-Install from sources for testing or development purposes.
+The extensions page will work for gnome-shell versions starting from 3.4.
+If you are stuck with an older gnome shell version, you can
+"grab an older version from the tags":https://github.com/projecthamster/shell-extension/tags
 
-*NOTE*: this extension works with the hamster applet version built from sources.
-See "https://github.com/projecthamster/hamster":https://github.com/projecthamster/hamster for details.
-There are reports that it also works just fine on debian testing or some such but you never know.
+Install from sources for testing or development purposes.
 
 
 h1. Installing
@@ -27,4 +27,4 @@ https://extensions.gnome.org/local/
 
 h1. Known issues:
 
-* it's very minimal
+* it's still very minimal
