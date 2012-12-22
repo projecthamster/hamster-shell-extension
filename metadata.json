@@ -1,5 +1,5 @@
 {
-    "description": "Shell extension for project hamster - the GNOME time tracker. The extension requires hamster to be installed from sources. Please see http://projecthamster.wordpress.com/building-and-running/ for details",
+    "description": "Shell extension for project hamster - the GNOME time tracker. File your issues here: https://github.com/projecthamster/shell-extension/issues",
     "extension-id": "project-hamster",
     "name": "Project Hamster Extension",
     "original-authors": [
