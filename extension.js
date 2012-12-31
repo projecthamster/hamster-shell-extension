@@ -535,6 +535,6 @@ function ExtensionController(extensionMeta) {
 
 
 function init(extensionMeta) {
-    Convenience.initTranslations();
+    Convenience.initTranslations("hamster-shell-extension");
     return new ExtensionController(extensionMeta);
 }
