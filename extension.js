@@ -133,6 +133,9 @@ HamsterBox.prototype = {
         global.stage.set_key_focus(this._textEntry);
     },
 
+    blur: function() {
+        global.stage.set_key_focus(null);
+    },
 
     _onEntryActivated: function() {
         this.emit('activate');
@@ -264,12 +267,13 @@ HamsterExtension.prototype = {
         this.menu.addMenuItem(item);
 
 
-        // ConsoleKit doesn't send notifications when shutdown/reboot
-        // are disabled, so we update the menu item each time the menu opens
+        // focus menu upon display
         this.menu.connect('open-state-changed', Lang.bind(this,
             function(menu, open) {
                 if (open) {
                     this.activityEntry.focus();
+                } else {
+                    this.activityEntry.blur();
                 }
             }
         ));
