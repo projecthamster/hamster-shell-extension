@@ -28,8 +28,9 @@ const Gio = imports.gi.Gio;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
-const Gettext = imports.gettext;
+const Gettext = imports.gettext.domain('gnome-shell-extensions');
 const _ = Gettext.gettext;
+const N_ = function(x) { return x; }
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -530,10 +531,6 @@ function ExtensionController(extensionMeta) {
 
 
 function init(extensionMeta) {
-    // Localization
-    let userExtensionLocalePath = extensionMeta.path + '/locale';
-    Gettext.bindtextdomain("hamster-shell-extension", userExtensionLocalePath);
-    Gettext.textdomain("hamster-shell-extension");
-
+    Convenience.initTranslations();
     return new ExtensionController(extensionMeta);
 }

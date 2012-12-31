@@ -1,6 +1,7 @@
 {
     "description": "Shell extension for project hamster - the GNOME time tracker. File your issues here: https://github.com/projecthamster/shell-extension/issues",
     "extension-id": "project-hamster",
+    "gettext-domain": "hamster-shell-extension",
     "name": "Project Hamster Extension",
     "original-authors": [
         "jerome@oufella.com",
