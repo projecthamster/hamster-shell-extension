@@ -4,8 +4,8 @@
     "gettext-domain": "hamster-shell-extension",
     "name": "Project Hamster Extension",
     "original-authors": [
-        "jerome@oufella.com",
         "toms.baugis@gmail.com"
+        "jerome@oufella.com",
     ],
     "settings-schema": "org.gnome.shell.extensions.project-hamster",
     "shell-version": [
@@ -13,5 +13,5 @@
     ],
     "url": "https://github.com/projecthamster/shell-extension.git",
     "uuid": "hamster@projecthamster.wordpress.com",
-    "version": 4.3
+    "version": 4.4
 }
