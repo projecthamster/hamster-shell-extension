@@ -28,7 +28,7 @@ const Gio = imports.gi.Gio;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
-const Gettext = imports.gettext.domain('gnome-shell-extensions');
+const Gettext = imports.gettext.domain('hamster-shell-extension');
 const _ = Gettext.gettext;
 const N_ = function(x) { return x; }
 
