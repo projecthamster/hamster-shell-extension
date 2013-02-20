@@ -328,7 +328,7 @@ HamsterExtension.prototype = {
                 activities.add(label, {row: i, col: 0, x_expand: false});
 
                 label = new St.Label({style_class: 'cell-label'});
-                label.set_text(fact.name)
+                label.set_text(fact.name + (0 < fact.tags.length ? (" #" + fact.tags.join(", #")) : ""));
                 activities.add(label, {row: i, col: 1});
 
                 label = new St.Label({style_class: 'cell-label'});
