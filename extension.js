@@ -357,7 +357,8 @@ HamsterExtension.prototype = {
 
                 if (!this.currentActivity ||
                     this.currentActivity.name != fact.name ||
-                    this.currentActivity.category != fact.category ) {
+                    this.currentActivity.category != fact.category ||
+                    this.currentActivity.tags.join(",") != fact.tags.join(",")) {
                     button = new St.Button({style_class: 'clickable cell-button'});
 
                     icon = new St.Icon({icon_name: "media-playback-start-symbolic",
