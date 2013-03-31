@@ -90,7 +90,7 @@ HamsterBox.prototype = {
         box.set_vertical(true);
 
         let label = new St.Label({style_class: 'hamster-box-label'});
-        label.set_text(_("What are you doing?"))
+        label.set_text(_("What are you doing?"));
         box.add(label);
 
         this._textEntry = new St.Entry({name: 'searchEntry',
@@ -104,10 +104,10 @@ HamsterBox.prototype = {
         box.add(this._textEntry);
 
         // autocomplete popup - couldn't spark it up just yet
-        //this._popup = new PopupMenu.PopupComboMenu(this._textEntry)
+        //this._popup = new PopupMenu.PopupComboMenu(this._textEntry);
 
         label = new St.Label({style_class: 'hamster-box-label'});
-        label.set_text(_("Todays activities"))
+        label.set_text(_("Todays activities"));
         box.add(label);
 
         let scrollbox = new St.ScrollView({style_class: 'hamster-scrollbox'});
@@ -119,8 +119,8 @@ HamsterBox.prototype = {
         container.set_vertical(true);
         scrollbox.add_actor(container);
 
-        this.activities = new St.Table({style_class: 'hamster-activities'})
-        container.add(this.activities)
+        this.activities = new St.Table({style_class: 'hamster-activities'});
+        container.add(this.activities);
 
         this.summaryLabel = new St.Label({style_class: 'summary-label'});
         box.add(this.summaryLabel);
@@ -150,7 +150,7 @@ HamsterBox.prototype = {
 
     _getActivities: function() {
         if (this.runningActivitiesQuery)
-            return this.autocompleteActivities
+            return this.autocompleteActivities;
 
         this.runningActivitiesQuery = true;
         this.proxy.GetActivitiesRemote("", Lang.bind(this, function([response], err) {
@@ -174,7 +174,7 @@ HamsterBox.prototype = {
         this._prevText = text;
 
         // ignore deletions
-        let ignoreKeys = [Clutter.BackSpace, Clutter.Delete, Clutter.Escape]
+        let ignoreKeys = [Clutter.BackSpace, Clutter.Delete, Clutter.Escape];
         for each (var key in ignoreKeys) {
             if (symbol == key)
                 return;
@@ -187,7 +187,7 @@ HamsterBox.prototype = {
                 this.prevText = text;
 
                 this._textEntry.set_text(rec[0]);
-                this._textEntry.clutter_text.set_selection(text.length, rec[0].length)
+                this._textEntry.clutter_text.set_selection(text.length, rec[0].length);
 
                 this._prevText = rec[0].toLowerCase();
 
@@ -219,7 +219,7 @@ HamsterExtension.prototype = {
 
         this._windowsProxy = new WindowsProxy(Gio.DBus.session,
                                               "org.gnome.Hamster.WindowServer",
-                                              "/org/gnome/Hamster/WindowServer")
+                                              "/org/gnome/Hamster/WindowServer");
 
         this._settings = Convenience.getSettings();
 
@@ -242,7 +242,7 @@ HamsterExtension.prototype = {
         this.panelContainer.add(this.icon);
         this.panelContainer.add(this.panelLabel);
 
-        let item = new HamsterBox()
+        let item = new HamsterBox();
         item.connect('activate', Lang.bind(this, this._onActivityEntry));
         this.activityEntry = item;
         this.activityEntry.proxy = this._proxy; // lazy proxying
@@ -287,7 +287,7 @@ HamsterExtension.prototype = {
         // load data
         this.facts = null;
         // refresh the label every 60 secs
-        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh))
+        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh));
         this.refresh();
     },
 
@@ -327,8 +327,8 @@ HamsterExtension.prototype = {
         }
         this.updatePanelDisplay(fact);
 
-        let activities = this.activityEntry.activities
-        activities.destroy_all_children() // remove previous entries
+        let activities = this.activityEntry.activities;
+        activities.destroy_all_children(); // remove previous entries
 
         var i = 0;
         for each (var fact in facts) {
@@ -339,7 +339,7 @@ HamsterExtension.prototype = {
             if (fact.endTime) {
                 text += "%02d:%02d".format(fact.endTime.getHours(), fact.endTime.getMinutes());
             }
-            label.set_text(text)
+            label.set_text(text);
             activities.add(label, {row: i, col: 0, x_expand: false});
 
             label = new St.Label({style_class: 'cell-label'});
@@ -347,7 +347,7 @@ HamsterExtension.prototype = {
             activities.add(label, {row: i, col: 1});
 
             label = new St.Label({style_class: 'cell-label'});
-            label.set_text(Stuff.formatDurationHuman(fact.delta))
+            label.set_text(Stuff.formatDurationHuman(fact.delta));
             activities.add(label, {row: i, col: 2, x_expand: false});
 
 
@@ -409,7 +409,7 @@ HamsterExtension.prototype = {
         for each (var fact in facts) {
             byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
             if (categories.indexOf(fact.category) == -1)
-                categories.push(fact.category)
+                categories.push(fact.category);
         };
 
         let label = "";
@@ -428,7 +428,7 @@ HamsterExtension.prototype = {
 
         if (appearance == 0) {
             this.panelLabel.show();
-            this.icon.hide()
+            this.icon.hide();
 
             if (fact && !fact.endTime) {
                 this.panelLabel.text = "%s %s".format(fact.name, Stuff.formatDuration(fact.delta));
