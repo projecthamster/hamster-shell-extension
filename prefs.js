@@ -29,13 +29,23 @@ const HamsterSettingsWidget = new GObject.Class({
 
         vbox = new Gtk.VBox({margin: 10});
         this.add(vbox);
-        let checkbox = new Gtk.CheckButton({label: "Swap clock with the hamster button",
-                                            margin_bottom: 10,
-                                            margin_top: 5})
-        checkbox.set_alignment(0, 0.5)
-        vbox.add(checkbox)
-        checkbox.connect('toggled', Lang.bind(this, this._onPositionChange));
-        checkbox.set_active(this._settings.get_boolean("swap-with-calendar"));
+
+        let placementOptions = new Gtk.ListStore();
+        placementOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
+
+        placementOptions.set(placementOptions.append(), [0, 1], ["Default", 0]);
+        placementOptions.set(placementOptions.append(), [0, 1], ["Replace calendar", 1]);
+        placementOptions.set(placementOptions.append(), [0, 1], ["Replace activities", 2]);
+
+        let placementCombo = new Gtk.ComboBox({model: placementOptions});
+
+        let renderer = new Gtk.CellRendererText();
+        placementCombo.pack_start(renderer, true);
+        placementCombo.add_attribute(renderer, 'text', 0);
+        placementCombo.connect('changed', Lang.bind(this, this._onPlacementChange));
+        placementCombo.set_active(this._settings.get_int("panel-placement"));
+
+        vbox.add(placementCombo);
 
 
         label = new Gtk.Label({margin_top: 20});
@@ -64,7 +74,6 @@ const HamsterSettingsWidget = new GObject.Class({
         vbox.add(appearanceCombo);
 
 
-
         label = new Gtk.Label({margin_top: 20});
         label.set_markup("<b>Global hotkey</b>")
         label.set_alignment(0, 0.5)
@@ -82,13 +91,19 @@ const HamsterSettingsWidget = new GObject.Class({
                                 margin_top: 70}));
     },
 
-    _onPositionChange: function(widget) {
-        let newVal = widget.get_active();
-        if (this._settings.get_boolean("swap-with-calendar") == newVal)
+    _onPlacementChange: function(widget) {
+        let [success, iter] = widget.get_active_iter();
+        if (!success)
             return;
 
-        this._settings.set_boolean("swap-with-calendar", newVal)
+        let newPlacement = widget.get_model().get_value(iter, 1);
+
+        if (this._settings.get_int("panel-placement") == newPlacement)
+            return;
+
+        this._settings.set_int("panel-placement", newPlacement);
     },
+
     _onAppearanceChange: function(widget) {
         let [success, iter] = widget.get_active_iter();
         if (!success)

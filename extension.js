@@ -502,16 +502,25 @@ function ExtensionController(extensionMeta) {
         extensionMeta: extensionMeta,
         extension: null,
         settings: null,
+        placement: 0,
+        activitiesText: null,
 
         enable: function() {
             this.settings = Convenience.getSettings();
             this.extension = new HamsterExtension(this.extensionMeta);
 
-            if (this.settings.get_boolean("swap-with-calendar")) {
+            this.placement = this.settings.get_int("panel-placement");
+            if (this.placement == 1) {
                 Main.panel.addToStatusArea("hamster", this.extension, 0, "center");
 
                 Main.panel._centerBox.remove_actor(dateMenu.container);
                 Main.panel._addToPanelBox('dateMenu', dateMenu, -1, Main.panel._rightBox);
+
+            } else if (this.placement == 2) {
+                this._activitiesText = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0].get_text();
+                Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0].set_text('');
+                Main.panel.addToStatusArea("hamster", this.extension, 1, "left");
+
             } else {
                 Main.panel.addToStatusArea("hamster", this.extension, 0, "right");
             }
@@ -529,10 +538,12 @@ function ExtensionController(extensionMeta) {
         disable: function() {
             global.display.remove_keybinding("show-hamster-dropdown");
 
-
-            if (this.settings.get_boolean("swap-with-calendar")) {
+            if (this.placement == 1) {
                 Main.panel._rightBox.remove_actor(dateMenu.container);
                 Main.panel._addToPanelBox('dateMenu', dateMenu, Main.sessionMode.panel.center.indexOf('dateMenu'), Main.panel._centerBox);
+
+            } else if (this.placement == 2) {
+                Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0].set_text(this._activitiesText);
             }
 
             Main.panel.menuManager.removeMenu(this.extension.menu);

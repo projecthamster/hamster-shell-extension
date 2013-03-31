@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
     <schema id="org.gnome.shell.extensions.project-hamster" path="/org/gnome/shell/extensions/project-hamster/">
-        <key name="swap-with-calendar" type="b">
-            <default>false</default>
-            <summary>Placement</summary>
-            <description>When enabled, time tracker extension will occupy calendar's place and move calendar to the right</description>
+        <key name="panel-placement" type="i">
+            <default>0</default>
+            <summary>Placement in the panel.</summary>
+            <description>Position to place extension at. 0 - default, 1 - replace calendar, 2 - replace activities.</description>
         </key>
 
         <key name="panel-appearance" type="i">
@@ -13,9 +13,9 @@
             <description>Sets the panel appearance. 0 - label, 1 - icon, 2 - label and icon.</description>
         </key>
 
-		<key type="as" name="show-hamster-dropdown">
-			<default><![CDATA[['<Super>h']]]></default>
-			<summary>Global key combination to show the drop-down.</summary>
-		</key>
+        <key type="as" name="show-hamster-dropdown">
+            <default><![CDATA[['<Super>h']]]></default>
+            <summary>Global key combination to show the drop-down.</summary>
+        </key>
     </schema>
 </schemalist>
