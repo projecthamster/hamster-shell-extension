@@ -528,15 +528,16 @@ function ExtensionController(extensionMeta) {
             Main.panel.menuManager.addMenu(this.extension.menu);
 
 
-            global.display.add_keybinding("show-hamster-dropdown",
+            Main.wm.addKeybinding("show-hamster-dropdown",
                 this.extension._settings,
                 Meta.KeyBindingFlags.NONE,
+                Shell.KeyBindingMode.ALL,
                 Lang.bind(this.extension, this.extension.toggle)
             );
         },
 
         disable: function() {
-            global.display.remove_keybinding("show-hamster-dropdown");
+            Main.wm.removeKeybinding("show-hamster-dropdown");
 
             if (this.placement == 1) {
                 Main.panel._rightBox.remove_actor(dateMenu.container);
