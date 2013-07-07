@@ -23,6 +23,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
+const Mainloop = imports.mainloop;
 const Gio = imports.gi.Gio;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -135,7 +136,9 @@ HamsterBox.prototype = {
     },
 
     focus: function() {
-        global.stage.set_key_focus(this._textEntry);
+        Mainloop.timeout_add(20, Lang.bind(this, function() {
+            global.stage.set_key_focus(this._textEntry);
+        }));
     },
 
     blur: function() {
