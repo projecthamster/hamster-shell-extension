@@ -23,24 +23,34 @@ const HamsterSettingsWidget = new GObject.Class({
 
 
         label = new Gtk.Label();
-        label.set_markup("<b>Positioning</b>")
-        label.set_alignment(0, 0.5)
+        label.set_markup("<b>Positioning</b>");
+        label.set_alignment(0, 0.5);
         this.add(label);
 
         vbox = new Gtk.VBox({margin: 10});
         this.add(vbox);
-        let checkbox = new Gtk.CheckButton({label: "Swap clock with the hamster button",
-                                            margin_bottom: 10,
-                                            margin_top: 5})
-        checkbox.set_alignment(0, 0.5)
-        vbox.add(checkbox)
-        checkbox.connect('toggled', Lang.bind(this, this._onPositionChange));
-        checkbox.set_active(this._settings.get_boolean("swap-with-calendar"));
+
+        let placementOptions = new Gtk.ListStore();
+        placementOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
+
+        placementOptions.set(placementOptions.append(), [0, 1], ["Default", 0]);
+        placementOptions.set(placementOptions.append(), [0, 1], ["Replace calendar", 1]);
+        placementOptions.set(placementOptions.append(), [0, 1], ["Replace activities", 2]);
+
+        let placementCombo = new Gtk.ComboBox({model: placementOptions});
+
+        let renderer = new Gtk.CellRendererText();
+        placementCombo.pack_start(renderer, true);
+        placementCombo.add_attribute(renderer, 'text', 0);
+        placementCombo.connect('changed', Lang.bind(this, this._onPlacementChange));
+        placementCombo.set_active(this._settings.get_int("panel-placement"));
+
+        vbox.add(placementCombo);
 
 
         label = new Gtk.Label({margin_top: 20});
-        label.set_markup("<b>Appearance in panel</b>")
-        label.set_alignment(0, 0.5)
+        label.set_markup("<b>Appearance in panel</b>");
+        label.set_alignment(0, 0.5);
         this.add(label);
 
         vbox = new Gtk.VBox({margin: 10});
@@ -59,36 +69,41 @@ const HamsterSettingsWidget = new GObject.Class({
         appearanceCombo.pack_start(renderer, true);
         appearanceCombo.add_attribute(renderer, 'text', 0);
         appearanceCombo.connect('changed', Lang.bind(this, this._onAppearanceChange));
-        appearanceCombo.set_active(this._settings.get_int("panel-appearance"))
+        appearanceCombo.set_active(this._settings.get_int("panel-appearance"));
 
         vbox.add(appearanceCombo);
 
 
-
         label = new Gtk.Label({margin_top: 20});
-        label.set_markup("<b>Global hotkey</b>")
-        label.set_alignment(0, 0.5)
+        label.set_markup("<b>Global hotkey</b>");
+        label.set_alignment(0, 0.5);
         this.add(label);
 
         vbox = new Gtk.VBox({margin: 10});
         this.add(vbox);
         let entry = new Gtk.Entry({margin_bottom: 10,
                                    margin_top: 5,
-                                   text: this._settings.get_strv("show-hamster-dropdown")[0]})
-        vbox.add(entry)
+                                   text: this._settings.get_strv("show-hamster-dropdown")[0]});
+        vbox.add(entry);
         entry.connect('changed', Lang.bind(this, this._onHotkeyChange));
 
         vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
                                 margin_top: 70}));
     },
 
-    _onPositionChange: function(widget) {
-        let newVal = widget.get_active();
-        if (this._settings.get_boolean("swap-with-calendar") == newVal)
+    _onPlacementChange: function(widget) {
+        let [success, iter] = widget.get_active_iter();
+        if (!success)
             return;
 
-        this._settings.set_boolean("swap-with-calendar", newVal)
+        let newPlacement = widget.get_model().get_value(iter, 1);
+
+        if (this._settings.get_int("panel-placement") == newPlacement)
+            return;
+
+        this._settings.set_int("panel-placement", newPlacement);
     },
+
     _onAppearanceChange: function(widget) {
         let [success, iter] = widget.get_active_iter();
         if (!success)
@@ -99,12 +114,12 @@ const HamsterSettingsWidget = new GObject.Class({
         if (this._settings.get_int("panel-appearance") == newAppearance)
             return;
 
-        this._settings.set_int("panel-appearance", newAppearance)
+        this._settings.set_int("panel-appearance", newAppearance);
     },
 
     _onHotkeyChange: function(widget, bananas) {
-        //global.log(widget, bananas)
-        let hotkey = widget.get_text()
+        //global.log(widget, bananas);
+        let hotkey = widget.get_text();
         let [key, mods] = Gtk.accelerator_parse(hotkey);
 
         if (key != 0) {
