@@ -127,7 +127,7 @@ HamsterBox.prototype = {
         box.add(this.summaryLabel);
 
 
-        this.addActor(box);
+        this.actor.add_child(box);
 
         this.autocompleteActivities = [];
         this.runningActivitiesQuery = null;
