@@ -14,6 +14,9 @@ Install from sources for testing or development purposes.
 
 h1. Installing
 
+Current compatible gnome shell version: 3.10
+For previous shell versions check "releases":https://github.com/projecthamster/shell-extension/tags
+
 To install just symlink checkout folder into @~/.local/share/gnome-shell/extensions/@
 as hamster@projecthamster.wordpress.com.
 It looks something like this:
