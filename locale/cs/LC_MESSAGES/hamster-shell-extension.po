@@ -40,7 +40,7 @@ msgstr "Zastavit sledování"
 
 #: extension.js:249
 msgid "Tracking Settings"
-msgstr "Nastevení sledování"
+msgstr "Nastavení sledování"
 
 #: extension.js:398
 msgid "No activity"
