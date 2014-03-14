@@ -231,7 +231,9 @@ HamsterExtension.prototype = {
         this.actor.add_actor(this.panelContainer);
 
 
-        this.panelLabel = new St.Label({style_class: 'hamster-label', text: _("Loading...")});
+        this.panelLabel = new St.Label({style_class: 'hamster-label',
+                                        text: _("Loading..."),
+                                        y_align: Clutter.ActorAlign.CENTER});
         this.currentActivity = null;
 
         // panel icon
