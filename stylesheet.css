@@ -1,15 +1,15 @@
 
 .hamster-box {
-	spacing: 15px;
+    spacing: 15px;
 }
 
 .hamster-box-label {
-	padding-top: 1em;
-	text-align: center;
+    padding-top: 1em;
+    text-align: center;
 }
 
 .hamster-activities {
-	border: 1px solid #333;
+    border: 1px solid #333;
 }
 
 .hamster-scrollbox {
@@ -19,31 +19,29 @@
 }
 
 .cell-label {
-	padding: 3px;
-	padding-right: 15px;
-	color: #aaa;
+    padding: 3px;
+    padding-right: 15px;
+    color: #aaa;
 }
 
 .summary-label {
-	color: #aaa;
-	text-align: right;
+    color: #aaa;
+    text-align: right;
 }
 
 .cell-button {
-	padding: 3px 5px;
+    padding: 3px 5px;
 }
 
 .clickable:hover {
-	background-color: #4c4c4c;
+    background-color: #4c4c4c;
 }
 
 .clickable:hover .cell-label {
-	color: #fff;
+    color: #fff;
 }
 
-.panel-icon {
-	padding-right: 5px;
-}
-.panel-icon:last-child {
-	padding-right: 0;
+
+.panel-box {
+    spacing: 5px;
 }
