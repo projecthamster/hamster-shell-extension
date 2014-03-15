@@ -371,11 +371,7 @@ HamsterExtension.prototype = {
             button.set_child(icon);
             button.fact = fact;
             button.connect('clicked', Lang.bind(this, function(button, event) {
-                this._windowsProxy.editRemote(GLib.Variant.new('i', [button.fact.id]),
-                        Lang.bind(this, function(response, err) {
-                            // TODO - handle exceptions perhaps
-                        })
-                );
+                this._windowsProxy.editSync(GLib.Variant.new('i', [button.fact.id]));
                 this.menu.close();
             }));
             activities.add(button, {row: i, col: 3});
@@ -477,21 +473,15 @@ HamsterExtension.prototype = {
     },
 
     _onShowHamsterActivate: function() {
-        this._windowsProxy.overviewRemote(Lang.bind(this, function(response, err) {
-            // TODO - handle exceptions perhaps
-        }));
+        this._windowsProxy.overviewSync();
     },
 
     _onNewFact: function() {
-        this._windowsProxy.editRemote(GLib.Variant.new('i', [0]), Lang.bind(this, function(response, err) {
-            // TODO - handle exceptions perhaps
-        }));
+        this._windowsProxy.editSync(GLib.Variant.new('i', [0]));
     },
 
     _onShowSettingsActivate: function() {
-        this._windowsProxy.preferencesRemote(Lang.bind(this, function(response, err) {
-            // TODO - handle exceptions perhaps
-        }));
+        this._windowsProxy.preferencesSync();
     },
 
 
