@@ -227,12 +227,11 @@ HamsterExtension.prototype = {
         this._settings = Convenience.getSettings();
 
 
-        this.panelContainer = new St.BoxLayout();
+        this.panelContainer = new St.BoxLayout({style_class: "panel-box"});
         this.actor.add_actor(this.panelContainer);
 
 
-        this.panelLabel = new St.Label({style_class: 'hamster-label',
-                                        text: _("Loading..."),
+        this.panelLabel = new St.Label({text: _("Loading..."),
                                         y_align: Clutter.ActorAlign.CENTER});
         this.currentActivity = null;
 
@@ -241,8 +240,7 @@ HamsterExtension.prototype = {
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-idle-symbolic.svg");
 
         this.icon = new St.Icon({gicon: this._trackingIcon,
-                                  icon_size: 16,
-                                  style_class: "panel-icon"});
+                                  icon_size: 16});
 
         this.panelContainer.add(this.icon);
         this.panelContainer.add(this.panelLabel);
