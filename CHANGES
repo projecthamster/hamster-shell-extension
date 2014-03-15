@@ -1,4 +1,14 @@
 =========================
+Build 7 (Oct 22, 2013)
+=========================
+
+  * Call the windows synchronously, so hopefully less of two-click "window is ready"
+  * Fix typo in Czechz locale (@Idoktor)
+  * Fix vertical label alignment in panel (@beanaroo)
+  * Fix too much shadow (HT @jfcahce)
+
+
+=========================
 Build 6 (Oct 22, 2013)
 =========================
 
