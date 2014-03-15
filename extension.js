@@ -229,6 +229,7 @@ HamsterExtension.prototype = {
 
         this.panelContainer = new St.BoxLayout({style_class: "panel-box"});
         this.actor.add_actor(this.panelContainer);
+        this.actor.add_style_class_name('panel-status-button');
 
 
         this.panelLabel = new St.Label({text: _("Loading..."),
@@ -240,7 +241,8 @@ HamsterExtension.prototype = {
         this._idleIcon = Gio.icon_new_for_string(this.extensionMeta.path + "/images/hamster-idle-symbolic.svg");
 
         this.icon = new St.Icon({gicon: this._trackingIcon,
-                                  icon_size: 16});
+                                 icon_size: 16,
+                                 style_class: "panel-icon"});
 
         this.panelContainer.add(this.icon);
         this.panelContainer.add(this.panelLabel);
