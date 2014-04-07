@@ -8,9 +8,10 @@
     ],
     "settings-schema": "org.gnome.shell.extensions.project-hamster",
     "shell-version": [
-        "3.10"
+        "3.10",
+        "3.12"
     ],
     "url": "https://github.com/projecthamster/shell-extension.git",
     "uuid": "hamster@projecthamster.wordpress.com",
-    "version": 7
+    "version": 8
 }
