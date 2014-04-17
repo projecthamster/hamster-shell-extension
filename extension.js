@@ -173,11 +173,13 @@ HamsterBox.prototype = {
         let text = this._textEntry.get_text().toLowerCase();
 	let starttime = "";
 	let activitytext = text;
-	
+
 	// Don't include leading times in the activity autocomplete
-	if (text.match(/^[0-9][0-9]:[0-9][0-9] /)) {
-	  starttime = text.substring(0, 6);
-	  activitytext = text.substring(6);
+	let match = [];
+	if ((match = text.match(/^\d\d:\d\d /)) ||
+	    (match = text.match(/^-\d+ /))) {
+	  starttime = text.substring(0, match[0].length);
+	  activitytext = text.substring(match[0].length);
 	}
 
         // if nothing has changed or we still have selection then that means
