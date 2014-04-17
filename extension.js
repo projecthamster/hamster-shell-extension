@@ -171,10 +171,19 @@ HamsterBox.prototype = {
     _onKeyReleaseEvent: function(textItem, evt) {
         let symbol = evt.get_key_symbol();
         let text = this._textEntry.get_text().toLowerCase();
+	let starttime = "";
+	let activitytext = text;
+	
+	// Don't include leading times in the activity autocomplete
+	if (text.match(/^[0-9][0-9]:[0-9][0-9] /)) {
+	  starttime = text.substring(0, 6);
+	  activitytext = text.substring(6);
+	}
 
         // if nothing has changed or we still have selection then that means
         // that special keys are at play and we don't attempt to autocomplete
-        if (this._prevText == text ||
+        if (activitytext == "" ||
+	    this._prevText == text ||
             this._textEntry.clutter_text.get_selection()) {
             return;
         }
@@ -190,13 +199,14 @@ HamsterBox.prototype = {
 
         let allActivities = this._getActivities();
         for each (var rec in allActivities) {
-            if (rec[0].toLowerCase().substring(0, text.length) == text) {
+            if (rec[0].toLowerCase().substring(0, activitytext.length) == activitytext) {
                 this.prevText = text;
+		let completion = starttime + rec[0];
 
-                this._textEntry.set_text(rec[0]);
-                this._textEntry.clutter_text.set_selection(text.length, rec[0].length);
+                this._textEntry.set_text(completion);
+                this._textEntry.clutter_text.set_selection(text.length, completion.length);
 
-                this._prevText = rec[0].toLowerCase();
+                this._prevText = completion.toLowerCase();
 
                 return;
             }
