@@ -201,9 +201,12 @@ HamsterBox.prototype = {
 
         let allActivities = this._getActivities();
         for each (var rec in allActivities) {
-            if (rec[0].toLowerCase().substring(0, activitytext.length) == activitytext) {
+	    let completion = rec[0];
+	    if (rec[1].length > 0)
+	      completion += "@" + rec[1];
+            if (completion.toLowerCase().substring(0, activitytext.length) == activitytext) {
                 this.prevText = text;
-		let completion = starttime + rec[0];
+		completion = starttime + completion;
 
                 this._textEntry.set_text(completion);
                 this._textEntry.clutter_text.set_selection(text.length, completion.length);
