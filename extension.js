@@ -408,7 +408,7 @@ HamsterExtension.prototype = {
                     let factStr = button.fact.name
                                   + "@" + button.fact.category
                                   + ", " + (button.fact.description);
-                    if (button.fact.tags) {
+                    if (button.fact.tags.length) {
                         factStr += " #" + button.fact.tags.join(", #");
                     }
 
