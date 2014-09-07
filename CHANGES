@@ -1,4 +1,14 @@
 =========================
+Build 8 (Sep 7, 2014)
+=========================
+
+  * Allow autocomplete after deltas and timestams (@ams-cs)
+  * update icons (@0rAX0)
+  * German locale (@bwcknr)
+  * Check tag presence correctly and avoid adding hashes to activities (@toupeira)
+
+
+=========================
 Build 7 (Mar 14, 2014)
 =========================
 
