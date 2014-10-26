@@ -1,6 +1,12 @@
-Build 10 (Oct 18, 2014
+Build 11 (Oct 26, 2014)
+=========================
+ * Cosmetic fixes to the dropdown - set min-width and fix the input box
+
+
+Build 10 (Oct 18, 2014)
 =========================
  * Bump Gnome compatibility to 3.14. Seems to work
+
 
 Build 8 (Sep 7, 2014)
 =========================
