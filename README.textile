@@ -5,16 +5,9 @@ h1. Available on extensions site
 *The extension is now up in extensions.gnome.org:*
 "https://extensions.gnome.org/extension/425/project-hamster-extension/":https://extensions.gnome.org/extension/425/project-hamster-extension/
 
-The extensions page will work for gnome-shell versions starting from 3.4.
-If you are stuck with an older gnome shell version, you can
-"grab an older version from the tags":https://github.com/projecthamster/shell-extension/tags
+h1. Installing for testing and development
 
-Install from sources for testing or development purposes.
-
-
-h1. Installing
-
-Current compatible gnome shell version: 3.10
+Current compatible gnome shell version: 3.14
 For previous shell versions check "releases":https://github.com/projecthamster/shell-extension/tags
 
 To install just symlink checkout folder into @~/.local/share/gnome-shell/extensions/@
@@ -30,4 +23,4 @@ https://extensions.gnome.org/local/
 
 h1. Known issues:
 
-* it's still very minimal
+* it's very minimal
