@@ -12,7 +12,6 @@
 	selected-color: black;
 	caret-color: rgb(128, 128, 128);
 	caret-size: 1px;
-	width: 250px;
 	transition-duration: 300;
 	box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
 }
