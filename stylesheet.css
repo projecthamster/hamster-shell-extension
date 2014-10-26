@@ -1,6 +1,7 @@
 
 .hamster-box {
     spacing: 15px;
+    min-width: 25em;
 }
 
 .hamster-box-label {
