@@ -4,7 +4,8 @@
     "name": "Project Hamster Extension",
     "original-authors": [
         "toms.baugis@gmail.com",
-        "jerome@oufella.com"
+        "jerome@oufella.com",
+        "markus-koller@gmx.ch"
     ],
     "settings-schema": "org.gnome.shell.extensions.project-hamster",
     "shell-version": [
