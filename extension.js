@@ -30,7 +30,7 @@ const PanelMenu = imports.ui.panelMenu;
 const Util = imports.misc.util;
 const Gettext = imports.gettext.domain('hamster-shell-extension');
 const _ = Gettext.gettext;
-const N_ = function(x) { return x; }
+const N_ = function(x) { return x; };
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -171,21 +171,21 @@ HamsterBox.prototype = {
     _onKeyReleaseEvent: function(textItem, evt) {
         let symbol = evt.get_key_symbol();
         let text = this._textEntry.get_text().toLowerCase();
-	let starttime = "";
-	let activitytext = text;
+        let starttime = "";
+        let activitytext = text;
 
-	// Don't include leading times in the activity autocomplete
-	let match = [];
-	if ((match = text.match(/^\d\d:\d\d /)) ||
-	    (match = text.match(/^-\d+ /))) {
-	  starttime = text.substring(0, match[0].length);
-	  activitytext = text.substring(match[0].length);
-	}
+        // Don't include leading times in the activity autocomplete
+        let match = [];
+        if ((match = text.match(/^\d\d:\d\d /)) ||
+            (match = text.match(/^-\d+ /))) {
+            starttime = text.substring(0, match[0].length);
+            activitytext = text.substring(match[0].length);
+        }
 
         // if nothing has changed or we still have selection then that means
         // that special keys are at play and we don't attempt to autocomplete
         if (activitytext == "" ||
-	    this._prevText == text ||
+            this._prevText == text ||
             this._textEntry.clutter_text.get_selection()) {
             return;
         }
@@ -201,12 +201,12 @@ HamsterBox.prototype = {
 
         let allActivities = this._getActivities();
         for each (var rec in allActivities) {
-	    let completion = rec[0];
-	    if (rec[1].length > 0)
-	      completion += "@" + rec[1];
+            let completion = rec[0];
+            if (rec[1].length > 0)
+                completion += "@" + rec[1];
             if (completion.toLowerCase().substring(0, activitytext.length) == activitytext) {
                 this.prevText = text;
-		completion = starttime + completion;
+                completion = starttime + completion;
 
                 this._textEntry.set_text(completion);
                 this._textEntry.clutter_text.set_selection(text.length, completion.length);
@@ -430,7 +430,7 @@ HamsterExtension.prototype = {
             byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
             if (categories.indexOf(fact.category) == -1)
                 categories.push(fact.category);
-        };
+        }
 
         let label = "";
         for each (var category in categories) {
@@ -446,7 +446,7 @@ HamsterExtension.prototype = {
         let appearance = this._settings.get_int("panel-appearance");
 
 
-        if (appearance == 0) {
+        if (appearance === 0) {
             this.panelLabel.show();
             this.icon.hide();
 
@@ -568,7 +568,7 @@ function ExtensionController(extensionMeta) {
             this.extension.destroy();
             this.extension = null;
         }
-    }
+    };
 }
 
 
