@@ -356,9 +356,6 @@ HamsterExtension.prototype = {
 
         var i = 0;
         for (var fact of facts) {
-            if (!fact.startTime) {
-                continue;
-            }
             let label;
 
             label = new St.Label({style_class: 'cell-label'});
