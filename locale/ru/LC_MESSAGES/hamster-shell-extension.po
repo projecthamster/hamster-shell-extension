@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: hamster-shell-extension\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-17 16:42+0100\n"
+"PO-Revision-Date: 2015-02-25 01:15+0300\n"
+"Last-Translator: Daniel Craig <daniel@danielcraig.me>\n"
+"Language-Team: Egor Garadja <egor.garadja@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.7.4\n"
+"Language: ru\n"
+
+#: extension.js:85
+msgid "What are you doing?"
+msgstr "Чем вы заняты?"
+
+#: extension.js:91
+msgid "Enter activity..."
+msgstr "Занятие..."
+
+#: extension.js:105
+msgid "Todays activities"
+msgstr "Сегодня"
+
+#: extension.js:215
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: extension.js:238
+msgid "Show Overview"
+msgstr "Обзор"
+
+#: extension.js:243
+msgid "Stop Tracking"
+msgstr "Прекратить учёт"
+
+#: extension.js:249
+msgid "Tracking Settings"
+msgstr "Параметры"
+
+#: extension.js:398
+msgid "No activity"
+msgstr "Нет записей"
+
+#: extension.js:254
+msgid "Add Earlier Activity"
+msgstr "Добавить раннее занятие"
