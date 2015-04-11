@@ -545,7 +545,8 @@ function ExtensionController(extensionMeta) {
             Main.wm.addKeybinding("show-hamster-dropdown",
                 this.extension._settings,
                 Meta.KeyBindingFlags.NONE,
-                Shell.ActionMode.ALL,
+                //since Gnome 3.16, Shell.KeyBindingMode is replaced by Shell.ActionMode
+                Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
                 Lang.bind(this.extension, this.extension.toggle)
             );
         },
