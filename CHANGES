@@ -1,14 +1,24 @@
+Build 17 (Jul 28, 2015)
+=========================
+
+ * Activities are now scrolled to the bottom when opening the menu (@rrthomas)
+
+
 Build 12 (Oct 28, 2014)
 =========================
+
  * The uploaded extension was missing subfolders
+
 
 Build 11 (Oct 26, 2014)
 =========================
+
  * Cosmetic fixes to the dropdown - set min-width and fix the input box
 
 
 Build 10 (Oct 18, 2014)
 =========================
+
  * Bump Gnome compatibility to 3.14. Seems to work
 
 
@@ -21,7 +31,6 @@ Build 8 (Sep 7, 2014)
   * Check tag presence correctly and avoid adding hashes to activities (@toupeira)
 
 
-=========================
 Build 7 (Mar 14, 2014)
 =========================
 
@@ -31,19 +40,18 @@ Build 7 (Mar 14, 2014)
   * Fix too much shadow (HT @jfcahce)
 
 
-=========================
 Build 6 (Oct 22, 2013)
 =========================
 
   * Update to 3.10 (patch by @exine)
 
-=========================
+
 Build 5 (Jul 7, 2013)
 =========================
 
   * Update to 3.8 (patches by @aleho and @WBTMagnum)
 
-=========================
+
 Build 4.4 (Dec 32, 2012)
 =========================
 
@@ -51,21 +59,19 @@ Build 4.4 (Dec 32, 2012)
     showing menu (issue #50)
   * Attempt to fix bug with locale switching to english when hamster is running
 
-=============================
+
 Build 4.2, 4.3 (Nov 8, 2012)
 =============================
 
   * Properly kill the refresh timeout on disabling
 
 
-============================
 Build 4, 4.1 (Oct 30, 2012)
 ============================
 
   * Switch over to Gnome Shell 3.6+
 
 
-======================
 Build 3 (Oct 4, 2012)
 ======================
 
@@ -74,7 +80,6 @@ Build 3 (Oct 4, 2012)
   * global hotkey is back - tweak it via extension preferences page
 
 
-=======================
 Build 2 (Aug 13, 2012)
 =======================
 
