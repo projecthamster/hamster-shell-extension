@@ -23,7 +23,7 @@ msgid "Enter activity..."
 msgstr "Introduzca actividad..."
 
 #: extension.js:105
-msgid "Todays activities"
+msgid "Today's activities"
 msgstr "Actividades de hoy"
 
 #: extension.js:215

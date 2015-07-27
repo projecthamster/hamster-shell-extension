@@ -112,7 +112,7 @@ HamsterBox.prototype = {
         //this._popup = new PopupMenu.PopupComboMenu(this._textEntry);
 
         label = new St.Label({style_class: 'hamster-box-label'});
-        label.set_text(_("Todays activities"));
+        label.set_text(_("Today's activities"));
         box.add(label);
 
         let scrollbox = new St.ScrollView({style_class: 'hamster-scrollbox'});
