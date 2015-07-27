@@ -116,6 +116,7 @@ HamsterBox.prototype = {
         box.add(label);
 
         let scrollbox = new St.ScrollView({style_class: 'hamster-scrollbox'});
+        this._scrollAdjustment = scrollbox.vscroll.adjustment;
         box.add(scrollbox);
 
         // Since St.Table does not implement StScrollable, we create a
@@ -141,6 +142,10 @@ HamsterBox.prototype = {
 
     focus: function() {
         Mainloop.timeout_add(20, Lang.bind(this, function() {
+            // scroll the activities to the bottom
+            this._scrollAdjustment.value = this._scrollAdjustment.upper;
+
+            // focus the text entry
             global.stage.set_key_focus(this._textEntry);
         }));
     },
