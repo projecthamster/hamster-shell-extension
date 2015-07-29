@@ -7,7 +7,7 @@ Simple Hamster shell extension for Gnome 3.
 **The extension is available on extensions.gnome.org:**  
 https://extensions.gnome.org/extension/425/project-hamster-extension/
 
-Current compatible Gnome shell version: 3.14  
+Current compatible Gnome shell version: 3.16  
 For previous shell versions check [releases](https://github.com/projecthamster/shell-extension/tags).
 
 #### Manual installation for testing and development
