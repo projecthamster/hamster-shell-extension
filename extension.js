@@ -125,7 +125,9 @@ HamsterBox.prototype = {
         container.set_vertical(true);
         scrollbox.add_actor(container);
 
-        this.activities = new St.Table({style_class: 'hamster-activities'});
+        this.activities = new St.Widget({style_class: 'hamster-activities',
+                                         layout_manager: new Clutter.TableLayout(),
+                                         reactive: true });
         container.add(this.activities);
 
         this.summaryLabel = new St.Label({style_class: 'summary-label'});
@@ -360,6 +362,7 @@ HamsterExtension.prototype = {
         activities.destroy_all_children(); // remove previous entries
 
         var i = 0;
+        let layout = activities.layout_manager;
         for (var fact of facts) {
             let label;
 
@@ -369,15 +372,15 @@ HamsterExtension.prototype = {
                 text += "%02d:%02d".format(fact.endTime.getHours(), fact.endTime.getMinutes());
             }
             label.set_text(text);
-            activities.add(label, {row: i, col: 0, x_expand: false});
+            layout.pack(label, 0, i);
 
             label = new St.Label({style_class: 'cell-label'});
             label.set_text(fact.name + (0 < fact.tags.length ? (" #" + fact.tags.join(", #")) : ""));
-            activities.add(label, {row: i, col: 1});
+            layout.pack(label, 1, i);
 
             label = new St.Label({style_class: 'cell-label'});
             label.set_text(Stuff.formatDurationHuman(fact.delta));
-            activities.add(label, {row: i, col: 2, x_expand: false});
+            layout.pack(label, 2, i);
 
 
             let icon;
@@ -394,7 +397,7 @@ HamsterExtension.prototype = {
                 this._windowsProxy.editSync(GLib.Variant.new('i', [button.fact.id]));
                 this.menu.close();
             }));
-            activities.add(button, {row: i, col: 3});
+            layout.pack(button, 3, i);
 
 
             if (!this.currentActivity ||
@@ -422,8 +425,7 @@ HamsterExtension.prototype = {
                     }));
                     this.menu.close();
                 }));
-
-                activities.add(button, {row: i, col: 4});
+                layout.pack(button, 4, i);
             }
 
             i += 1;
