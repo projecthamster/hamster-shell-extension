@@ -28,3 +28,10 @@ After that you can enable the extension and change the preferences using Tweak T
 3. Push to your branch - `git push origin my_branch`
 4. Submit a [Pull Request](https://github.com/projecthamster/shell-extension/pulls) with your branch
 5. That's it!
+
+## Release process
+
+1. Bump version and Gnome Shell compatibility in `metadata.json`
+2. Commit your changes and run `./build.sh`
+3. Go to https://extensions.gnome.org/upload/ and upload the generated file `hamster@projecthamster.wordpress.com.zip`
+5. You can check the review progress at https://extensions.gnome.org/review/
