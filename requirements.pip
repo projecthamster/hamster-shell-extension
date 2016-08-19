@@ -1,0 +1,8 @@
+# This file lists python packages required by our development toolchain.
+# These are NOT dependencies for the actuall package but rather tools to
+# ease development.
+
+
+Sphinx==1.4.1
+bumpversion==0.5.3
+doc8==0.7.0
