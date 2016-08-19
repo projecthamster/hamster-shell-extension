@@ -1,6 +1,9 @@
 # Sphinx directories
-BUILDDIR = _build
-TEST_BUILDDIR = _test_build
+SPHINX_BUILDDIR = _build
+SPHINX_TEST_SPHINX_BUILDDIR = _test_build
+
+# Directory to collect all sourc file to in order to build.
+BUILDDIR = build
 
 # Script to lauch a browser in order to open passed path.
 define BROWSER_PYSCRIPT
@@ -21,28 +24,45 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
 	@echo "   clean"
+	@echo "   clean-build   to clean the build directory of any leftovers."
 	@echo "   clean-docs"
+	@echo "   collect  	to collect all required files to the build directory."
+	@echo "   compile 	to compile file that needs to be shipped as a binary."
 	@echo "   develop       to install (or update) all packages required for development"
-	@echo "   dist          to package a release to be uploaded to extensions.gnome.org"
+	@echo "   dist          to package a release as a ready to deploy extension archive"
 	@echo "   open-docs     to build and open the documentation"
 	@echo "   test-docs     to run automated tests on the documentation."
 
-clean: clean-docs, clean-test-docs
+clean: clean-build clean-docs clean-test-docs
 	rm -f dist/*
 
+clean-build:
+	rm -fr build
+
 clean-docs:
-	$(MAKE) -C docs clean BUILDDIR=$(BUILDDIR)
+	$(MAKE) -C docs clean SPHINX_BUILDDIR=$(SPHINX_BUILDDIR)
 
 clean-test-docs:
-	$(MAKE) -C docs clean BUILDDIR=$(TEST_BUILDDIR)
+	$(MAKE) -C docs clean SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
+
+collect:
+	mkdir -p build
+	cp -R extension/* $(BUILDDIR)
+	cp -R data/* $(BUILDDIR)
+
+compile:
+	glib-compile-schemas $(BUILDDIR)/schemas
+	find $(BUILDDIR) -name \*.po -execdir msgfmt hamster-shell-extension.po -o hamster-shell-extension.mo \;
 
 develop:
 	pip install -U pip setuptools wheel
 	pip install -U -r requirements.pip
 
-dist: clean
-	zip -r dist/hamster@projecthamster.wordpress.com.zip extension/*
-	ls -l dist
+dist: clean-build collect compile
+# We need to do this like this as 'zip' always uses the cwd as archive root.
+# And for the extension to work extension.js etc. need to be at the root.
+	cd $(BUILDDIR); zip -rq ../dist/hamster@projecthamster.wordpress.com.zip ./*
+	@ls -l dist
 
 docs:
 	$(MAKE) -C docs clean
@@ -52,5 +72,5 @@ open-docs: docs
 	$(BROWSER) docs/_build/html/index.html
 
 test-docs:
-	make docs BUILDDIR=$(TEST_BUILDDIR) SPHINXOPTS='-W'
-	make -C docs linkcheck BUILDDIR=$(TEST_BUILDDIR)
+	make docs SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR) SPHINXOPTS='-W'
+	make -C docs linkcheck SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
