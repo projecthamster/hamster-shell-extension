@@ -6,14 +6,21 @@
 Welcome to Hamster-Shell-Extension's documentation!
 ====================================================
 
-Contents:
+This documentation tries to help you use, improve and get involved with the
+*Hamster-Shell-Extension*.
+
+As always: please feel encourage to summit an issue or PR if you spot an error
+or feel that topics are not covered properly.
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
    readme
    contributing
    authors
+   hacking
    history
    packaging
    versioning
+   styleguide
