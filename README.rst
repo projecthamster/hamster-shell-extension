@@ -12,6 +12,15 @@ Thank you Frederic!
 Install
 --------
 
+Dependencies
+~~~~~~~~~~~~
+Because *Hamster-Shell-Extension* is just a frontend to the hamster dbus
+service the presence of `hamster-time-tracker
+<https://github.com/projecthamster/hamster>`_ is required. You can verify that
+the relevant dbus services are up and running by issuing ``ps aux | grep
+hamster`` which should bring up ``hamster-service`` and
+``hamster-windows-service``.
+
 Install For Production
 ~~~~~~~~~~~~~~~~~~~~~~~
 The extension is available on `the central extension repository <https://extensions.gnome.org/extension/425/project-hamster-extension>`_.
