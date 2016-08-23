@@ -5,6 +5,7 @@ Development Lead
 ----------------
 
 * Eric Goller <eric.goller@ninjaduck.solutions>
+* Frederic Guilbault <fred@0464.ca>
 
 Contributors
 ------------
