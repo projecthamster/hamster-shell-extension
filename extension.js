@@ -101,7 +101,8 @@ HamsterBox.prototype = {
         this._textEntry = new St.Entry({name: 'searchEntry',
                                         can_focus: true,
                                         track_hover: true,
-                                        hint_text: _("Enter activity...")});
+                                        hint_text: _("Enter activity..."),
+                                        style_class: "search-entry"});
         this._textEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
         this._textEntry.clutter_text.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
