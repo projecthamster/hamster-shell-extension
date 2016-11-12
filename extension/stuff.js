@@ -32,7 +32,7 @@ function fromDbusFact(fact) {
         return new Date(res.setUTCMinutes(res.getUTCMinutes() + res.getTimezoneOffset()));
     }
 
-    return {
+    result = {
         name: fact[4],
         startTime: UTCToLocal(fact[1]*1000),
         endTime: fact[2] != 0 ? UTCToLocal(fact[2]*1000) : null,
@@ -44,6 +44,7 @@ function fromDbusFact(fact) {
         delta: Math.floor(fact[9] / 60), // minutes
         id: fact[0]
     };
+    return result;
 };
 
 function fromDbusFacts(facts) {
