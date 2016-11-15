@@ -61,6 +61,7 @@ develop:
 dist: clean-build collect compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
+	mkdir -p $(BUILDDIR);
 	cd $(BUILDDIR); zip -rq ../dist/hamster@projecthamster.wordpress.com.zip ./*
 	@ls -l dist
 
