@@ -447,36 +447,38 @@ HamsterExtension.prototype = {
         this.activityEntry.summaryLabel.set_text(label);
     },
 
-
+    /**
+     * Display the icon/activity/runningTime on Gonme's panel.
+     *
+     * @method
+     * @name updatePanelDisplay
+     * @param {Object} fact most recent fact object.
+     * @returns {undefined}
+     */
     updatePanelDisplay: function(fact) {
-        // 0 = show label, 1 = show icon + duration, 2 = just icon
+        // ["Label", 0]  ["Icon", 1] ["Label and icon", 2]);
         let appearance = this._settings.get_int("panel-appearance");
-
+        this.panelLabel.text =  _('No activity');
+        this .icon.gicon = this._idleIcon;
+        this.icon.show();
 
         if (appearance === 0) {
-            this.panelLabel.show();
             this.icon.hide();
-
             if (fact && !fact.endTime) {
-                this.panelLabel.text = "%s %s".format(fact.name, Stuff.formatDuration(fact.delta));
-            } else {
-                this.panelLabel.text = _("No activity");
+                this.panelLabel.text = fact.name+' '+Stuff.formatDuration(fact.delta);
             }
-        } else {
-            this.icon.show();
-            if (appearance == 1)
-                this.panelLabel.hide();
-            else
-                this.panelLabel.show();
 
-
-            // updates panel label. if fact is none, will set panel status to "no activity"
+        } else if (appearance === 1) {
+            this.panelLabel.text = '';
             if (fact && !fact.endTime) {
                 this.panelLabel.text = Stuff.formatDuration(fact.delta);
                 this.icon.gicon = this._trackingIcon;
-            } else {
-                this.panelLabel.text = "";
-                this.icon.gicon = this._idleIcon;
+            }
+
+        }else{  //appearance === 2
+            if (fact && !fact.endTime) {
+                this.icon.gicon = this._trackingIcon;
+                this.panelLabel.text = fact.name+' '+Stuff.formatDuration(fact.delta);
             }
         }
     },
