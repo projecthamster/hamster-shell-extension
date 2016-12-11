@@ -9,6 +9,7 @@ Development Lead
 
 Contributors
 ------------
+* Richard Stangl (github: @rstangl)
 
 Original Authors (pre 0.10.0)
 ------------------------------
