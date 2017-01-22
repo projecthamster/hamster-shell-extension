@@ -63,7 +63,7 @@ const ApiProxyIface = '<node> \
 </interface> \
 </node>';
 
-let ApiProxy = Gio.DBusProxy.makeProxyWrapper(ApiProxyIface);
+let ApiProxy = makeProxyWrapperNoProperties(ApiProxyIface);
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster.WindowServer /org/gnome/Hamster/WindowServer org.freedesktop.DBus.Introspectable.Introspect
 const WindowsProxyIface = '<node> \
@@ -76,8 +76,45 @@ const WindowsProxyIface = '<node> \
 </interface> \
 </node>';
 
-let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
+let WindowsProxy = makeProxyWrapperNoProperties(WindowsProxyIface);
 
+
+/* Version of Gio.DBusProxy.makeProxyWrapper() which sets the
+ * DO_NOT_LOAD_PROPERTIES flag. This is important for Hamster because it does
+ * not implement org.freedesktop.DBus.Properties. Calling that on startup
+ * returns an error which causes the shell extension to fail to load. */
+function makeProxyWrapperNoProperties(interfaceXml) {
+    let info = Gio.DBusInterfaceInfo.new_for_xml(interfaceXml);
+    let iname = info.name
+    return function(bus, name, object, asyncCallback, cancellable) {
+        var obj = new Gio.DBusProxy({ g_connection: bus,
+                                      g_interface_name: iname,
+                                      g_interface_info: info,
+                                      g_name: name,
+                                      g_object_path: object,
+                                      g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
+        if (!cancellable)
+            cancellable = null;
+        if (asyncCallback)
+            obj.init_async(GLib.PRIORITY_DEFAULT, cancellable, function(initable, result) {
+                let caughtErrorWhenInitting = null;
+                try {
+                    initable.init_finish(result);
+                } catch(e) {
+                    caughtErrorWhenInitting = e;
+                }
+
+                if (caughtErrorWhenInitting === null) {
+                    asyncCallback(initable, null);
+                } else {
+                    asyncCallback(null, caughtErrorWhenInitting);
+                }
+            });
+        else
+            obj.init(cancellable);
+        return obj;
+    };
+}
 
 
 /* a little box or something */
