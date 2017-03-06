@@ -17,6 +17,7 @@ const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
+const St = imports.gi.St;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -78,6 +79,17 @@ let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
  */
 function Controller(extensionMeta) {
     let dateMenu = Main.panel.statusArea.dateMenu;
+
+    try {
+           ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster')
+       } catch(err) {
+           global.log(err);
+           button = new St.Bin();
+           let icon = new St.Icon({ icon_name: 'error', style_class: 'error-icon' });
+           button.set_child(icon);
+           Main.panel._rightBox.insert_child_at_index(button, 0);
+           Main.notify( _("Hamster widget: Dbus connection failed ") );
+       }
 
     return {
         extensionMeta: extensionMeta,
