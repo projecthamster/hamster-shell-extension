@@ -364,7 +364,7 @@ HamsterExtension.prototype = {
 
         var i = 0;
         let layout = activities.layout_manager;
-        for (var fact of facts) {
+        for (fact of facts) {
             let label;
 
             label = new St.Label({style_class: 'cell-label'});
@@ -434,7 +434,7 @@ HamsterExtension.prototype = {
 
         let byCategory = {};
         let categories = [];
-        for (var fact of facts) {
+        for (fact of facts) {
             byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
             if (categories.indexOf(fact.category) == -1)
                 categories.push(fact.category);
