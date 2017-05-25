@@ -63,7 +63,7 @@ const ApiProxyIface = '<node> \
 </interface> \
 </node>';
 
-let ApiProxy = Gio.DBusProxy.makeProxyWrapper(ApiProxyIface);
+let ApiProxy = makeProxyWrapperNoProperties(ApiProxyIface);
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster.WindowServer /org/gnome/Hamster/WindowServer org.freedesktop.DBus.Introspectable.Introspect
 const WindowsProxyIface = '<node> \
@@ -76,8 +76,45 @@ const WindowsProxyIface = '<node> \
 </interface> \
 </node>';
 
-let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
+let WindowsProxy = makeProxyWrapperNoProperties(WindowsProxyIface);
 
+
+/* Version of Gio.DBusProxy.makeProxyWrapper() which sets the
+ * DO_NOT_LOAD_PROPERTIES flag. This is important for Hamster because it does
+ * not implement org.freedesktop.DBus.Properties. Calling that on startup
+ * returns an error which causes the shell extension to fail to load. */
+function makeProxyWrapperNoProperties(interfaceXml) {
+    let info = Gio.DBusInterfaceInfo.new_for_xml(interfaceXml);
+    let iname = info.name
+    return function(bus, name, object, asyncCallback, cancellable) {
+        var obj = new Gio.DBusProxy({ g_connection: bus,
+                                      g_interface_name: iname,
+                                      g_interface_info: info,
+                                      g_name: name,
+                                      g_object_path: object,
+                                      g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
+        if (!cancellable)
+            cancellable = null;
+        if (asyncCallback)
+            obj.init_async(GLib.PRIORITY_DEFAULT, cancellable, function(initable, result) {
+                let caughtErrorWhenInitting = null;
+                try {
+                    initable.init_finish(result);
+                } catch(e) {
+                    caughtErrorWhenInitting = e;
+                }
+
+                if (caughtErrorWhenInitting === null) {
+                    asyncCallback(initable, null);
+                } else {
+                    asyncCallback(null, caughtErrorWhenInitting);
+                }
+            });
+        else
+            obj.init(cancellable);
+        return obj;
+    };
+}
 
 
 /* a little box or something */
@@ -241,15 +278,27 @@ HamsterExtension.prototype = {
         PanelMenu.Button.prototype._init.call(this, 0.0);
 
         this.extensionMeta = extensionMeta;
-        this._proxy = new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
-        this._proxy.connectSignal('FactsChanged',      Lang.bind(this, this.refresh));
-        this._proxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
-        this._proxy.connectSignal('TagsChanged',       Lang.bind(this, this.refresh));
 
+        try {
+            this._proxy = new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
+            this._proxy.connectSignal('FactsChanged',      Lang.bind(this, this.refresh));
+            this._proxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
+            this._proxy.connectSignal('TagsChanged',       Lang.bind(this, this.refresh));
+        } catch (e) {
+            log('Failed to connect to org.gnome.Hamster on D-Bus session bus: ' + e.message);
+            this.loadFailed = true;
+            return;
+        }
 
-        this._windowsProxy = new WindowsProxy(Gio.DBus.session,
-                                              "org.gnome.Hamster.WindowServer",
-                                              "/org/gnome/Hamster/WindowServer");
+        try {
+            this._windowsProxy = new WindowsProxy(Gio.DBus.session,
+                                                  "org.gnome.Hamster.WindowServer",
+                                                  "/org/gnome/Hamster/WindowServer");
+        } catch (e) {
+            log('Failed to connect to org.gnome.Hamster.WindowServer on D-Bus session bus: ' + e.message);
+            this.loadFailed = true;
+            return;
+        }
 
         this._settings = Convenience.getSettings();
 
@@ -329,6 +378,14 @@ HamsterExtension.prototype = {
 
     toggle: function() {
         this.menu.toggle();
+    },
+
+    destroy: function() {
+        this.actor.destroy();
+        try{
+        log(this.parent);
+        this.parent();
+        } catch (e) { log('Error destroying Hamster: ' + e.message); }
     },
 
     refreshActivities: function(proxy, sender) {
@@ -531,6 +588,9 @@ function ExtensionController(extensionMeta) {
             this.settings = Convenience.getSettings();
             this.extension = new HamsterExtension(this.extensionMeta);
 
+            if (this.extension.loadFailed)
+                return;
+
             this.placement = this.settings.get_int("panel-placement");
             if (this.placement == 1) {
                 Main.panel.addToStatusArea("hamster", this.extension, 0, "center");
@@ -560,20 +620,22 @@ function ExtensionController(extensionMeta) {
         },
 
         disable: function() {
-            Main.wm.removeKeybinding("show-hamster-dropdown");
+            if (!this.extension.loadFailed) {
+                Main.wm.removeKeybinding("show-hamster-dropdown");
 
-            if (this.placement == 1) {
-                Main.panel._rightBox.remove_actor(dateMenu.container);
-                Main.panel._addToPanelBox('dateMenu', dateMenu, Main.sessionMode.panel.center.indexOf('dateMenu'), Main.panel._centerBox);
+                if (this.placement == 1) {
+                    Main.panel._rightBox.remove_actor(dateMenu.container);
+                    Main.panel._addToPanelBox('dateMenu', dateMenu, Main.sessionMode.panel.center.indexOf('dateMenu'), Main.panel._centerBox);
 
-            } else if (this.placement == 2) {
-                Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0].set_text(this._activitiesText);
+                } else if (this.placement == 2) {
+                    Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0].set_text(this._activitiesText);
+                }
+
+                Main.panel.menuManager.removeMenu(this.extension.menu);
+
+                GLib.source_remove(this.extension.timeout);
             }
 
-            Main.panel.menuManager.removeMenu(this.extension.menu);
-
-            GLib.source_remove(this.extension.timeout);
-            this.extension.actor.destroy();
             this.extension.destroy();
             this.extension = null;
         }
