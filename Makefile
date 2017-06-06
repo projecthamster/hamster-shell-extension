@@ -4,6 +4,8 @@ SPHINX_TEST_SPHINX_BUILDDIR = _test_build
 
 # Directory to collect all sourc file to in order to build.
 BUILDDIR = build
+# Directory to save a ready to deploy extension archive
+DISTDIR = dist
 
 # Script to lauch a browser in order to open passed path.
 define BROWSER_PYSCRIPT
@@ -62,6 +64,7 @@ dist: clean-build collect compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(BUILDDIR);
+	mkdir -p $(DISTDIR)
 	cd $(BUILDDIR); zip -rq ../dist/hamster@projecthamster.wordpress.com.zip ./*
 	cd $(BUILDDIR); tar -czf ../dist/hamster@projecthamster.wordpress.com.tgz *
 	@ls -l dist

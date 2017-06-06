@@ -1,18 +1,17 @@
-function formatDuration(minutes) {
-    return "%02d:%02d".format((minutes - minutes % 60) / 60, minutes % 60);
+function formatDuration(seconds) {
+    var date = new Date(null);
+    date.setSeconds(seconds);
+    return date.toISOString().replace(/.*(\d{2}:\d{2}):.*/, "$1")
 }
 
-function formatDurationHuman(minutes) {
-    let hours = (minutes - minutes % 60) / 60;
-    let mins = minutes % 60;
+function formatDurationHuman(seconds) {
     let res = "";
 
-    if (hours > 0 || mins > 0) {
-        if (hours > 0)
-            res += "%dh ".format(hours);
+    if (seconds > 60) {
+        var date = new Date(null);
+        date.setSeconds(seconds);
+        res = date.toISOString().replace(/.*(\d{2}:\d{2}):.*/, "$1").replace(":",'h')+'min';
 
-        if (mins > 0)
-            res += "%dmin".format(mins);
     } else {
         res = "Just started";
     }
@@ -20,8 +19,8 @@ function formatDurationHuman(minutes) {
     return res;
 }
 
-function formatDurationHours(minutes) {
-    return new Number(minutes / 60.0).toFixed(1) + "h";
+function formatDurationHours(seconds) {
+    return Math.round( (seconds/3600)*10 )/10 + "h";
 }
 
 function fromDbusFact(fact) {
@@ -41,7 +40,7 @@ function fromDbusFact(fact) {
         category: fact[6],
         tags: fact[7],
         date: UTCToLocal(fact[8] * 1000),
-        delta: Math.floor(fact[9] / 60), // minutes
+        delta: fact[9], // duration represented in seconds
         id: fact[0]
     };
     return result;

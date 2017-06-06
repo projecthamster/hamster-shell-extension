@@ -17,11 +17,13 @@ const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
+const St = imports.gi.St;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
+const Util = imports.misc.util;
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
 const ApiProxyIface = '<node> \
@@ -84,27 +86,13 @@ function Controller(extensionMeta) {
         panelWidget: null,
         settings: null,
         placement: 0,
-        apiProxy:  new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster'),
-        windowsProxy: new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
-            "/org/gnome/Hamster/WindowServer"),
+        apiProxy: null,
+        windowsProxy: null,
 
         enable: function() {
-            this.settings = Convenience.getSettings();
-            this.panelWidget = new PanelWidget(this);
-            this.placement = this.settings.get_int("panel-placement");
-
-            this._placeWidget(this.placement, this.panelWidget)
-            this.apiProxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
-            this.activities = this.refreshActivities();
-
-            Main.panel.menuManager.addMenu(this.panelWidget.menu);
-            Main.wm.addKeybinding("show-hamster-dropdown",
-                this.panelWidget._settings,
-                Meta.KeyBindingFlags.NONE,
-                // Since Gnome 3.16, Shell.KeyBindingMode is replaced by Shell.ActionMode
-                Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
-                Lang.bind(this.panelWidget, this.panelWidget.toggle)
-            );
+            Util.spawn(['/usr/bin/hamster-service']);
+            Util.spawn(['/usr/bin/hamster-windows-service']);
+            GLib.timeout_add_seconds(0, 5, Lang.bind(this, this.lazyEnable));
         },
 
         disable: function() {
@@ -142,7 +130,9 @@ function Controller(extensionMeta) {
                 // For some bizare reason I am unable to create a proper array out
                 // of the return value of the dbus method call any other way.
                 // So unless can provide some insight here, this hack does the job.
-                let foo = function([activities]){return activities;};
+                let foo = function([activities]) {
+                    return activities;
+                };
                 return foo(activities);
             };
 
@@ -165,9 +155,9 @@ function Controller(extensionMeta) {
             } else if (placement == 2) {
                 // 'Replace activities'
                 let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0]
-                // If our widget replaces the 'Activities' menu in the panel,
-                // this property stores the original text so we can restore it
-                // on ``this.disable``.
+                    // If our widget replaces the 'Activities' menu in the panel,
+                    // this property stores the original text so we can restore it
+                    // on ``this.disable``.
                 this._activitiesText = activitiesMenu.get_text();
                 activitiesMenu.set_text('');
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 1, "left");
@@ -192,6 +182,49 @@ function Controller(extensionMeta) {
                 let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0]
                 activitiesMenu.set_text(this._activitiesText);
             };
+        },
+        lazyEnable: function(proxy, sender) {
+            this.apiProxy = new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster');
+            this.windowsProxy = new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer", "/org/gnome/Hamster/WindowServer");
+            if (!this.testAPI()) {
+                return false;
+            }
+            this.apiProxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
+            this.activities = this.refreshActivities();
+            this.settings = Convenience.getSettings();
+            this.panelWidget = new PanelWidget(this);
+            this.placement = this.settings.get_int("panel-placement");
+
+            this._placeWidget(this.placement, this.panelWidget)
+
+            Main.panel.menuManager.addMenu(this.panelWidget.menu);
+            Main.wm.addKeybinding("show-hamster-dropdown",
+                this.panelWidget._settings,
+                Meta.KeyBindingFlags.NONE,
+                // Since Gnome 3.16, Shell.KeyBindingMode is replaced by Shell.ActionMode
+                Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
+                Lang.bind(this.panelWidget, this.panelWidget.toggle)
+            );
+            return false;
+        },
+        testAPI: function() {
+            try {
+                ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster')
+            } catch (err) {
+                global.log(err);
+                button = new St.Bin();
+                let icon = new St.Icon({
+                    icon_name: 'error',
+                    style_class: 'error-icon'
+                });
+                button.set_child(icon);
+                Main.panel._rightBox.insert_child_at_index(button, 0);
+                Main.notify(_("Hamster widget: Dbus connection failed "));
+                return false;
+            }
+
+            return true;
+
         },
     };
 };
