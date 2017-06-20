@@ -25,8 +25,8 @@ Install For Production
 ~~~~~~~~~~~~~~~~~~~~~~~
 The extension is available on `the central extension repository <https://extensions.gnome.org/extension/425/project-hamster-extension>`_.
 
-Current compatible Gnome shell version: 3.20
-For previous shell versions check `releases <https://github.com/projecthamster/shell-extension/tags>`_.
+Current compatible Gnome shell version: 3.24
+For previous shell versions check `releases <https://github.com/projecthamster/hamster-shell-extension/tags>`_.
 
 Creating a development environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
