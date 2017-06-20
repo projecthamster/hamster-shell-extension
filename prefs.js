@@ -65,7 +65,7 @@ const HamsterSettingsWidget = new GObject.Class({
 
         let appearanceCombo = new Gtk.ComboBox({model: appearanceOptions});
 
-        let renderer = new Gtk.CellRendererText();
+        renderer = new Gtk.CellRendererText();
         appearanceCombo.pack_start(renderer, true);
         appearanceCombo.add_attribute(renderer, 'text', 0);
         appearanceCombo.connect('changed', Lang.bind(this, this._onAppearanceChange));
