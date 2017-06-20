@@ -45,8 +45,20 @@ changing you main environment.
 
 Manual Installation For Testing and Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To install just run ``make dist`` do create a distributable archive.
-You can now you the ``tweaktool`` (at the bottom of the ``extensions`` tab)
+Clone the repository::
+
+    git clone git@github.com:projecthamster/hamster-shell-extension.git
+
+Make sure you are on the development branch::
+
+    git checkout develop
+
+Build a fresh distribution package::
+
+    make dist
+
+This will create a distributable archive.
+You can now use the ``tweaktool`` (at the bottom of the ``extensions`` tab)
 to install and activate the new ``zip`` file located in the ``dist`` directory.
 
 Alternatively you just can unpack the tar archive to ``~/.local/share/gnome-shell/extensions/``.
