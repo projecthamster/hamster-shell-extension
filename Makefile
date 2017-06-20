@@ -46,7 +46,7 @@ clean-test-docs:
 	$(MAKE) -C docs clean SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
 
 collect:
-	mkdir -p build
+	mkdir -p $(BUILDDIR)
 	cp -R extension/* $(BUILDDIR)
 	cp -R data/* $(BUILDDIR)
 
