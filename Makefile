@@ -4,6 +4,8 @@ SPHINX_TEST_SPHINX_BUILDDIR = _test_build
 
 # Directory to collect all sourc file to in order to build.
 BUILDDIR = build
+# Directory to save a 'ready to deploy extension' archive
+DISTDIR = dist
 
 # Script to lauch a browser in order to open passed path.
 define BROWSER_PYSCRIPT
@@ -24,14 +26,14 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
 	@echo "   clean"
-	@echo "   clean-build   to clean the build directory of any leftovers."
+	@echo "   clean-build  to clean the build directory of any leftovers."
 	@echo "   clean-docs"
-	@echo "   collect  	to collect all required files to the build directory."
-	@echo "   compile 	to compile file that needs to be shipped as a binary."
-	@echo "   develop       to install (or update) all packages required for development"
-	@echo "   dist          to package a release as a ready to deploy extension archive"
-	@echo "   open-docs     to build and open the documentation"
-	@echo "   test-docs     to run automated tests on the documentation."
+	@echo "   collecst     to collect all required files to the build directory."
+	@echo "   compile      to compile file that needs to be shipped as a binary."
+	@echo "   develop      to install (or update) all packages required for development"
+	@echo "   dist         to package a release as a ready to deploy extension archive"
+	@echo "   open-docs    to build and open the documentation"
+	@echo "   test-docs    to run automated tests on the documentation."
 
 clean: clean-build clean-docs clean-test-docs
 	rm -f dist/*
@@ -62,8 +64,9 @@ dist: clean-build collect compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(BUILDDIR);
-	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./*
-	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tgz *
+	mkdir -p $(DISTDIR);
+	cd $(BUILDDIR); zip -rq ../dist/hamster@projecthamster.org.zip ./*
+	cd $(BUILDDIR); tar -czf ../dist/hamster@projecthamster.org.tgz *
 	@ls -l dist
 
 docs:
