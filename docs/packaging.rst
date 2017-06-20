@@ -14,7 +14,7 @@ TL;DR
 #. Check and if needed bump Gnome Shell compatibility in ``metadata.json``.
 #. Commit your changes and run ``make dist``.
 #. Go to ``https://extensions.gnome.org/upload/`` and upload the generated file
-   ``hamster@projecthamster.wordpress.com.zip``.
+   ``contact@projecthamster.org.zip``.
 #. You can check the review progress at ``https://extensions.gnome.org/review/``.
 
 Long Version
@@ -59,7 +59,7 @@ GNOME-shell all that is left to do is to warp it up in a convenient easy to
 deploy way.  There are two relevant ways to deploy an extension.
 
 #. Via the official `gnome extensions repository <https://extensions.gnome.org>`_.
-#. Copying/symlinking the contend of the build directory to 
+#. Copying/symlinking the contend of the build directory to
    ``~/.local/share/gnome-shell/extension/hamster@projecthamster.wordpreess.com``
 
 In order to upload our release to ``extensions.gnome.org`` we wrap the build
