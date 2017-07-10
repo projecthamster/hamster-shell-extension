@@ -192,6 +192,7 @@ const PanelWidget = new Lang.Class({
     // Once this is done, the actual code from the callback should follow
     // here.
     this._controller.apiProxy.GetTodaysFactsRemote(Lang.bind(this, _refresh));
+    return GLib.SOURCE_CONTINUE;
     },
 
     /**
