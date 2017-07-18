@@ -62,14 +62,13 @@ const HamsterSettingsWidget = new GObject.Class({
 
         let placementCombo = new Gtk.ComboBox({model: placementOptions});
 
-        let renderer = new Gtk.CellRendererText();
-        placementCombo.pack_start(renderer, true);
-        placementCombo.add_attribute(renderer, 'text', 0);
+        let placementComboRenderer = new Gtk.CellRendererText();
+        placementCombo.pack_start(placementComboRenderer, true);
+        placementCombo.add_attribute(placementComboRenderer, 'text', 0);
         placementCombo.connect('changed', Lang.bind(this, this._onPlacementChange));
         placementCombo.set_active(this._settings.get_int("panel-placement"));
 
         vbox.add(placementCombo);
-
 
         label = new Gtk.Label({margin_top: 20});
         label.set_markup("<b>Appearance in panel</b>");
@@ -88,9 +87,9 @@ const HamsterSettingsWidget = new GObject.Class({
 
         let appearanceCombo = new Gtk.ComboBox({model: appearanceOptions});
 
-        let renderer = new Gtk.CellRendererText();
-        appearanceCombo.pack_start(renderer, true);
-        appearanceCombo.add_attribute(renderer, 'text', 0);
+        let appearanceComboRenderer = new Gtk.CellRendererText();
+        appearanceCombo.pack_start(appearanceComboRenderer, true);
+        appearanceCombo.add_attribute(appearanceComboRenderer, 'text', 0);
         appearanceCombo.connect('changed', Lang.bind(this, this._onAppearanceChange));
         appearanceCombo.set_active(this._settings.get_int("panel-appearance"));
 
