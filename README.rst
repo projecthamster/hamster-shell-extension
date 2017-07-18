@@ -28,6 +28,21 @@ The extension is available on `the central extension repository <https://extensi
 Current compatible Gnome shell version: 3.20
 For previous shell versions check `releases <https://github.com/projecthamster/shell-extension/tags>`_.
 
+Creating a development environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As ``hamster-shell-extension`` is mainly simple JS there is not much of a development
+setup needed if you just want to get hacking right away. We do however provide
+a few convenience functionalities that make documenting and releasing the extension
+easier. For those purposes some additional python packages are required.
+The easiest and cleanest way to go about this is to create a new virtual environment and activate
+it::
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+
+Now you are all setup to run ``make develop`` and related make targets without
+changing you main environment.
+
 Manual Installation For Testing and Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To install just run ``make dist`` do create a distributable archive.
