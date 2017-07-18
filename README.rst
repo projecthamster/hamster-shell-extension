@@ -30,11 +30,12 @@ For previous shell versions check `releases <https://github.com/projecthamster/s
 
 Manual Installation For Testing and Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To install just symlink the checkout folder into ``~/.local/share/gnome-shell/extensions/``
-as ``hamster@projecthamster.wordpress.com``. It looks something like this::
+To install just run ``make dist`` do create a distributable archive.
+You can now you the ``tweaktool`` (at the bottom of the ``extensions`` tab)
+to install and activate the new ``zip`` file located in the ``dist`` directory.
 
-        cd ~/.local/share/gnome-shell/extensions/
-	ln -s /path/to/the/checkout hamster@projecthamster.wordpress.com
+Alternatively you just can unpack the tar archive to ``~/.local/share/gnome-shell/extensions/``.
+As a result, a directory named ``hamster@projecthamster.wordpress.com`` should be there now.
 
 After that you can enable the extension and change the preferences using Tweak
 Tool, or on ``https://extensions.gnome.org/local/``
