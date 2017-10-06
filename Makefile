@@ -65,8 +65,8 @@ dist: clean-build collect compile
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(BUILDDIR);
 	mkdir -p $(DISTDIR);
-	cd $(BUILDDIR); zip -rq ../dist/hamster@projecthamster.org.zip ./*
-	cd $(BUILDDIR); tar -czf ../dist/hamster@projecthamster.org.tgz *
+	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./*
+	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tgz *
 	@ls -l dist
 
 docs:
