@@ -55,7 +55,7 @@ function fromDbusFact(fact) {
         return new Date(res.setUTCMinutes(res.getUTCMinutes() + res.getTimezoneOffset()));
     }
 
-    result = {
+    let result = {
         name: fact[4],
         startTime: UTCToLocal(fact[1]*1000),
         endTime: fact[2] != 0 ? UTCToLocal(fact[2]*1000) : null,
