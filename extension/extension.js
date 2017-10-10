@@ -94,7 +94,7 @@ function Controller(extensionMeta) {
         panelWidget: null,
         settings: null,
         placement: 0,
-        apiProxy:  new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster'),
+        apiProxy: new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster'),
         windowsProxy: new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
             "/org/gnome/Hamster/WindowServer"),
 
@@ -103,7 +103,36 @@ function Controller(extensionMeta) {
             this.panelWidget = new PanelWidget(this);
             this.placement = this.settings.get_int("panel-placement");
 
-            this._placeWidget(this.placement, this.panelWidget)
+            this._placeWidget(this.placement, this.panelWidget);
+
+            // Callbacks that handle appearing/vanishing dbus services.
+            function apiProxy_appeared_callback() {
+            }
+
+            function apiProxy_vanished_callback() {
+                global.log(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
+                Main.notify(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
+                this.disable();
+            }
+
+            function windowsProxy_appeared_callback() {
+            }
+
+            function windowsProxy_vanished_callback() {
+                global.log(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
+                Main.notify(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
+                this.disable();
+            }
+
+            // Set-up watchers that watch for required dbus services.
+            let dbus_watcher = Gio.bus_watch_name(Gio.BusType.SESSION, 'org.gnome.Hamster',
+                Gio.BusNameWatcherFlags.NONE, apiProxy_appeared_callback.bind(this),
+                apiProxy_vanished_callback.bind(this), '');
+
+            let dbus_watcher = Gio.bus_watch_name(Gio.BusType.SESSION, 'org.gnome.Hamster.WindowServer',
+                Gio.BusNameWatcherFlags.NONE, windowsProxy_appeared_callback.bind(this),
+                windowsProxy_vanished_callback.bind(this), '');
+
             this.apiProxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
             this.activities = this.refreshActivities();
 
@@ -120,6 +149,7 @@ function Controller(extensionMeta) {
         disable: function() {
             Main.wm.removeKeybinding("show-hamster-dropdown");
 
+            global.log('Shutting down hamster-shell-extension.')
             this._removeWidget(this.placement)
             Main.panel.menuManager.removeMenu(this.panelWidget.menu);
             GLib.source_remove(this.panelWidget.timeout);
