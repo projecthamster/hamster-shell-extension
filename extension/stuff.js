@@ -113,14 +113,3 @@ function fromDbusFacts(facts) {
 
     return res;
 };
-
-
-function parseFactString(input) {
-    let res = {
-        "time": null,
-        "activity": input,
-        "category": null,
-        "description": null,
-        "tags": null,
-    };
-}
