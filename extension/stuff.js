@@ -25,15 +25,18 @@ Copyright (c) 2016 - 2017 Eric Goller / projecthamster <elbenfreund@projecthamst
 
 /* @function formatDuration
  *
- * Return time-information formatted as '%MM:%SS'
+ * Return time-information formatted as '%HH:%MM'
  *
  * @param {int} - Total amount of seconds to represent.
  */
-function formatDuration(seconds) {
-    minutes = seconds / 60;
-    seconds = seconds % 60;
+function formatDuration(total_seconds) {
+    let hours = total_seconds / 3600;
+    let remaining_seconds = total_seconds % 3600;
+    // We only care for "full minutes".
+    let minutes = remaining_seconds / 60;
+
     // This string formatting is not part of JS canon but provided by the shell environment.
-    return "%02d:%02d".format(minutes, seconds);
+    return "%02d:%02d".format(hours, minutes);
 }
 
 /* @function formatDurationHuman
