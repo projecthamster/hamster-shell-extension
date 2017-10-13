@@ -21,31 +21,66 @@ Copyright (c) 2016 - 2017 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-function formatDuration(minutes) {
-    return "%02d:%02d".format((minutes - minutes % 60) / 60, minutes % 60);
+// Time formatting helpers
+
+/* @function formatDuration
+ *
+ * Return time-information formatted as '%MM:%SS'
+ *
+ * @param {int} - Total amount of seconds to represent.
+ */
+function formatDuration(seconds) {
+    minutes = seconds / 60;
+    seconds = seconds % 60;
+    // This string formatting is not part of JS canon but provided by the shell environment.
+    return "%02d:%02d".format(minutes, seconds);
 }
 
-function formatDurationHuman(minutes) {
-    let hours = (minutes - minutes % 60) / 60;
-    let mins = minutes % 60;
-    let res = "";
+/* @function formatDurationHuman
+ *
+ * Return time-information as '%HHh %SSmin' or '%SSmin' (if hours=0).
+ *
+ * @param {int} - Total amount of seconds to represent.
+ */
+function formatDurationHuman(total_seconds) {
+    let hours = total_seconds / 3600;
+    let remaining_seconds = total_seconds % 3600;
+    // We only care for "full minutes".
+    let minutes = remaining_seconds / 60;
 
-    if (hours > 0 || mins > 0) {
-        if (hours > 0)
-            res += "%dh ".format(hours);
+    let result = ''
 
-        if (mins > 0)
-            res += "%dmin".format(mins);
+    if (hours > 0 || minutes > 0) {
+        if (hours > 0) {
+            result += "%dh ".format(hours);
+        }
+
+        if (minutes > 0) {
+            result += "%dmin".format(minutes);
+        }
     } else {
-        res = "Just started";
+        result = "Just started";
     }
 
-    return res;
+    return result;
 }
 
-function formatDurationHours(minutes) {
-    return new Number(minutes / 60.0).toFixed(1) + "h";
+/* @function formatDurationHours
+ *
+ * Return time-information as decimal (with one decimal place) amount of hours.
+ * Example: 'X.Yh'
+ *
+ * @param {int} - Total amount of seconds to represent.
+ */
+function formatDurationHours(seconds) {
+    // We shift by one decimal place to the left in order to round properly.
+    let hours = Math.round((seconds/3600)*10);
+    // Shift right after rounding.
+    hours = hours / 10;
+    return '%2dh'.format(hours);
 }
+
+// Other helper functions
 
 function fromDbusFact(fact) {
     // converts a fact coming from dbus into a usable object
@@ -64,7 +99,7 @@ function fromDbusFact(fact) {
         category: fact[6],
         tags: fact[7],
         date: UTCToLocal(fact[8] * 1000),
-        delta: Math.floor(fact[9] / 60), // minutes
+        delta: fact[9],
         id: fact[0]
     };
     return result;
