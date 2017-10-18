@@ -129,7 +129,7 @@ function Controller(extensionMeta) {
                 Gio.BusNameWatcherFlags.NONE, apiProxy_appeared_callback.bind(this),
                 apiProxy_vanished_callback.bind(this), '');
 
-            let dbus_watcher = Gio.bus_watch_name(Gio.BusType.SESSION, 'org.gnome.Hamster.WindowServer',
+            let dbus_watcher_window = Gio.bus_watch_name(Gio.BusType.SESSION, 'org.gnome.Hamster.WindowServer',
                 Gio.BusNameWatcherFlags.NONE, windowsProxy_appeared_callback.bind(this),
                 windowsProxy_vanished_callback.bind(this), '');
 
