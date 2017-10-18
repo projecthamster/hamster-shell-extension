@@ -47,7 +47,7 @@ Manual Installation For Testing and Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clone the repository::
 
-    git clone git@github.com:projecthamster/hamster-shell-extension.git
+    git clone https://github.com/projecthamster/hamster-shell-extension.git
 
 Make sure you are on the development branch::
 
