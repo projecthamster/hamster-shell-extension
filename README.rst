@@ -62,7 +62,7 @@ You can now use the ``tweaktool`` (at the bottom of the ``extensions`` tab)
 to install and activate the new ``zip`` file located in the ``dist`` directory.
 
 Alternatively you just can unpack the tar archive to ``~/.local/share/gnome-shell/extensions/``.
-As a result, a directory named ``hamster@projecthamster.org`` should be there now.
+As a result, a directory named ``contact@projecthamster.org`` should be there now.
 
 After that you can enable the extension and change the preferences using Tweak
 Tool, or on ``https://extensions.gnome.org/local/``
