@@ -80,7 +80,7 @@ function formatDurationHours(seconds) {
     let hours = Math.round((seconds/3600)*10);
     // Shift right after rounding.
     hours = hours / 10;
-    return '%2dh'.format(hours);
+    return '%.1fh'.format(hours);
 }
 
 // Other helper functions
