@@ -23,12 +23,14 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
 .PHONY: docs clean
 
+.NOTPARALLEL: clean-build collect
+
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
 	@echo "   clean"
 	@echo "   clean-build  to clean the build directory of any leftovers."
 	@echo "   clean-docs"
-	@echo "   collecst     to collect all required files to the build directory."
+	@echo "   collect      to collect all required files to the build directory."
 	@echo "   compile      to compile file that needs to be shipped as a binary."
 	@echo "   develop      to install (or update) all packages required for development"
 	@echo "   dist         to package a release as a ready to deploy extension archive"
@@ -64,7 +66,6 @@ develop:
 dist: clean-build collect compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
-	mkdir -p $(BUILDDIR);
 	mkdir -p $(DISTDIR);
 	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./*
 	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tgz *
