@@ -16,7 +16,8 @@
         "3.18",
         "3.20",
         "3.22",
-        "3.24"
+        "3.24",
+        "3.26"
     ],
     "url": "https://github.com/projecthamster/hamster-shell-extension.git",
     "uuid": "contact@projecthamster.org",
