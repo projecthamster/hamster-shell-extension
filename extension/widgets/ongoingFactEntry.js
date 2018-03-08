@@ -36,7 +36,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
  *
  *
  */
-const OngoingFactEntry = new Lang.Class({
+var OngoingFactEntry = new Lang.Class({
     Name: 'OngoingFactEntry',
     Extends: St.Entry,
 
