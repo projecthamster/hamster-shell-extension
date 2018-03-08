@@ -40,7 +40,7 @@ const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget
  * well as todays facts.
  * @class
  */
-const FactsBox = new Lang.Class({
+var FactsBox = new Lang.Class({
     Name: 'FactsBox',
     Extends: PopupMenu.PopupBaseMenuItem,
     _init: function(controller, panelWidget) {

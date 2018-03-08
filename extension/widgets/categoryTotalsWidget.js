@@ -33,7 +33,7 @@ const Stuff = Me.imports.stuff;
 /**
  * Custom Label widget that displays category totals.
  */
-const CategoryTotalsWidget = new Lang.Class({
+var CategoryTotalsWidget = new Lang.Class({
     Name: 'CategoryTotals',
     Extends: St.Label,
 

@@ -52,7 +52,7 @@ const Stuff = Me.imports.stuff;
  *
  * @class
  */
-const PanelWidget = new Lang.Class({
+var PanelWidget = new Lang.Class({
     Name: 'PanelWidget',
     Extends: PanelMenu.Button,
 
