@@ -33,7 +33,7 @@ const Stuff = Me.imports.stuff;
 /**
  * A widget that lists all facts for *today*.
  */
-const TodaysFactsWidget = new Lang.Class({
+var TodaysFactsWidget = new Lang.Class({
     Name: 'TodaysFactsWidget',
     Extends: St.ScrollView,
 
