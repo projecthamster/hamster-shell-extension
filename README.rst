@@ -3,6 +3,14 @@ Hamster Gnome Shell extension
 
 A Simple Hamster shell extension for Gnome 3.
 
+Important: Testers needed
+-------------------------
+One of the main reasons development on this extension is slow is that there is
+hardly any testing for feature/bugfix branches. As automated tests are not
+really an options we would love to **hear from you** if you would be willing to
+take new feature branches for a test drive and provide some feedback every now
+and then. **Please get in tough!**
+
 -----
 
 Install
