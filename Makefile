@@ -85,4 +85,4 @@ test-docs:
 	make -C docs linkcheck SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
 
 test-style:
-	jshint extension/*
+	jshint --config .jshint.cfg extension/
