@@ -17,7 +17,7 @@ along with 'hamster-shell-extension'.  If not, see <http://www.gnu.org/licenses/
 Copyright (c) 2011 Jerome Oufella <jerome@oufella.com>
 Copyright (c) 2011-2012 Toms Baugis <toms.baugis@gmail.com>
 Icons Artwork Copyright (c) 2012 Reda Lazri <the.red.shortcut@gmail.com>
-Copyright (c) 2016 - 2017 Eric Goller / projecthamster <elbenfreund@projecthamster.org>
+Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamster.org>
 */
 
 
