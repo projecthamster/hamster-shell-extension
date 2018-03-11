@@ -11,7 +11,11 @@ really an options we would love to **hear from you** if you would be willing to
 take new feature branches for a test drive and provide some feedback every now
 and then. **Please get in tough!**
 
+Usage
 -----
+Quick categorization of activities is done by entering your activity in the
+following format: 'activity@category, description #tag1 #tag2', where the comma
+is mandatory when adding a description and/or tag(s).
 
 Install
 --------
