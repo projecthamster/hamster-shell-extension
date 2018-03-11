@@ -3,11 +3,7 @@ Hamster Gnome Shell extension
 
 A Simple Hamster shell extension for Gnome 3.
 
-News
 -----
-Frederic Guilbault (@border0464111) agreed to step up to the challenge and will
-take over responsibility of the *Hamster-Shell-Extension* as new maintainer.
-Thank you Frederic!
 
 Install
 --------
