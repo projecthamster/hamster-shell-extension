@@ -26,7 +26,7 @@ const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
 const PanelMenu = imports.ui.panelMenu;
 const St = imports.gi.St;
-const PopupMenu = imports.ui.popupMenu
+const PopupMenu = imports.ui.popupMenu;
 const GLib = imports.gi.GLib;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
@@ -61,7 +61,7 @@ var PanelWidget = new Lang.Class({
         // What is the parameter?
         this.parent(0.0);
 
-        this._controller = controller
+        this._controller = controller;
         // [FIXME]
         // Still needed?
         this._extensionMeta = controller.extensionMeta;
@@ -167,10 +167,10 @@ var PanelWidget = new Lang.Class({
 		    let result = null;
 		    if (facts.length) {
 			let lastFact = facts[facts.length - 1];
-			if (!lastFact.endTime) { result = lastFact };
-		    };
+			if (!lastFact.endTime) { result = lastFact; }
+		    }
 		    return result;
-		};
+		}
 
 		let facts = [];
 
@@ -180,13 +180,13 @@ var PanelWidget = new Lang.Class({
 		    log(err);
 		} else if (response.length > 0) {
 		    facts = Stuff.fromDbusFacts(response);
-		};
+		}
 
 		let ongoingFact = getOngoingFact(facts);
 
 		this.updatePanelDisplay(ongoingFact);
 		this.factsBox.refresh(facts, ongoingFact);
-	};
+	}
 
     // [FIXME]
     // This should really be a synchronous call fetching the facts.
@@ -228,17 +228,17 @@ var PanelWidget = new Lang.Class({
             let result = _("No activity");
             if (fact) {
                 result = "%s %s".format(fact.name, Stuff.formatDuration(fact.delta));
-            };
+            }
             return result;
-        };
+        }
         /**
          * Returns the appropriate icon image depending on ``fact``.
          */
         function getIcon(panelWidget) {
             let result = panelWidget._idleIcon;
-            if (fact) { result = panelWidget._trackingIcon };
+            if (fact) { result = panelWidget._trackingIcon; }
             return result;
-        };
+        }
 
         // 0 = show label, 1 = show just icon, 2 = show label and icon
         switch (this._settings.get_int("panel-appearance")) {
@@ -258,7 +258,7 @@ var PanelWidget = new Lang.Class({
                 this.panelLabel.set_text(getLabelString(fact));
                 this.panelLabel.show();
                 break;
-        };
+        }
     },
 
     /**

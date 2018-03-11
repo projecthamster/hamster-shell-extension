@@ -112,8 +112,8 @@ const HamsterSettingsWidget = new GObject.Class({
         vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
                                 margin_top: 70}));
 
-        let version_text = ExtensionUtils.getCurrentExtension().metadata.version
-        let version_label_text = "You are running hamster-shell-extension version " + version_text
+        let version_text = ExtensionUtils.getCurrentExtension().metadata.version;
+        let version_label_text = "You are running hamster-shell-extension version " + version_text;
         vbox.add(new Gtk.Label({label: version_label_text, margin_top: 10}));
     },
 

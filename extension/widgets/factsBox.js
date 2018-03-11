@@ -23,16 +23,16 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 
 const Lang = imports.lang;
 const St = imports.gi.St;
-const PopupMenu = imports.ui.popupMenu
+const PopupMenu = imports.ui.popupMenu;
 const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
-const OngoingFactEntry = Me.imports.widgets.ongoingFactEntry.OngoingFactEntry
-const CategoryTotalsWidget = Me.imports.widgets.categoryTotalsWidget.CategoryTotalsWidget
-const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget
+const OngoingFactEntry = Me.imports.widgets.ongoingFactEntry.OngoingFactEntry;
+const CategoryTotalsWidget = Me.imports.widgets.categoryTotalsWidget.CategoryTotalsWidget;
+const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget;
 
 
 /**
@@ -46,7 +46,7 @@ var FactsBox = new Lang.Class({
     _init: function(controller, panelWidget) {
         this.parent({reactive: false});
 
-        this._controller = controller
+        this._controller = controller;
 
         // Setup main layout box
         let main_box = new St.BoxLayout({style_class: 'hamster-box'});
@@ -74,7 +74,7 @@ var FactsBox = new Lang.Class({
         main_box.add(this.todaysFactsWidget);
 
         // Setup category summery
-        this.summaryLabel = new CategoryTotalsWidget()
+        this.summaryLabel = new CategoryTotalsWidget();
         main_box.add(this.summaryLabel);
     },
 

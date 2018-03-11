@@ -51,7 +51,7 @@ function formatDurationHuman(total_seconds) {
     // We only care for "full minutes".
     let minutes = remaining_seconds / 60;
 
-    let result = ''
+    let result = '';
 
     if (hours > 0 || minutes > 0) {
         if (hours > 0) {
@@ -106,7 +106,7 @@ function fromDbusFact(fact) {
         id: fact[0]
     };
     return result;
-};
+}
 
 function fromDbusFacts(facts) {
     let res = [];
@@ -115,4 +115,4 @@ function fromDbusFacts(facts) {
     }
 
     return res;
-};
+}

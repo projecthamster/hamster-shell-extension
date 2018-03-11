@@ -56,16 +56,16 @@ var CategoryTotalsWidget = new Lang.Class({
                 byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
                 if (categories.indexOf(fact.category) == -1)
                     categories.push(fact.category);
-            };
+            }
 
             let string = "";
             for (let category of categories) {
                 string += category + ": " + Stuff.formatDurationHours(byCategory[category]) +  ", ";
-            };
+            }
             // strip trailing comma
             return string.slice(0, string.length - 2);
-        };
+        }
 
-        this.set_text(getString(facts))
+        this.set_text(getString(facts));
     },
 });

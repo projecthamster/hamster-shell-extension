@@ -79,9 +79,9 @@ var TodaysFactsWidget = new Lang.Class({
                     // as a single issue.
                     otherFact.tags.join(",") != fact.tags.join(",")) {
                         result = false;
-                    };
+                    }
                 return result;
-            };
+            }
 
             /**
              * Callback for the 'openEditDialog'-Button.
@@ -94,7 +94,7 @@ var TodaysFactsWidget = new Lang.Class({
             function onOpenEditDialog(button, event) {
                 controller.windowsProxy.editSync(GLib.Variant.new('i', [fact.id]));
                 menu.close();
-            };
+            }
 
             /**
              * Callback for the 'onContinue'-Button.
@@ -107,10 +107,8 @@ var TodaysFactsWidget = new Lang.Class({
             function onContinueButton(button, event) {
                 // [FIXME]
                 // This probably should be a "serialize" method of the fact object.
-                let fact = button.fact
-                let factStr = fact.name
-                  + "@" + fact.category
-                  + ", " + (fact.description);
+                let fact = button.fact;
+                let factStr = fact.name + "@" + fact.category + ", " + (fact.description);
                 if (fact.tags.length) {
                     factStr += " #" + fact.tags.join(", #");
                 }
@@ -119,7 +117,7 @@ var TodaysFactsWidget = new Lang.Class({
                     // not interested in the new id - this shuts up the warning
                 }));
                 menu.close();
-            };
+            }
 
             // Construct the ``Label`` rendering the start- and endtime information.
             let timeLabel = new St.Label({style_class: 'cell-label'});
@@ -127,10 +125,10 @@ var TodaysFactsWidget = new Lang.Class({
             let start_string = "%02d:%02d - ".format(fact.startTime.getHours(), fact.startTime.getMinutes());
             if (fact.endTime) {
                 let end_string = "%02d:%02d".format(fact.endTime.getHours(), fact.endTime.getMinutes());
-                timeString = start_string + end_string
+                timeString = start_string + end_string;
             } else {
-                timeString = start_string
-            };
+                timeString = start_string;
+            }
             timeLabel.set_text(timeString);
 
             // Construct the ``Label``rendering the remaining fact info.
@@ -154,7 +152,7 @@ var TodaysFactsWidget = new Lang.Class({
             // Construct a 'start previous fact's activity as new' button.
             // This is only done if the *ongoing fact* activity is actually
             // different from the one we currently process.
-            let continueButton = null
+            let continueButton = null;
             if (!checkSameActivity(fact, ongoingFact)) {
 
                 let continueIcon = new St.Icon({icon_name: "media-playback-start-symbolic", icon_size: 16});
@@ -162,17 +160,17 @@ var TodaysFactsWidget = new Lang.Class({
                 continueButton.set_child(continueIcon);
                 continueButton.fact = fact;
                 continueButton.connect('clicked', Lang.bind(this, onContinueButton));
-            };
+            }
 
             //The order of the array will be the order in which they will be added to the row.
             let result = [timeLabel, factLabel, deltaLabel, editButton];
 
             if (continueButton) {
                 result.push(continueButton);
-            };
-            return result
+            }
+            return result;
 
-        };
+        }
 
         let rowCount = 0;
         let layout = this.facts_widget.layout_manager;
@@ -180,9 +178,9 @@ var TodaysFactsWidget = new Lang.Class({
             let rowComponents = constructRow(fact, ongoingFact, this._controller, this._panelWidget.menu);
             for (let component of rowComponents) {
                 layout.pack(component, rowComponents.indexOf(component), rowCount);
-            };
+            }
             rowCount += 1;
-        };
+        }
     },
 
     /**
@@ -190,6 +188,6 @@ var TodaysFactsWidget = new Lang.Class({
      */
     refresh: function(facts, ongoingFact) {
         this.facts_widget.remove_all_children();
-        this.populateFactsWidget(facts, ongoingFact)
+        this.populateFactsWidget(facts, ongoingFact);
     },
 });
