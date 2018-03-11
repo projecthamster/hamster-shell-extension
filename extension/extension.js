@@ -34,43 +34,48 @@ const Convenience = Me.imports.convenience;
 const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
-const ApiProxyIface = '<node> \
-<interface name="org.gnome.Hamster"> \
-<method name="GetTodaysFacts"> \
-  <arg direction="out" type="a(iiissisasii)" /> \
-</method> \
-<method name="StopTracking"> \
-  <arg direction="in"  type="v" name="end_time" /> \
-</method> \
-<method name="AddFact"> \
-  <arg direction="in"  type="s" name="fact" /> \
-  <arg direction="in"  type="i" name="start_time" /> \
-  <arg direction="in"  type="i" name="end_time" /> \
-  <arg direction="in"  type="b" name="temporary" /> \
-  <arg direction="out" type="i" /> \
-</method> \
-<method name="GetActivities"> \
-  <arg direction="in"  type="s" name="search" /> \
-  <arg direction="out" type="a(ss)" /> \
-</method> \
-<signal name="FactsChanged"></signal> \
-<signal name="ActivitiesChanged"></signal> \
-<signal name="TagsChanged"></signal> \
-</interface> \
-</node>';
+const ApiProxyIface = ['',
+  '<node>',
+  '  <interface name="org.gnome.Hamster">',
+  '    <method name="GetTodaysFacts">',
+  '      <arg direction="out" type="a(iiissisasii)" />',
+  '    </method>',
+  '    <method name="StopTracking">',
+  '      <arg direction="in"  type="v" name="end_time" />',
+  '    </method>',
+  '    <method name="AddFact">',
+  '      <arg direction="in"  type="s" name="fact" />',
+  '      <arg direction="in"  type="i" name="start_time" />',
+  '      <arg direction="in"  type="i" name="end_time" />',
+  '      <arg direction="in"  type="b" name="temporary" />',
+  '      <arg direction="out" type="i" />',
+  '    </method>',
+  '    <method name="GetActivities">',
+  '      <arg direction="in"  type="s" name="search" />',
+  '      <arg direction="out" type="a(ss)" />',
+  '    </method>',
+  '    <signal name="FactsChanged"></signal>',
+  '    <signal name="ActivitiesChanged"></signal>',
+  '    <signal name="TagsChanged"></signal>',
+  '  </interface>',
+  '</node>',
+].join('');
 
 let ApiProxy = Gio.DBusProxy.makeProxyWrapper(ApiProxyIface);
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster.WindowServer /org/gnome/Hamster/WindowServer org.freedesktop.DBus.Introspectable.Introspect
-const WindowsProxyIface = '<node> \
-<interface name="org.gnome.Hamster.WindowServer"> \
-<method name="edit"> \
-  <arg direction="in"  type="v" name="id" /> \
-</method> \
-<method name="overview"></method> \
-<method name="preferences"></method> \
-</interface> \
-</node>';
+const WindowsProxyIface = ['',
+  '<node>',
+  '  <interface name="org.gnome.Hamster.WindowServer">',
+  '    <method name="edit">',
+  '      <arg direction="in"  type="v" name="id" />',
+  '    </method>',
+  '    <method name="overview"></method>',
+  '    <method name="preferences"></method>',
+  '  </interface>',
+  '</node>',
+].join('');
+
 
 let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
 
