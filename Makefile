@@ -33,6 +33,8 @@ help:
 	@echo "   develop      to install (or update) all packages required for development"
 	@echo "   dist         to package a release as a ready to deploy extension archive"
 	@echo "   open-docs    to build and open the documentation"
+	@echo "   test-style   to run the code against a set of stylechecks and linter."
+	@echo "                (Requires JSHint)."
 	@echo "   test-docs    to run automated tests on the documentation."
 
 clean: clean-build clean-docs clean-test-docs
@@ -80,3 +82,6 @@ open-docs: docs
 test-docs:
 	make docs SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR) SPHINXOPTS='-W'
 	make -C docs linkcheck SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
+
+test-style:
+	jshint extension/*
