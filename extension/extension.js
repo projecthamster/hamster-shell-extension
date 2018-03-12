@@ -94,11 +94,43 @@ function Controller(extensionMeta) {
         panelWidget: null,
         settings: null,
         placement: 0,
-        apiProxy: new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster'),
-        windowsProxy: new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
-            "/org/gnome/Hamster/WindowServer"),
+        apiProxy: null,
+        windowsProxy: null,
+        // ``shouldEnable`` indicates if the 'magic' enable function has been called or not.
+        // for details please see: https://github.com/projecthamster/hamster-shell-extension/pull/239
+        shouldEnable: false,
 
+        /**
+         * 'Magic' method, called upon extension launch.
+         *
+         * The gnome-shell-extension API grantees that there is always a ``disable`` call in
+         * between to ``enable`` calls.
+         *
+         * Note:
+         *  We only set up our dbus proxies here. In order to be able to do so asynchronously all
+         *  the actual startup code is refered to ``deferred_enable``.
+         */
         enable: function() {
+            this.shouldEnable = true;
+            new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster',
+                Lang.bind(this, function(proxy) {
+                    this.apiProxy = proxy;
+                    this.deferred_enable();
+                }));
+            new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
+                "/org/gnome/Hamster/WindowServer",
+                Lang.bind(this, function(proxy) {
+                    this.windowsProxy = proxy;
+                    this.deferred_enable();
+                }));
+        },
+
+        deferred_enable: function() {
+            // Make sure ``enable`` is 'finished' and ``disable`` has not been
+            // called in between.
+            if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
+                return;
+
             this.settings = Convenience.getSettings();
             this.panelWidget = new PanelWidget(this);
             this.placement = this.settings.get_int("panel-placement");
@@ -147,6 +179,7 @@ function Controller(extensionMeta) {
         },
 
         disable: function() {
+            this.shouldEnable = false;
             Main.wm.removeKeybinding("show-hamster-dropdown");
 
             global.log('Shutting down hamster-shell-extension.')
