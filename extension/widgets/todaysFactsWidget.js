@@ -189,7 +189,7 @@ var TodaysFactsWidget = new Lang.Class({
      * Clear the widget and populate it anew.
      */
     refresh: function(facts, ongoingFact) {
-        this.facts_widget.destroy_all_children();
+        this.facts_widget.remove_all_children();
         this.populateFactsWidget(facts, ongoingFact)
     },
 });
