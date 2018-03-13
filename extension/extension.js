@@ -189,6 +189,8 @@ function Controller(extensionMeta) {
             this.panelWidget.actor.destroy();
             this.panelWidget.destroy();
             this.panelWidget = null;
+            this.apiProxy = null;
+            this.windowsProxy = null;
         },
 
         /**
