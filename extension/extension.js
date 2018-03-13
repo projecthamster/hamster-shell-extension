@@ -203,27 +203,22 @@ function Controller(extensionMeta) {
          */
         refreshActivities: function() {
             /**
-             * Return an Array of [Activity.name, AcAivity.category.name] Arrays.
+             * Return an Array of [Activity.name, Activity.category.name] Arrays.
              *
              */
             function getActivities(controller) {
-                // [FIXME]
-                // It seems preferable to have a sync methods call in order to
-                // avoid race conditions (previously extensions used async
-                // version).
-                // There is however a reasonable risk this may actually be a bad
-                // idea as it may block the entire shell if the request takes too
-                // long. This may be particulary likly if the dbus service uses
-                // a remote database as persistent storage.
-                // We need to come back to this once we have the low hanging fruits
-                // covered.
-                let activities = controller.apiProxy.GetActivitiesSync('');
-                // [FIXME]
-                // For some bizare reason I am unable to create a proper array out
-                // of the return value of the dbus method call any other way.
-                // So unless can provide some insight here, this hack does the job.
-                let foo = function([activities]){return activities;};
-                return foo(activities);
+                if (controller.runningActivitiesQuery) {
+                    return(controller.activities);
+                }
+
+                this.runningActivitiesQuery = true;
+                controller.apiProxy.GetActivitiesRemote("", Lang.bind(this, function([response], err) {
+                  controller.runningActivitiesQuery = false;
+                  controller.activities = response;
+                }));
+
+                global.log('ACTIVITIES HAMSTER: ', controller.activities);
+                return controller.activities;
             }
 
             let result = getActivities(this);
