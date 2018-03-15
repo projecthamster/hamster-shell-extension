@@ -135,6 +135,7 @@ var PanelWidget = new Lang.Class({
 
         // refresh the widget every 60 secs
         this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh));
+        this.connect('destroy', Lang.bind(this, this._disableRefreshTimer));
         this.refresh();
     },
 
@@ -260,6 +261,17 @@ var PanelWidget = new Lang.Class({
         };
     },
 
+    /**
+     * Disable the refresh timer.
+     *
+     * @callback panelWidget~_disableRefreshTimer
+     *
+     * This method is actually a callback triggered on the destroy
+     * signal.
+     */
+    _disableRefreshTimer: function() {
+        GLib.source_remove(this.timeout);
+    },
 
     /**
      * Callback to be triggered when an *ongoing fact* is stopped.
