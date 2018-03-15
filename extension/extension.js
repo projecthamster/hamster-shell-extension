@@ -184,9 +184,6 @@ function Controller(extensionMeta) {
 
             global.log('Shutting down hamster-shell-extension.')
             this._removeWidget(this.placement)
-            Main.panel.menuManager.removeMenu(this.panelWidget.menu);
-            GLib.source_remove(this.panelWidget.timeout);
-            this.panelWidget.actor.destroy();
             this.panelWidget.destroy();
             this.panelWidget = null;
             this.apiProxy = null;
@@ -262,10 +259,14 @@ function Controller(extensionMeta) {
                     Main.sessionMode.panel.center.indexOf('dateMenu'),
                     Main.panel._centerBox
                 );
+                Main.panel._centerBox.remove_actor(this.panelWidget.container);
             } else if (placement == 2) {
                 // We replaced the 'Activities' menu
                 let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0]
                 activitiesMenu.set_text(this._activitiesText);
+                Main.panel._leftBox.remove_actor(this.panelWidget.container);
+            } else {
+                Main.panel._rightBox.remove_actor(this.panelWidget.container);
             };
         },
     };
