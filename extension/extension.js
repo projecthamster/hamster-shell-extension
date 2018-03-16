@@ -34,43 +34,48 @@ const Convenience = Me.imports.convenience;
 const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
-const ApiProxyIface = '<node> \
-<interface name="org.gnome.Hamster"> \
-<method name="GetTodaysFacts"> \
-  <arg direction="out" type="a(iiissisasii)" /> \
-</method> \
-<method name="StopTracking"> \
-  <arg direction="in"  type="v" name="end_time" /> \
-</method> \
-<method name="AddFact"> \
-  <arg direction="in"  type="s" name="fact" /> \
-  <arg direction="in"  type="i" name="start_time" /> \
-  <arg direction="in"  type="i" name="end_time" /> \
-  <arg direction="in"  type="b" name="temporary" /> \
-  <arg direction="out" type="i" /> \
-</method> \
-<method name="GetActivities"> \
-  <arg direction="in"  type="s" name="search" /> \
-  <arg direction="out" type="a(ss)" /> \
-</method> \
-<signal name="FactsChanged"></signal> \
-<signal name="ActivitiesChanged"></signal> \
-<signal name="TagsChanged"></signal> \
-</interface> \
-</node>';
+const ApiProxyIface = ['',
+  '<node>',
+  '  <interface name="org.gnome.Hamster">',
+  '    <method name="GetTodaysFacts">',
+  '      <arg direction="out" type="a(iiissisasii)" />',
+  '    </method>',
+  '    <method name="StopTracking">',
+  '      <arg direction="in"  type="v" name="end_time" />',
+  '    </method>',
+  '    <method name="AddFact">',
+  '      <arg direction="in"  type="s" name="fact" />',
+  '      <arg direction="in"  type="i" name="start_time" />',
+  '      <arg direction="in"  type="i" name="end_time" />',
+  '      <arg direction="in"  type="b" name="temporary" />',
+  '      <arg direction="out" type="i" />',
+  '    </method>',
+  '    <method name="GetActivities">',
+  '      <arg direction="in"  type="s" name="search" />',
+  '      <arg direction="out" type="a(ss)" />',
+  '    </method>',
+  '    <signal name="FactsChanged"></signal>',
+  '    <signal name="ActivitiesChanged"></signal>',
+  '    <signal name="TagsChanged"></signal>',
+  '  </interface>',
+  '</node>',
+].join('');
 
 let ApiProxy = Gio.DBusProxy.makeProxyWrapper(ApiProxyIface);
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster.WindowServer /org/gnome/Hamster/WindowServer org.freedesktop.DBus.Introspectable.Introspect
-const WindowsProxyIface = '<node> \
-<interface name="org.gnome.Hamster.WindowServer"> \
-<method name="edit"> \
-  <arg direction="in"  type="v" name="id" /> \
-</method> \
-<method name="overview"></method> \
-<method name="preferences"></method> \
-</interface> \
-</node>';
+const WindowsProxyIface = ['',
+  '<node>',
+  '  <interface name="org.gnome.Hamster.WindowServer">',
+  '    <method name="edit">',
+  '      <arg direction="in"  type="v" name="id" />',
+  '    </method>',
+  '    <method name="overview"></method>',
+  '    <method name="preferences"></method>',
+  '  </interface>',
+  '</node>',
+].join('');
+
 
 let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
 
@@ -182,8 +187,11 @@ function Controller(extensionMeta) {
             this.shouldEnable = false;
             Main.wm.removeKeybinding("show-hamster-dropdown");
 
-            global.log('Shutting down hamster-shell-extension.')
-            this._removeWidget(this.placement)
+            global.log('Shutting down hamster-shell-extension.');
+            this._removeWidget(this.placement);
+            Main.panel.menuManager.removeMenu(this.panelWidget.menu);
+            GLib.source_remove(this.panelWidget.timeout);
+            this.panelWidget.actor.destroy();
             this.panelWidget.destroy();
             this.panelWidget = null;
             this.apiProxy = null;
@@ -216,7 +224,7 @@ function Controller(extensionMeta) {
                 // So unless can provide some insight here, this hack does the job.
                 let foo = function([activities]){return activities;};
                 return foo(activities);
-            };
+            }
 
             let result = getActivities(this);
             this.activities = result;
@@ -236,7 +244,7 @@ function Controller(extensionMeta) {
                 Main.panel._addToPanelBox('dateMenu', dateMenu, -1, Main.panel._rightBox);
             } else if (placement == 2) {
                 // 'Replace activities'
-                let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0]
+                let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0];
                 // If our widget replaces the 'Activities' menu in the panel,
                 // this property stores the original text so we can restore it
                 // on ``this.disable``.
@@ -246,7 +254,7 @@ function Controller(extensionMeta) {
             } else {
                 // 'Default'
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 0, "right");
-            };
+            }
         },
 
         _removeWidget: function(placement) {
@@ -262,15 +270,15 @@ function Controller(extensionMeta) {
                 Main.panel._centerBox.remove_actor(this.panelWidget.container);
             } else if (placement == 2) {
                 // We replaced the 'Activities' menu
-                let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0]
+                let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0];
                 activitiesMenu.set_text(this._activitiesText);
                 Main.panel._leftBox.remove_actor(this.panelWidget.container);
             } else {
                 Main.panel._rightBox.remove_actor(this.panelWidget.container);
-            };
+            }
         },
     };
-};
+}
 
 
 function init(extensionMeta) {

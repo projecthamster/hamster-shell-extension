@@ -48,8 +48,8 @@ var OngoingFactEntry = new Lang.Class({
             hint_text: _("Enter activity...")
         });
 
-        this._controller = controller
-        this._prevText = ''
+        this._controller = controller;
+        this._prevText = '';
         // Seems to be populate by GetActivities.
         this._autocompleteActivities = [];
         this._runningActivitiesQuery = null;
@@ -92,11 +92,11 @@ var OngoingFactEntry = new Lang.Class({
             let result = ignoreKeys.indexOf(key);
             if (result == -1) {
                 result = false;
-            } else{
+            } else {
                 result = true;
-            };
+            }
             return result;
-        };
+        }
 
         let symbol = evt.get_key_symbol();
         // [FIXME]
@@ -121,7 +121,7 @@ var OngoingFactEntry = new Lang.Class({
             (match = text.match(/^-\d+ /))) {
             starttime = text.substring(0, match[0].length);
             activitytext = text.substring(match[0].length);
-        };
+        }
 
         // [FIXME]
         // Should be a separate local function.
@@ -135,7 +135,7 @@ var OngoingFactEntry = new Lang.Class({
         }
         this._prevText = text;
 
-        if (checkIfIgnoredKey(symbol)) { return };
+        if (checkIfIgnoredKey(symbol)) { return; }
 
         // [FIXME]
         // Investigate if we can move this into a dedicated 'autocomplete' function.
@@ -179,7 +179,7 @@ var OngoingFactEntry = new Lang.Class({
                 this.get_clutter_text().set_selection(text.length, completion.length);
 
                 this._prevText = completion.toLowerCase();
-            };
-        };
+            }
+        }
     },
 });
