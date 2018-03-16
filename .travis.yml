@@ -1,0 +1,7 @@
+language: node_js
+
+install:
+  - npm i -g jshint
+
+script:
+  - make test-style
