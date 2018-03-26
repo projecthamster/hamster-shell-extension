@@ -28,16 +28,17 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
 	@echo "   clean"
-	@echo "   clean-build  to clean the build directory of any leftovers."
+	@echo "   clean-build		to clean the build directory of any leftovers."
 	@echo "   clean-docs"
-	@echo "   collect      to collect all required files to the build directory."
-	@echo "   compile      to compile file that needs to be shipped as a binary."
-	@echo "   develop      to install (or update) all packages required for development"
-	@echo "   dist         to package a release as a ready to deploy extension archive"
-	@echo "   open-docs    to build and open the documentation"
-	@echo "   test-style   to run the code against a set of stylechecks and linter."
-	@echo "                (Requires JSHint)."
-	@echo "   test-docs    to run automated tests on the documentation."
+	@echo "   collect			to collect all required files to the build directory."
+	@echo "   compile			to compile file that needs to be shipped as a binary."
+	@echo "   develop			to install (or update) all packages required for development"
+	@echo "   dist				to package a release as a ready to deploy extension archive"
+	@echo "   gettext-catalogue to generate a new gettext catalogue"
+	@echo "   open-docs			to build and open the documentation"
+	@echo "   test-style		to run the code against a set of stylechecks and linter."
+	@echo "						(Requires JSHint)."
+	@echo "   test-docs			to run automated tests on the documentation."
 
 clean: clean-build clean-docs clean-test-docs
 	rm -f dist/*
@@ -60,6 +61,11 @@ collect:
 compile:
 	glib-compile-schemas $(BUILDDIR)/schemas
 	find $(BUILDDIR) -name \*.po -execdir msgfmt hamster-shell-extension.po -o hamster-shell-extension.mo \;
+
+gettext-catalogue:
+	find ./extension/ -type f -name '*.js' -print > list
+	xgettext -L JavaScript --from-code=UTF-8 --files-from=list -k_ -kN_ -o  ./messages.pot
+	rm ./list
 
 develop:
 	pip install -U pip setuptools wheel
