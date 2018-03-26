@@ -2,49 +2,57 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-07 10:04-0300\n"
-"PO-Revision-Date: 2015-10-07 10:15-0300\n"
+"POT-Creation-Date: 2018-03-12 01:43+0100\n"
+"PO-Revision-Date: 2018-03-12 01:43+0100\n"
+"Last-Translator: Fábio Nogueira <deb-user-ba@ubuntu.com>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Fábio Nogueira <deb-user-ba@ubuntu.com>\n"
-"Language-Team: \n"
-"X-Generator: Poedit 1.7.5\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: pt_BR\n"
 
-#: extension.js:98
+#: widgets/factsBox.js:58
 msgid "What are you doing?"
 msgstr "O que você está fazendo?"
 
-#: extension.js:104
-msgid "Enter activity..."
-msgstr "Digite a atividade..."
-
-#: extension.js:115
+#: widgets/factsBox.js:66
 msgid "Today's activities"
 msgstr "Atividades de hoje"
 
-#: extension.js:261
+#: widgets/ongoingFactEntry.js:48
+msgid "Enter activity..."
+msgstr "Digite a atividade..."
+
+#: widgets/panelWidget.js:82
 msgid "Loading..."
 msgstr "Carregando..."
 
-#: extension.js:285
+#: widgets/panelWidget.js:103
 msgid "Show Overview"
 msgstr "Exibir visão geral"
 
-#: extension.js:290
+#: widgets/panelWidget.js:110
 msgid "Stop Tracking"
 msgstr "Parar rastreamento"
 
-#: extension.js:295
+#: widgets/panelWidget.js:115
 msgid "Add Earlier Activity"
 msgstr "Adicionar atividade anterior"
 
-#: extension.js:301
+#: widgets/panelWidget.js:121
 msgid "Tracking Settings"
 msgstr "Configurações do rastreamento"
 
-#: extension.js:463
+#: widgets/panelWidget.js:227
 msgid "No activity"
 msgstr "Sem atividade"
+
+#: extension.js:113 extension.js:114
+msgid "hamster-shell-extension: 'hamster-service' not running. Shutting down."
+msgstr ""
+
+#: extension.js:122 extension.js:123
+msgid ""
+"hamster-shell-extension: 'hamster-windows-service' not running. Shutting "
+"down."
+msgstr ""

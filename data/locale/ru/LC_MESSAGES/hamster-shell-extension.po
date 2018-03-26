@@ -2,49 +2,59 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-17 16:42+0100\n"
-"PO-Revision-Date: 2015-02-25 01:15+0300\n"
+"POT-Creation-Date: 2018-03-12 01:43+0100\n"
+"PO-Revision-Date: 2018-03-12 01:43+0100\n"
 "Last-Translator: Daniel Craig <daniel@danielcraig.me>\n"
 "Language-Team: Egor Garadja <egor.garadja@gmail.com>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.7.4\n"
-"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: extension.js:85
+#: widgets/factsBox.js:58
 msgid "What are you doing?"
 msgstr "Чем вы заняты?"
 
-#: extension.js:91
-msgid "Enter activity..."
-msgstr "Занятие..."
-
-#: extension.js:105
+#: widgets/factsBox.js:66
 msgid "Today's activities"
 msgstr "Сегодня"
 
-#: extension.js:215
+#: widgets/ongoingFactEntry.js:48
+msgid "Enter activity..."
+msgstr "Занятие..."
+
+#: widgets/panelWidget.js:82
 msgid "Loading..."
 msgstr "Загрузка..."
 
-#: extension.js:238
+#: widgets/panelWidget.js:103
 msgid "Show Overview"
 msgstr "Обзор"
 
-#: extension.js:243
+#: widgets/panelWidget.js:110
 msgid "Stop Tracking"
 msgstr "Прекратить учёт"
 
-#: extension.js:249
+#: widgets/panelWidget.js:115
+msgid "Add Earlier Activity"
+msgstr "Добавить раннее занятие"
+
+#: widgets/panelWidget.js:121
 msgid "Tracking Settings"
 msgstr "Параметры"
 
-#: extension.js:398
+#: widgets/panelWidget.js:227
 msgid "No activity"
 msgstr "Нет записей"
 
-#: extension.js:254
-msgid "Add Earlier Activity"
-msgstr "Добавить раннее занятие"
+#: extension.js:113 extension.js:114
+msgid "hamster-shell-extension: 'hamster-service' not running. Shutting down."
+msgstr ""
+
+#: extension.js:122 extension.js:123
+msgid ""
+"hamster-shell-extension: 'hamster-windows-service' not running. Shutting "
+"down."
+msgstr ""

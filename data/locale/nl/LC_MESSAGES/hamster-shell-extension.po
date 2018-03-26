@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-18 13:27+0200\n"
-"PO-Revision-Date: 2014-06-18 13:33+0200\n"
-"Last-Translator: <bwcknr@gmail.com>\n"
+"POT-Creation-Date: 2018-03-12 01:42+0100\n"
+"PO-Revision-Date: 2018-03-12 01:42+0100\n"
+"Last-Translator: bwcknr@gmail.com\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -12,38 +12,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: extension.js:98
+#: widgets/factsBox.js:58
 msgid "What are you doing?"
 msgstr "Wat ben je aan het doen?"
 
-#: extension.js:104
-msgid "Enter activity..."
-msgstr "Activiteit starten..."
-
-#: extension.js:115
+#: widgets/factsBox.js:66
 msgid "Today's activities"
 msgstr "Huidige activiteiten"
 
-#: extension.js:254
+#: widgets/ongoingFactEntry.js:48
+msgid "Enter activity..."
+msgstr "Activiteit starten..."
+
+#: widgets/panelWidget.js:82
 msgid "Loading..."
 msgstr "Laden..."
 
-#: extension.js:278
+#: widgets/panelWidget.js:103
 msgid "Show Overview"
 msgstr "Overzicht tonen"
 
-#: extension.js:283
+#: widgets/panelWidget.js:110
 msgid "Stop Tracking"
 msgstr "Registratie stoppen"
 
-#: extension.js:288
+#: widgets/panelWidget.js:115
 msgid "Add Earlier Activity"
 msgstr "Eerdere activiteit toevoegen"
 
-#: extension.js:294
+#: widgets/panelWidget.js:121
 msgid "Tracking Settings"
 msgstr "Registratieinstellingen"
 
-#: extension.js:456
+#: widgets/panelWidget.js:227
 msgid "No activity"
 msgstr "Geen activiteit"
+
+#: extension.js:113 extension.js:114
+msgid "hamster-shell-extension: 'hamster-service' not running. Shutting down."
+msgstr ""
+
+#: extension.js:122 extension.js:123
+msgid ""
+"hamster-shell-extension: 'hamster-windows-service' not running. Shutting "
+"down."
+msgstr ""
