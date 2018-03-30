@@ -28,6 +28,9 @@ const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
 
+const Gettext = imports.gettext.domain('hamster-shell-extension');
+const _ = Gettext.gettext;
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
 const OngoingFactEntry = Me.imports.widgets.ongoingFactEntry.OngoingFactEntry;

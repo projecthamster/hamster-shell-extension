@@ -25,6 +25,9 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 
+const Gettext = imports.gettext.domain('hamster-shell-extension');
+const _ = Gettext.gettext;
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 

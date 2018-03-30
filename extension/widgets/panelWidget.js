@@ -29,6 +29,9 @@ const St = imports.gi.St;
 const PopupMenu = imports.ui.popupMenu;
 const GLib = imports.gi.GLib;
 
+const Gettext = imports.gettext.domain('hamster-shell-extension');
+const _ = Gettext.gettext;
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const FactsBox = Me.imports.widgets.factsBox.FactsBox;
 const Stuff = Me.imports.stuff;

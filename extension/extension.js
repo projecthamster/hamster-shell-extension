@@ -28,6 +28,9 @@ const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
 
+const Gettext = imports.gettext.domain('hamster-shell-extension');
+const _ = Gettext.gettext;
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
@@ -277,6 +280,6 @@ function Controller(extensionMeta) {
 
 
 function init(extensionMeta) {
-    Convenience.initTranslations("hamster-shell-extension");
+    Convenience.initTranslations();
     return new Controller(extensionMeta);
 }
