@@ -30,3 +30,7 @@ References
 - Information on current `dbus best practices <https://mail.gnome.org/archives/gnome-shell-list/2013-February/msg00059.html>`_.
   This is particular usefull as it mentions that ``Sync`` and ``Remote`` strings are appended to our interface method names. For a full tutorial
   please `see refer to this one <http://cheesehead-techblog.blogspot.de/2012/08/dbus-tutorial-introspection-figuring.html>`_.
+- `A comprehensive overview over the shell <https://blog.fpmurphy.com/2011/05/more-gnome-shell-customization.html>`_ that cover a wide range from general architecture to
+  the exact names of various parts of the "gnome shell screen".
+- `GNOME's official page on shell development <https://wiki.gnome.org/Projects/GnomeShell/Development>`_ is particularly useful in linking the different bits and pieces (css, tweeners, clutter, ...) togeter.
+- `One of the most instructive series/tutorials <http://blog.mecheye.net/2011/11/modern-gnome-shell-extension-part-1/>`_ by Jasper St. Pierre.
