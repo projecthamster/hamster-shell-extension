@@ -51,6 +51,17 @@ it::
 Now you are all setup to run ``make develop`` and related make targets without
 changing you main environment.
 
+The following is only needed if you wish to build the documentation.
+
+After you ran ``make develop``, create a new *node virtual env* with (the freshly installed)
+``nodeenv``::
+
+    nodeenv .nodeenv
+    source .nodeenv/bin/activate
+
+Finally use npm to setup jsdoc in your virtual node environment::
+    npm install -g jsdoc
+
 Manual Installation For Testing and Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clone the repository::
