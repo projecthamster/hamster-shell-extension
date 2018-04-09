@@ -24,3 +24,4 @@ or feel that topics are not covered properly.
    packaging
    versioning
    styleguide
+   jsdoc/index

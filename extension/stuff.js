@@ -23,10 +23,10 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 
 // Time formatting helpers
 
-/* @function formatDuration
- *
+/**
  * Return time-information formatted as '%HH:%MM'
  *
+ * @function
  * @param {int} - Total amount of seconds to represent.
  */
 function formatDuration(total_seconds) {
@@ -38,10 +38,10 @@ function formatDuration(total_seconds) {
     // This string formatting is not part of JS canon but provided by the shell environment.
     return "%02d:%02d".format(hours, minutes);
 }
-
-/* @function formatDurationHuman
- *
+/**
  * Return time-information as '%HHh %SSmin' or '%SSmin' (if hours=0).
+ *
+ * @function
  *
  * @param {int} - Total amount of seconds to represent.
  */
@@ -68,11 +68,11 @@ function formatDurationHuman(total_seconds) {
     return result;
 }
 
-/* @function formatDurationHours
- *
+/**
  * Return time-information as decimal (with one decimal place) amount of hours.
  * Example: 'X.Yh'
  *
+ * @function
  * @param {int} - Total amount of seconds to represent.
  */
 function formatDurationHours(seconds) {
