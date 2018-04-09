@@ -65,7 +65,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'hamster-shell-extension'
-copyright = u'2016, Eric Goller'
+copyright = u'2016-2018, Eric Goller'
 author = u'Eric Goller'
 
 # The version info for the project you're documenting, acts as replacement
