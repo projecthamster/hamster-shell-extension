@@ -1,4 +1,4 @@
-Stuff.js
+stuff.js
 ========
 
 .. autofunction:: formatDuration
