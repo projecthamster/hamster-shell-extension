@@ -3,7 +3,30 @@
 History
 ========
 
-Build 18 (2015-10-039
+Version 0.10.0
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+As this release contains a massive refactoring effort as well as a general overhaul of the entire project, the following
+gives just general overview over the most significant changes. For a full list of all closed issued please refer to the
+`issue tracker <https://github.com/projecthamster/hamster-shell-extension/issues?q=is%3Aissue+milestone%3A0.10.0+is%3Aclosed>`_.
+
+- Switch to a semantic versioning scheme (starting at ``0.10.0``).
+- Provide an all Makefile that handles common development and packaging tasks.
+- Support ``gnome-shell`` versions up to ``3.28``.
+- Add 'weblate.org' translation workflow.
+- Provide basic documentation.
+- Improve handling of async dbus calls.
+- Update copyright notices.
+- ``JSHint`` compliance (enforced by CI setup).
+- Fix multiple ``variable redeclaration error`` s.
+- Switch to a new UUID for the extension (``contact@projecthamster.org``).
+- Split codebase over multiple files for clarity.
+- Show extension version in preference dialog.
+- Removed obsolete legacy imports.
+
+
+
+Build 18 (2015-10-03)
 ------------------------
  * Fix GNOME Shell 3.18 compatibility issues.
 
