@@ -58,7 +58,7 @@ collect:
 	cp -R data/* $(BUILDDIR)
 	wget https://gitlab.gnome.org/GNOME/gnome-shell-extensions/raw/master/lib/convenience.js -O $(BUILDDIR)/convenience.js
 
-compile:
+compile: collect
 	glib-compile-schemas $(BUILDDIR)/schemas
 	find $(BUILDDIR) -name \*.po -execdir msgfmt hamster-shell-extension.po -o hamster-shell-extension.mo \;
 
@@ -71,7 +71,7 @@ develop:
 	pip install -U pip setuptools wheel
 	pip install -U -r requirements.pip
 
-dist: clean-build collect compile
+dist: clean-build compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(DISTDIR);
