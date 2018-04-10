@@ -1,0 +1,62 @@
+#
+# Raphaël Doursenaud <rdoursenaud@gpcsolutions.fr>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: hamster-shell-extension\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-12 01:40+0100\n"
+"PO-Revision-Date: 2018-03-12 01:40+0100\n"
+"Last-Translator: Raphaël Doursenaud <rdoursenaud@free.fr>\n"
+"Language-Team: français <>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: widgets/factsBox.js:58
+msgid "What are you doing?"
+msgstr "Que faîtes vous ?"
+
+#: widgets/factsBox.js:66
+msgid "Today's activities"
+msgstr "Activités du jour"
+
+#: widgets/ongoingFactEntry.js:48
+msgid "Enter activity..."
+msgstr "Entrez l'activité…"
+
+#: widgets/panelWidget.js:82
+msgid "Loading..."
+msgstr "Chargement…"
+
+#: widgets/panelWidget.js:103
+msgid "Show Overview"
+msgstr "Montrer le résumé"
+
+#: widgets/panelWidget.js:110
+msgid "Stop Tracking"
+msgstr "Arrêter le suivi"
+
+#: widgets/panelWidget.js:115
+msgid "Add Earlier Activity"
+msgstr "Ajouter une activité antérieure"
+
+#: widgets/panelWidget.js:121
+msgid "Tracking Settings"
+msgstr "Préférences"
+
+#: widgets/panelWidget.js:227
+msgid "No activity"
+msgstr "Pas d'activité"
+
+#: extension.js:113 extension.js:114
+msgid "hamster-shell-extension: 'hamster-service' not running. Shutting down."
+msgstr ""
+
+#: extension.js:122 extension.js:123
+msgid ""
+"hamster-shell-extension: 'hamster-windows-service' not running. Shutting "
+"down."
+msgstr ""

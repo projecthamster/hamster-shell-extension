@@ -1,0 +1,9 @@
+language: python
+
+install:
+  - pip install -r requirements.pip
+  - npm i -g jshint
+
+script:
+  - make test-style
+  - make test-docs
