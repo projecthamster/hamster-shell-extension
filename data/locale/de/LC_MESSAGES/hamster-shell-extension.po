@@ -3,14 +3,16 @@ msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-12 01:37+0100\n"
-"PO-Revision-Date: 2018-03-12 01:38+0100\n"
-"Last-Translator: bwcknr@gmail.com\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2018-04-10 11:56+0000\n"
+"Last-Translator: Eric Goller <elbenfreund@denkeninechtzeit.net>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/project-hamster/"
+"shell-extensions/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.20\n"
 
 #: widgets/factsBox.js:58
 msgid "What are you doing?"
@@ -26,7 +28,7 @@ msgstr "Tätigkeit starten..."
 
 #: widgets/panelWidget.js:82
 msgid "Loading..."
-msgstr "Lade..."
+msgstr "Lade…"
 
 #: widgets/panelWidget.js:103
 msgid "Show Overview"
