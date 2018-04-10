@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: hamster-shell-extension\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-12 01:39+0100\n"
-"PO-Revision-Date: 2018-04-09 21:14+0000\n"
+"PO-Revision-Date: 2018-04-10 10:49+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/project-hamster/"
 "shell-extensions/cs/>\n"
@@ -53,10 +53,12 @@ msgstr "Žádná aktivita"
 
 #: extension.js:113 extension.js:114
 msgid "hamster-shell-extension: 'hamster-service' not running. Shutting down."
-msgstr ""
+msgstr "hamster-shell-extension: „hamster-service“ není spuštěná. Ukončuje se."
 
 #: extension.js:122 extension.js:123
 msgid ""
 "hamster-shell-extension: 'hamster-windows-service' not running. Shutting "
 "down."
 msgstr ""
+"hamster-shell-extension: „hamster-windows-service“ není spuštěná. Ukončuje "
+"se."
