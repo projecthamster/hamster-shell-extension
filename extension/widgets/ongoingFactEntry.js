@@ -48,7 +48,8 @@ var OngoingFactEntry = new Lang.Class({
             name: 'searchEntry',
             can_focus: true,
             track_hover: true,
-            hint_text: _("Enter activity...")
+            hint_text: _("Enter activity..."),
+            style_class: "search-entry"
         });
 
         this._controller = controller;
