@@ -309,6 +309,7 @@ texinfo_documents = [
 
 
 # sphinx-js
-js_source_path = '../extension'
+root_for_relative_js_paths = '../extension'
+js_source_path = ['../extension', '../extension/widgets']
 primary_domain = 'js'
 
