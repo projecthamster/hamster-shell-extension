@@ -82,7 +82,7 @@ var PanelWidget = new Lang.Class({
         this.actor.add_style_class_name('panel-status-button');
 
         this.panelLabel = new St.Label({
-            text: _("Loading..."),
+            text: _("Loading…"),
             y_align: Clutter.ActorAlign.CENTER
         });
 
