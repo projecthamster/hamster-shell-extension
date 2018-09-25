@@ -249,6 +249,9 @@ function Controller(extensionMeta) {
                 this._activitiesText = activitiesMenu.get_text();
                 activitiesMenu.set_text('');
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 1, "left");
+            } else if (placement == 3) {
+                // 'Center'
+                Main.panel.addToStatusArea("hamster", this.panelWidget, 1, "center");
             } else {
                 // 'Default'
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 0, "right");
