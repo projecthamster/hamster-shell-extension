@@ -60,6 +60,7 @@ class HamsterSettingsWidget extends Gtk.Grid {
         placementOptions.set(placementOptions.append(), [0, 1], ["Default", 0]);
         placementOptions.set(placementOptions.append(), [0, 1], ["Replace calendar", 1]);
         placementOptions.set(placementOptions.append(), [0, 1], ["Replace activities", 2]);
+        placementOptions.set(placementOptions.append(), [0, 1], ["Center", 3]);
 
         let placementCombo = new Gtk.ComboBox({
             model: placementOptions,
