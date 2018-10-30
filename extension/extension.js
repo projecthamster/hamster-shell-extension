@@ -21,7 +21,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
@@ -192,9 +191,6 @@ function Controller(extensionMeta) {
 
             global.log('Shutting down hamster-shell-extension.');
             this._removeWidget(this.placement);
-            Main.panel.menuManager.removeMenu(this.panelWidget.menu);
-            GLib.source_remove(this.panelWidget.timeout);
-            this.panelWidget.actor.destroy();
             this.panelWidget.destroy();
             this.panelWidget = null;
             this.apiProxy = null;
