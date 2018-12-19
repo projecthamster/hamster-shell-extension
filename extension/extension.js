@@ -173,7 +173,7 @@ class Controller {
             windowsProxy_vanished_callback.bind(this));
 
         this.apiProxy.connectSignal('ActivitiesChanged', this.refreshActivities.bind(this));
-        this.activities = this.refreshActivities();
+        this.refreshActivities();
 
         Main.panel.menuManager.addMenu(this.panelWidget.menu);
         Main.wm.addKeybinding("show-hamster-dropdown",
@@ -204,26 +204,16 @@ class Controller {
      * Build a new cache of all activities present in the backend.
      */
     refreshActivities() {
-        /**
-         * Return an Array of [Activity.name, Activity.category.name] Arrays.
-         *
-         */
-        let result = () => {
-            if (this.runningActivitiesQuery) {
-                return(this.activities);
-            }
+        if (this.runningActivitiesQuery) {
+            return(this.activities);
+        }
 
-            this.runningActivitiesQuery = true;
-            this.apiProxy.GetActivitiesRemote("", ([response], err) => {
-              this.runningActivitiesQuery = false;
-              this.activities = response;
-            });
-
+        this.runningActivitiesQuery = true;
+        this.apiProxy.GetActivitiesRemote("", ([response], err) => {
+            this.runningActivitiesQuery = false;
+            this.activities = response;
             global.log('ACTIVITIES HAMSTER: ', this.activities);
-            return this.activities;
-        };
-        this.activities = result;
-        return result;
+        });
     }
 
     /**
