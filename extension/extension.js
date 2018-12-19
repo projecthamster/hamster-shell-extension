@@ -174,7 +174,7 @@ function Controller(extensionMeta) {
                 windowsProxy_vanished_callback.bind(this));
 
             this.apiProxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
-            this.activities = this.refreshActivities();
+            this.refreshActivities();
 
             Main.panel.menuManager.addMenu(this.panelWidget.menu);
             Main.wm.addKeybinding("show-hamster-dropdown",
@@ -218,15 +218,11 @@ function Controller(extensionMeta) {
                 controller.apiProxy.GetActivitiesRemote("", Lang.bind(this, function([response], err) {
                   controller.runningActivitiesQuery = false;
                   controller.activities = response;
+                  global.log('ACTIVITIES HAMSTER: ', controller.activities);
                 }));
-
-                global.log('ACTIVITIES HAMSTER: ', controller.activities);
-                return controller.activities;
             }
 
-            let result = getActivities(this);
-            this.activities = result;
-            return result;
+            getActivities(this);
         },
 
         /**
