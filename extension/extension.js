@@ -192,8 +192,6 @@ class Controller {
         global.log('Shutting down hamster-shell-extension.');
         this._removeWidget(this.placement);
         Main.panel.menuManager.removeMenu(this.panelWidget.menu);
-        GLib.source_remove(this.panelWidget.timeout);
-        this.panelWidget.actor.destroy();
         this.panelWidget.destroy();
         this.panelWidget = null;
         this.apiProxy = null;
