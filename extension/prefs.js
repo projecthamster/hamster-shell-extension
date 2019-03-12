@@ -97,6 +97,32 @@ const HamsterSettingsWidget = new GObject.Class({
 
 
         label = new Gtk.Label({margin_top: 20});
+        label.set_markup("<b>Hours per day</b>");
+        label.set_alignment(0, 0.5);
+        this.add(label);
+
+        vbox = new Gtk.VBox({margin: 10});
+        this.add(vbox);
+        let spin = Gtk.SpinButton.new_with_range(0.0, 24.0, 0.25);
+        spin.set_digits(2);
+        vbox.add(spin);
+        this._settings.bind('hours-per-day', spin, 'value', Gio.SettingsBindFlags.DEFAULT);
+
+
+        label = new Gtk.Label({margin_top: 20});
+        label.set_markup("<b>Days per week</b>");
+        label.set_alignment(0, 0.5);
+        this.add(label);
+
+
+        vbox = new Gtk.VBox({margin: 10});
+        this.add(vbox);
+        spin = Gtk.SpinButton.new_with_range(0.0, 7.0, 0.5);
+        vbox.add(spin);
+        this._settings.bind('days-per-week', spin, 'value', Gio.SettingsBindFlags.DEFAULT);
+
+
+        label = new Gtk.Label({margin_top: 20});
         label.set_markup("<b>Global hotkey</b>");
         label.set_alignment(0, 0.5);
         this.add(label);

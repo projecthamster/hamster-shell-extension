@@ -13,6 +13,16 @@
             <description>Sets the panel appearance. 0 - label, 1 - icon, 2 - label and icon.</description>
         </key>
 
+        <key name="hours-per-day" type="d">
+            <default>8.0</default>
+            <summary>Hours to work in a day.</summary>
+        </key>
+
+        <key name="days-per-week" type="d">
+            <default>5</default>
+            <summary>Days to work in a week.</summary>
+        </key>
+
         <key type="as" name="show-hamster-dropdown">
             <default><![CDATA[['<Super>h']]]></default>
             <summary>Global key combination to show the drop-down.</summary>
