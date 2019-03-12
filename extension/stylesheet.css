@@ -72,3 +72,8 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
     spacing: 5px;
     color: orange;
 }
+
+.panel-box-weekdone {
+    spacing: 5px;
+    color: green;
+}
