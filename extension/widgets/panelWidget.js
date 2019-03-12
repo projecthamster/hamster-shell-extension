@@ -225,6 +225,29 @@ var PanelWidget = new Lang.Class({
         this.setWeekTimeDone(totalWeek);
     },
 
+    _refreshExpectedWeekStatus: function([response], err) {
+        let facts = [];
+
+        if (err) {
+            log(err);
+        } else if (response.length > 0) {
+            facts = Stuff.fromDbusFacts(response);
+        }
+
+        let currentWeek = 0;
+        for (var fact of facts) {
+            currentWeek += fact.delta;
+        }
+
+        let weekOfDay = new Date().getDay();
+        // Set Sunday as 7
+        if (weekOfDay == 0) {
+            weekOfDay = 7;
+        }
+
+        this.isTimeDone(weekOfDay * HOURS_PER_DAY * 60 * 60, currentWeek, 'panel-box-daydoneweeknot');
+    },
+
     /**
      * Get begin of current week.
      */
@@ -243,6 +266,15 @@ var PanelWidget = new Lang.Class({
         let now = new Date();
         let last = now.getDate() + 6 - ((now.getDay() - 1) % 7);
         now.setUTCDate(last);
+        now.setUTCHours(23, 59, 59, 0);
+        return Math.floor(now.getTime() / 1000);
+    },
+
+    /**
+     * Get end of current day.
+     */
+    _endOfToday: function() {
+        let now = new Date();
         now.setUTCHours(23, 59, 59, 0);
         return Math.floor(now.getTime() / 1000);
     },
@@ -280,6 +312,12 @@ var PanelWidget = new Lang.Class({
      */
     setDayTimeDone: function(totalTime) {
         this.isTimeDone(totalTime, HOURS_PER_DAY * 60 * 60, 'panel-box-daydone');
+        if (totalTime >= HOURS_PER_DAY * 60 * 60) {
+            this._controller.apiProxy.GetFactsRemote(this._startOfWeek(),
+                                                     this._endOfToday(),
+                                                     "",
+                                                     Lang.bind(this, this._refreshExpectedWeekStatus));
+        }
     },
 
     /**
