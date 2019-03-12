@@ -61,6 +61,26 @@ var TodaysFactsWidget = new Lang.Class({
     populateFactsWidget: function(facts, ongoingFact) {
 
         /**
+         * Get total spend time on day
+         */
+        function getTotalDay(facts) {
+            let byCategory = {};
+            let categories = [];
+            for (let fact of facts) {
+                byCategory[fact.category] = (byCategory[fact.category] || 0) + fact.delta;
+                if (categories.indexOf(fact.category) == -1)
+                    categories.push(fact.category);
+            }
+
+            let totalDay = 0;
+            for (let category of categories) {
+                totalDay += byCategory[category];
+            }
+
+            return totalDay;
+        }
+
+        /**
          * Construct an individual row within the widget - representing a single fact.
          */
         function constructRow(fact, ongoingFact, controller, menu) {
@@ -181,6 +201,7 @@ var TodaysFactsWidget = new Lang.Class({
             }
             rowCount += 1;
         }
+        this._panelWidget.setDayTimeDone(getTotalDay(facts));
     },
 
     /**
