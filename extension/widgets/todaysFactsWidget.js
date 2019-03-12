@@ -28,6 +28,7 @@ const GLib = imports.gi.GLib;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
+const Convenience = Me.imports.convenience;
 
 
 /**
@@ -201,7 +202,10 @@ var TodaysFactsWidget = new Lang.Class({
             }
             rowCount += 1;
         }
-        this._panelWidget.setDayTimeDone(getTotalDay(facts));
+	let settings = Convenience.getSettings();
+	if (settings.get_boolean("enable-work-done")) {
+            this._panelWidget.setDayTimeDone(getTotalDay(facts));
+	}
     },
 
     /**

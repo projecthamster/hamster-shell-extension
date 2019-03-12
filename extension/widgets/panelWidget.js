@@ -198,10 +198,14 @@ var PanelWidget = new Lang.Class({
     // Once this is done, the actual code from the callback should follow
     // here.
     this._controller.apiProxy.GetTodaysFactsRemote(Lang.bind(this, _refresh));
-    this._controller.apiProxy.GetFactsRemote(this._startOfWeek(),
-                                             this._endOfWeek(),
-                                             "",
-                                             Lang.bind(this, this._refreshWeekStatus));
+
+    if (this._settings.get_boolean("enable-work-done")) {
+        this._controller.apiProxy.GetFactsRemote(this._startOfWeek(),
+                                                 this._endOfWeek(),
+                                                 "",
+                                                 Lang.bind(this, this._refreshWeekStatus));
+    }
+
     return GLib.SOURCE_CONTINUE;
     },
 
