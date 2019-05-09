@@ -149,6 +149,7 @@ class Controller {
             }
 
             function apiProxy_vanished_callback() {
+		/* jshint validthis: true */
                 global.log(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
                 Main.notify(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
                 this.disable();
@@ -158,6 +159,7 @@ class Controller {
             }
 
             function windowsProxy_vanished_callback() {
+		/* jshint validthis: true */
                 global.log(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
                 Main.notify(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
                 this.disable();
