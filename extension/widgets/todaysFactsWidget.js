@@ -25,6 +25,7 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
@@ -33,12 +34,10 @@ const Stuff = Me.imports.stuff;
 /**
  * A widget that lists all facts for *today*.
  */
-var TodaysFactsWidget = new Lang.Class({
-    Name: 'TodaysFactsWidget',
-    Extends: St.ScrollView,
-
-    _init: function(controller, panelWidget) {
-        this.parent({style_class: 'hamster-scrollbox'});
+var TodaysFactsWidget = GObject.registerClass(
+class TodaysFactsWidget extends St.ScrollView {
+    _init(controller, panelWidget) {
+        super._init({style_class: 'hamster-scrollbox'});
         this._controller = controller;
         this._panelWidget = panelWidget;
 
@@ -53,12 +52,12 @@ var TodaysFactsWidget = new Lang.Class({
         this.factsBox.add(this.facts_widget);
         this.add_actor(this.factsBox);
 
-    },
+    }
 
     /**
      * Populate the widget with rows representing the passed facts.
      */
-    populateFactsWidget: function(facts, ongoingFact) {
+    populateFactsWidget(facts, ongoingFact) {
 
         /**
          * Construct an individual row within the widget - representing a single fact.
@@ -181,13 +180,13 @@ var TodaysFactsWidget = new Lang.Class({
             }
             rowCount += 1;
         }
-    },
+    }
 
     /**
      * Clear the widget and populate it anew.
      */
-    refresh: function(facts, ongoingFact) {
+    refresh(facts, ongoingFact) {
         this.facts_widget.remove_all_children();
         this.populateFactsWidget(facts, ongoingFact);
-    },
+    }
 });

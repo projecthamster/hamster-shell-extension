@@ -31,13 +31,13 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const HamsterSettingsWidget = new GObject.Class({
-    Name: 'ProjectHamster.Prefs.HamsterSettingsWidget',
-    GTypeName: 'HamsterSettingsWidget',
-    Extends: Gtk.VBox,
+const HamsterSettingsWidget = GObject.registerClass(
+class HamsterSettingsWidget extends Gtk.VBox {
+    _init(params) {
+        super._init(params);
 
-    _init : function(params) {
-        this.parent(params);
+        this.name = 'ProjectHamster.Prefs.HamsterSettingsWidget';
+
         this.margin = 10;
 
         this._settings = ExtensionUtils.getSettings();
@@ -114,9 +114,9 @@ const HamsterSettingsWidget = new GObject.Class({
         let version_text = ExtensionUtils.getCurrentExtension().metadata.version;
         let version_label_text = "You are running hamster-shell-extension version " + version_text;
         vbox.add(new Gtk.Label({label: version_label_text, margin_top: 10}));
-    },
+    }
 
-    _onPlacementChange: function(widget) {
+    _onPlacementChange(widget) {
         let [success, iter] = widget.get_active_iter();
         if (!success)
             return;
@@ -127,9 +127,9 @@ const HamsterSettingsWidget = new GObject.Class({
             return;
 
         this._settings.set_int("panel-placement", newPlacement);
-    },
+    }
 
-    _onAppearanceChange: function(widget) {
+    _onAppearanceChange(widget) {
         let [success, iter] = widget.get_active_iter();
         if (!success)
             return;
@@ -140,9 +140,9 @@ const HamsterSettingsWidget = new GObject.Class({
             return;
 
         this._settings.set_int("panel-appearance", newAppearance);
-    },
+    }
 
-    _onHotkeyChange: function(widget, bananas) {
+    _onHotkeyChange(widget, bananas) {
         //global.log(widget, bananas);
         let hotkey = widget.get_text();
         let [key, mods] = Gtk.accelerator_parse(hotkey);

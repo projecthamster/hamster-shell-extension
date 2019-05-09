@@ -23,6 +23,7 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 
 const Lang = imports.lang;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
 const PanelMenu = imports.ui.panelMenu;
 const St = imports.gi.St;
@@ -55,14 +56,12 @@ const Stuff = Me.imports.stuff;
  *
  * @class
  */
-var PanelWidget = new Lang.Class({
-    Name: 'PanelWidget',
-    Extends: PanelMenu.Button,
-
-    _init: function(controller) {
+var PanelWidget = GObject.registerClass(
+class PanelWidget extends PanelMenu.Button {
+    _init(controller) {
         // [FIXME]
         // What is the parameter?
-        this.parent(0.0);
+        super._init(0.0);
 
         this._controller = controller;
         // [FIXME]
@@ -140,7 +139,7 @@ var PanelWidget = new Lang.Class({
         this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh));
         this.connect('destroy', Lang.bind(this, this._disableRefreshTimer));
         this.refresh();
-    },
+    }
 
     /**
      * This is our main 'update/refresh' method.
@@ -152,7 +151,7 @@ var PanelWidget = new Lang.Class({
      * required facts etc and pass them to the relevant sub-widget's
      * refresh methods.
      */
-    refresh: function() {
+    refresh() {
     /**
      * We need to wrap our actual refresh code in this callback for now as
      * I am having major difficulties using a syncronous dbus method call to
@@ -197,21 +196,21 @@ var PanelWidget = new Lang.Class({
     // here.
     this._controller.apiProxy.GetTodaysFactsRemote(Lang.bind(this, _refresh));
     return GLib.SOURCE_CONTINUE;
-    },
+    }
 
     /**
      * Open 'popup menu' containing the bulk of the extension widgets.
      */
-    show: function() {
+    show() {
         this.menu.open();
-    },
+    }
 
     /**
      * Close/Open the 'popup menu' depending on previous state.
      */
-    toggle: function() {
+    toggle() {
         this.menu.toggle();
-    },
+    }
 
 
     /**
@@ -220,7 +219,7 @@ var PanelWidget = new Lang.Class({
      * Depending on the 'display mode' set in the extensions settings this has
      * slightly different consequences.
      */
-    updatePanelDisplay: function(fact) {
+    updatePanelDisplay(fact) {
         /**
          * Return a text string representing the passed fact suitable for the panelLabel.
          *
@@ -262,7 +261,7 @@ var PanelWidget = new Lang.Class({
                 this.panelLabel.show();
                 break;
         }
-    },
+    }
 
     /**
      * Disable the refresh timer.
@@ -272,9 +271,9 @@ var PanelWidget = new Lang.Class({
      * This method is actually a callback triggered on the destroy
      * signal.
      */
-    _disableRefreshTimer: function() {
+    _disableRefreshTimer() {
         GLib.source_remove(this.timeout);
-    },
+    }
 
     /**
      * Callback to be triggered when an *ongoing fact* is stopped.
@@ -283,7 +282,7 @@ var PanelWidget = new Lang.Class({
      * This will get the current time and issue the ``StopTracking``
      * method call to the dbus interface.
      */
-    _onStopTracking: function() {
+    _onStopTracking() {
         let now = new Date();
         let epochSeconds = Date.UTC(now.getFullYear(),
                                     now.getMonth(),
@@ -293,25 +292,25 @@ var PanelWidget = new Lang.Class({
                                     now.getSeconds());
         epochSeconds = Math.floor(epochSeconds / 1000);
         this._controller.apiProxy.StopTrackingRemote(GLib.Variant.new('i', [epochSeconds]));
-    },
+    }
 
     /**
      * Callback that triggers opening of the *Overview*-Window.
      *
      * @callback panelWidget~_onOpenOverview
      */
-    _onOpenOverview: function() {
+    _onOpenOverview() {
         this._controller.windowsProxy.overviewSync();
-    },
+    }
 
     /**
      * Callback that triggers opening of the *Add Fact*-Window.
      *
      * @callback panelWidget~_onOpenAddFact
      */
-    _onOpenAddFact: function() {
+    _onOpenAddFact() {
         this._controller.windowsProxy.editSync(GLib.Variant.new('i', [0]));
-    },
+    }
 
     /**
      * Callback that triggers opening of the *Add Fact*-Window.
@@ -320,7 +319,7 @@ var PanelWidget = new Lang.Class({
      *
      * Note: This will open the GUI settings, not the extension settings!
      */
-    _onOpenSettings: function() {
+    _onOpenSettings() {
         this._controller.windowsProxy.preferencesSync();
-    },
+    }
 });
