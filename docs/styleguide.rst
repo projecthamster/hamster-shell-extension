@@ -31,7 +31,7 @@ Code-style
 
 Documentation
 ---------------
-- We use `JSDoc syntax and blog tags <http://usejsdoc.org>`_ to document all
+- We use JSDoc syntax and blog tags to document all
   our code.
 - Headings should capitalise each word.
 - Please use ``-`` for unordered lists and ``#.`` for ordered lists unless you
