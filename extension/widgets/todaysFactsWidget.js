@@ -66,6 +66,7 @@ class TodaysFactsWidget extends St.ScrollView {
             /**
              * Check if two facts have the same activity.
              */
+	    /* jshint validthis: true */
             function checkSameActivity(fact, otherFact) {
                 // Check if two facts have the same activity.
                 let result = true;
@@ -112,6 +113,7 @@ class TodaysFactsWidget extends St.ScrollView {
                     factStr += " #" + fact.tags.join(", #");
                 }
 
+		/* jshint validthis: true */
                 controller.apiProxy.AddFactRemote(factStr, 0, 0, false, Lang.bind(this, function(response, err) {
                     // not interested in the new id - this shuts up the warning
                 }));

@@ -165,6 +165,7 @@ class PanelWidget extends PanelMenu.Button {
          *
          * Returns ``null`` if there is no *ongoing fact*.
          */
+        /* jshint validthis: true */
 		function getOngoingFact(facts) {
 		    let result = null;
 		    if (facts.length) {
