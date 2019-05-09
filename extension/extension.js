@@ -212,7 +212,7 @@ class Controller {
         this.apiProxy.GetActivitiesRemote("", function([response], err) {
             this.runningActivitiesQuery = false;
             this.activities = response;
-            global.log('ACTIVITIES HAMSTER: ', this.activities);
+            // global.log('ACTIVITIES HAMSTER: ', this.activities);
         }.bind(this));
     }
 
