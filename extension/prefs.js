@@ -25,7 +25,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -64,7 +63,7 @@ class HamsterSettingsWidget extends Gtk.VBox {
         let placementComboRenderer = new Gtk.CellRendererText();
         placementCombo.pack_start(placementComboRenderer, true);
         placementCombo.add_attribute(placementComboRenderer, 'text', 0);
-        placementCombo.connect('changed', Lang.bind(this, this._onPlacementChange));
+        placementCombo.connect('changed', this._onPlacementChange.bind(this));
         placementCombo.set_active(this._settings.get_int("panel-placement"));
 
         vbox.add(placementCombo);
@@ -89,7 +88,7 @@ class HamsterSettingsWidget extends Gtk.VBox {
         let appearanceComboRenderer = new Gtk.CellRendererText();
         appearanceCombo.pack_start(appearanceComboRenderer, true);
         appearanceCombo.add_attribute(appearanceComboRenderer, 'text', 0);
-        appearanceCombo.connect('changed', Lang.bind(this, this._onAppearanceChange));
+        appearanceCombo.connect('changed', this._onAppearanceChange.bind(this));
         appearanceCombo.set_active(this._settings.get_int("panel-appearance"));
 
         vbox.add(appearanceCombo);
@@ -106,7 +105,7 @@ class HamsterSettingsWidget extends Gtk.VBox {
                                    margin_top: 5,
                                    text: this._settings.get_strv("show-hamster-dropdown")[0]});
         vbox.add(entry);
-        entry.connect('changed', Lang.bind(this, this._onHotkeyChange));
+        entry.connect('changed', this._onHotkeyChange.bind(this));
 
         vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
                                 margin_top: 70}));

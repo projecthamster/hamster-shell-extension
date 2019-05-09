@@ -21,7 +21,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
@@ -56,8 +55,8 @@ class OngoingFactEntry extends St.Entry {
         // Seems to be populate by GetActivities.
         this._autocompleteActivities = [];
         this._runningActivitiesQuery = null;
-        this.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
-        this.clutter_text.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
+        this.clutter_text.connect('activate', this._onEntryActivated.bind(this));
+        this.clutter_text.connect('key-release-event', this._onKeyReleaseEvent.bind(this));
     }
 
     /**
@@ -71,9 +70,9 @@ class OngoingFactEntry extends St.Entry {
      */
     _onEntryActivated() {
         let text = this.get_text();
-        this._controller.apiProxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, error) {
+        this._controller.apiProxy.AddFactRemote(text, 0, 0, false, function(response, error) {
             // not interested in the new id - this shuts up the warning
-        }));
+	}.bind(this));
         this.set_text('');
     }
 

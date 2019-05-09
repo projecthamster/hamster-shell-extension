@@ -21,7 +21,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
@@ -70,8 +69,8 @@ class PanelWidget extends PanelMenu.Button {
         this._settings = controller.settings;
         this._windowsProxy = controller.windowsProxy;
 
-        controller.apiProxy.connectSignal('FactsChanged',      Lang.bind(this, this.refresh));
-        controller.apiProxy.connectSignal('TagsChanged',       Lang.bind(this, this.refresh));
+        controller.apiProxy.connectSignal('FactsChanged',      this.refresh.bind(this));
+        controller.apiProxy.connectSignal('TagsChanged',       this.refresh.bind(this));
 
 
         // Setup the main layout container for the part of the extension
@@ -103,41 +102,41 @@ class PanelWidget extends PanelMenu.Button {
 
         // overview
         let overviewMenuItem = new PopupMenu.PopupMenuItem(_("Show Overview"));
-        overviewMenuItem.connect('activate', Lang.bind(this, this._onOpenOverview));
+        overviewMenuItem.connect('activate', this._onOpenOverview.bind(this));
         this.menu.addMenuItem(overviewMenuItem);
 
         // [FIXME]
         // This should only be shown if we have an 'ongoing fact'.
         // stop tracking
         let stopTrackinMenuItem = new PopupMenu.PopupMenuItem(_("Stop Tracking"));
-        stopTrackinMenuItem.connect('activate', Lang.bind(this, this._onStopTracking));
+        stopTrackinMenuItem.connect('activate', this._onStopTracking.bind(this));
         this.menu.addMenuItem(stopTrackinMenuItem);
 
         // add new task
         let addNewFactMenuItem = new PopupMenu.PopupMenuItem(_("Add Earlier Activity"));
-        addNewFactMenuItem.connect('activate', Lang.bind(this, this._onOpenAddFact));
+        addNewFactMenuItem.connect('activate', this._onOpenAddFact.bind(this));
         this.menu.addMenuItem(addNewFactMenuItem);
 
         // settings
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         let SettingMenuItem = new PopupMenu.PopupMenuItem(_("Tracking Settings"));
-        SettingMenuItem.connect('activate', Lang.bind(this, this._onOpenSettings));
+        SettingMenuItem.connect('activate', this._onOpenSettings.bind(this));
         this.menu.addMenuItem(SettingMenuItem);
 
         // focus menu upon display
-        this.menu.connect('open-state-changed', Lang.bind(this,
+        this.menu.connect('open-state-changed',
             function(menu, open) {
                 if (open) {
                     this.factsBox.focus();
                 } else {
                     this.factsBox.unfocus();
                 }
-            }
-        ));
+            }.bind(this)
+        );
 
         // refresh the widget every 60 secs
-        this.timeout = GLib.timeout_add_seconds(0, 60, Lang.bind(this, this.refresh));
-        this.connect('destroy', Lang.bind(this, this._disableRefreshTimer));
+        this.timeout = GLib.timeout_add_seconds(0, 60, this.refresh.bind(this));
+        this.connect('destroy', this._disableRefreshTimer.bind(this));
         this.refresh();
     }
 
@@ -195,7 +194,7 @@ class PanelWidget extends PanelMenu.Button {
     // This should really be a synchronous call fetching the facts.
     // Once this is done, the actual code from the callback should follow
     // here.
-    this._controller.apiProxy.GetTodaysFactsRemote(Lang.bind(this, _refresh));
+    this._controller.apiProxy.GetTodaysFactsRemote(_refresh.bind(this));
     return GLib.SOURCE_CONTINUE;
     }
 

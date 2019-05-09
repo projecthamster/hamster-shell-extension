@@ -21,7 +21,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
@@ -114,9 +113,9 @@ class TodaysFactsWidget extends St.ScrollView {
                 }
 
 		/* jshint validthis: true */
-                controller.apiProxy.AddFactRemote(factStr, 0, 0, false, Lang.bind(this, function(response, err) {
+                controller.apiProxy.AddFactRemote(factStr, 0, 0, false, function(response, err) {
                     // not interested in the new id - this shuts up the warning
-                }));
+                }.bind(this));
                 menu.close();
             }
 
@@ -148,7 +147,7 @@ class TodaysFactsWidget extends St.ScrollView {
             editButton.set_child(editIcon);
             // [FIXME]
             // Wouldn't it be cleaner to pass the fact as data payload to the callback binding?
-            editButton.connect('clicked', Lang.bind(this, onOpenEditDialog));
+            editButton.connect('clicked', onOpenEditDialog.bind(this));
 
             // Construct a 'start previous fact's activity as new' button.
             // This is only done if the *ongoing fact* activity is actually
@@ -160,7 +159,7 @@ class TodaysFactsWidget extends St.ScrollView {
                 continueButton = new St.Button({style_class: 'clickable cell-button'});
                 continueButton.set_child(continueIcon);
                 continueButton.fact = fact;
-                continueButton.connect('clicked', Lang.bind(this, onContinueButton));
+                continueButton.connect('clicked', onContinueButton.bind(this));
             }
 
             //The order of the array will be the order in which they will be added to the row.
@@ -176,7 +175,7 @@ class TodaysFactsWidget extends St.ScrollView {
         let rowCount = 0;
         let layout = this.facts_widget.layout_manager;
         for (let fact of facts) {
-            let rowComponents = Lang.bind(this, constructRow)(fact, ongoingFact, this._controller, this._panelWidget.menu);
+            let rowComponents = constructRow.bind(this)(fact, ongoingFact, this._controller, this._panelWidget.menu);
             for (let component of rowComponents) {
                 layout.pack(component, rowComponents.indexOf(component), rowCount);
             }

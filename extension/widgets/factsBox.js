@@ -21,7 +21,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
 const St = imports.gi.St;
 const PopupMenu = imports.ui.popupMenu;
 const Clutter = imports.gi.Clutter;
@@ -62,7 +61,7 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         main_box.add(_ongoingFactLabel);
 
         this.ongoingFactEntry = new OngoingFactEntry(this._controller);
-        //this.ongoingFactEntry.clutter_text.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
+        //this.ongoingFactEntry.clutter_text.connect('key-release-event', this._onKeyReleaseEvent.bind(this));
         main_box.add(this.ongoingFactEntry);
 
         let fact_list_label = new St.Label({style_class: 'hamster-box-label'});
@@ -95,10 +94,10 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
      * Focus the fact entry and make sure todaysFactsWidget are scrolled to the bottom.
      */
     focus() {
-        Mainloop.timeout_add(20, Lang.bind(this, function() {
+        Mainloop.timeout_add(20, function() {
             this._scrollAdjustment.value = this._scrollAdjustment.upper;
             global.stage.set_key_focus(this.ongoingFactEntry);
-        }));
+        }.bind(this));
     }
 
     /**

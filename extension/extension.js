@@ -120,16 +120,16 @@ function Controller(extensionMeta) {
         enable: function() {
             this.shouldEnable = true;
             new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster',
-                Lang.bind(this, function(proxy) {
+                function(proxy) {
                     this.apiProxy = proxy;
                     this.deferred_enable();
-                }));
+                }.bind(this));
             new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
                 "/org/gnome/Hamster/WindowServer",
-                Lang.bind(this, function(proxy) {
+                function(proxy) {
                     this.windowsProxy = proxy;
                     this.deferred_enable();
-                }));
+                }.bind(this));
         },
 
         deferred_enable: function() {
@@ -172,7 +172,7 @@ function Controller(extensionMeta) {
                 Gio.BusNameWatcherFlags.NONE, windowsProxy_appeared_callback.bind(this),
                 windowsProxy_vanished_callback.bind(this));
 
-            this.apiProxy.connectSignal('ActivitiesChanged', Lang.bind(this, this.refreshActivities));
+            this.apiProxy.connectSignal('ActivitiesChanged', this.refreshActivities.bind(this));
             this.refreshActivities();
 
             Main.panel.menuManager.addMenu(this.panelWidget.menu);
@@ -181,7 +181,7 @@ function Controller(extensionMeta) {
                 Meta.KeyBindingFlags.NONE,
                 // Since Gnome 3.16, Shell.KeyBindingMode is replaced by Shell.ActionMode
                 Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
-                Lang.bind(this.panelWidget, this.panelWidget.toggle)
+				  this.panelWidget.toggle.bind(this.panelWidget)
             );
         },
 
@@ -212,11 +212,11 @@ function Controller(extensionMeta) {
                 }
 
                 this.runningActivitiesQuery = true;
-                controller.apiProxy.GetActivitiesRemote("", Lang.bind(this, function([response], err) {
+                controller.apiProxy.GetActivitiesRemote("", function([response], err) {
                   controller.runningActivitiesQuery = false;
                   controller.activities = response;
                   global.log('ACTIVITIES HAMSTER: ', controller.activities);
-                }));
+                }.bind(this));
             }
 
             getActivities(this);
