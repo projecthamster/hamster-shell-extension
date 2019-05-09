@@ -176,7 +176,7 @@ class TodaysFactsWidget extends St.ScrollView {
         let rowCount = 0;
         let layout = this.facts_widget.layout_manager;
         for (let fact of facts) {
-            let rowComponents = constructRow(fact, ongoingFact, this._controller, this._panelWidget.menu);
+            let rowComponents = Lang.bind(this, constructRow)(fact, ongoingFact, this._controller, this._panelWidget.menu);
             for (let component of rowComponents) {
                 layout.pack(component, rowComponents.indexOf(component), rowCount);
             }
