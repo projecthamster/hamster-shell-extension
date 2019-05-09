@@ -55,10 +55,7 @@ clean-test-docs:
 $(BUILDDIR):
 	mkdir -p $@
 
-$(BUILDDIR)/convenience.js:	$(BUILDDIR)
-	wget https://gitlab.gnome.org/GNOME/gnome-shell-extensions/raw/gnome-3-30/lib/convenience.js -O $@
-
-collect:	$(BUILDDIR)/convenience.js
+collect:
 	cp -R extension/* $(BUILDDIR)
 	cp -R data/* $(BUILDDIR)
 

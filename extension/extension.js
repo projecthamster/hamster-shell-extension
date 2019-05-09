@@ -33,7 +33,6 @@ const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
 const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
@@ -139,7 +138,7 @@ function Controller(extensionMeta) {
             if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
                 return;
 
-            this.settings = Convenience.getSettings();
+            this.settings = ExtensionUtils.getSettings();
             this.panelWidget = new PanelWidget(this);
             this.placement = this.settings.get_int("panel-placement");
 
@@ -274,6 +273,6 @@ function Controller(extensionMeta) {
 
 
 function init(extensionMeta) {
-    Convenience.initTranslations();
+    ExtensionUtils.initTranslations();
     return new Controller(extensionMeta);
 }

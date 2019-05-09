@@ -30,7 +30,6 @@ const Lang = imports.lang;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
 
 const HamsterSettingsWidget = new GObject.Class({
     Name: 'ProjectHamster.Prefs.HamsterSettingsWidget',
@@ -41,7 +40,7 @@ const HamsterSettingsWidget = new GObject.Class({
         this.parent(params);
         this.margin = 10;
 
-        this._settings = Convenience.getSettings();
+        this._settings = ExtensionUtils.getSettings();
 
         let vbox, label;
 
