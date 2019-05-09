@@ -22,7 +22,6 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 
 
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
 const Main = imports.ui.main;
@@ -93,19 +92,20 @@ let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
  *
  * @class
  */
-function Controller(extensionMeta) {
+class Controller {
+    constructor(extensionMeta) {
     let dateMenu = Main.panel.statusArea.dateMenu;
 
-    return {
-        extensionMeta: extensionMeta,
-        panelWidget: null,
-        settings: null,
-        placement: 0,
-        apiProxy: null,
-        windowsProxy: null,
+        this.extensionMeta = extensionMeta;
+        this.panelWidget = null;
+        this.settings = null;
+        this.placement = 0;
+        this.apiProxy = null;
+        this.windowsProxy = null;
         // ``shouldEnable`` indicates if the 'magic' enable function has been called or not.
         // for details please see: https://github.com/projecthamster/hamster-shell-extension/pull/239
-        shouldEnable: false,
+        this.shouldEnable = false;
+    }
 
         /**
          * 'Magic' method, called upon extension launch.
@@ -117,7 +117,7 @@ function Controller(extensionMeta) {
          *  We only set up our dbus proxies here. In order to be able to do so asynchronously all
          *  the actual startup code is refered to ``deferred_enable``.
          */
-        enable: function() {
+	enable() {
             this.shouldEnable = true;
             new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster',
                 function(proxy) {
@@ -130,9 +130,9 @@ function Controller(extensionMeta) {
                     this.windowsProxy = proxy;
                     this.deferred_enable();
                 }.bind(this));
-        },
+        }
 
-        deferred_enable: function() {
+        deferred_enable() {
             // Make sure ``enable`` is 'finished' and ``disable`` has not been
             // called in between.
             if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
@@ -183,9 +183,9 @@ function Controller(extensionMeta) {
                 Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
 				  this.panelWidget.toggle.bind(this.panelWidget)
             );
-        },
+        }
 
-        disable: function() {
+        disable() {
             this.shouldEnable = false;
             Main.wm.removeKeybinding("show-hamster-dropdown");
 
@@ -196,37 +196,29 @@ function Controller(extensionMeta) {
             this.panelWidget = null;
             this.apiProxy = null;
             this.windowsProxy = null;
-        },
+        }
 
         /**
          * Build a new cache of all activities present in the backend.
          */
-        refreshActivities: function() {
-            /**
-             * Return an Array of [Activity.name, Activity.category.name] Arrays.
-             *
-             */
-            function getActivities(controller) {
-                if (controller.runningActivitiesQuery) {
-                    return(controller.activities);
+        refreshActivities() {
+                if (this.runningActivitiesQuery) {
+                    return(this.activities);
                 }
 
                 this.runningActivitiesQuery = true;
-                controller.apiProxy.GetActivitiesRemote("", function([response], err) {
-                  controller.runningActivitiesQuery = false;
-                  controller.activities = response;
-                  global.log('ACTIVITIES HAMSTER: ', controller.activities);
+                this.apiProxy.GetActivitiesRemote("", function([response], err) {
+                  this.runningActivitiesQuery = false;
+                  this.activities = response;
+                  global.log('ACTIVITIES HAMSTER: ', this.activities);
                 }.bind(this));
-            }
-
-            getActivities(this);
-        },
+        }
 
         /**
          * Place the actual extension wi
          * get in the right place according to settings.
          */
-        _placeWidget: function(placement, panelWidget) {
+        _placeWidget(placement, panelWidget) {
             if (placement == 1) {
                 // 'Replace calendar'
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 0, "center");
@@ -246,9 +238,9 @@ function Controller(extensionMeta) {
                 // 'Default'
                 Main.panel.addToStatusArea("hamster", this.panelWidget, 0, "right");
             }
-        },
+        }
 
-        _removeWidget: function(placement) {
+        _removeWidget(placement) {
             if (placement == 1) {
                 // We replaced the calendar
                 Main.panel._rightBox.remove_actor(dateMenu.container);
@@ -267,8 +259,7 @@ function Controller(extensionMeta) {
             } else {
                 Main.panel._rightBox.remove_actor(this.panelWidget.container);
             }
-        },
-    };
+        }
 }
 
 
