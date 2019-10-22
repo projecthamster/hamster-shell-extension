@@ -43,10 +43,10 @@ const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget
  * well as todays facts.
  * @class
  */
-var FactsBox =
+const FactsBox = GObject.registerClass(
 class FactsBox extends PopupMenu.PopupBaseMenuItem {
-    constructor(controller, panelWidget) {
-        super({reactive: false});
+    _init(controller, panelWidget) {
+        super._init({reactive: false});
 
         this._controller = controller;
 
@@ -106,4 +106,4 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
     unfocus() {
         global.stage.set_key_focus(null);
     }
-};
+});
