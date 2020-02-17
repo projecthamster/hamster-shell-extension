@@ -76,7 +76,7 @@ dist: compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(DISTDIR);
-	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./*
+	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./* || true
 	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tar.gz *
 	@ls -l dist
 
