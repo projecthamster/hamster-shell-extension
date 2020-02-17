@@ -55,7 +55,7 @@ clean-test-docs:
 $(BUILDDIR):
 	mkdir -p $@
 
-collect:
+collect:	$(BUILDDIR)
 	cp -R extension/* $(BUILDDIR)
 	cp -R data/* $(BUILDDIR)
 
