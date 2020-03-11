@@ -82,3 +82,20 @@ Afterwards, enable the extension and change the preferences using Tweak Tool,
 or on ``https://extensions.gnome.org/local/``. On GNOME 3.36 and later, you
 can also use the GNOME "Extensions" tool.
 
+Changing the extension UUID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to change the "UUID" of the extension from
+``contact@projecthamster.org`` to a name of your choice. If you do this,
+you have to obey the `UUID Guidelines
+<https://wiki.gnome.org/Projects/GnomeShell/Extensions/UUIDGuidelines>`.
+This may become necessary in some cases if there are problems with the
+official UUID on `https://extensions.gnome.org`.
+
+To change the UUID, pass it to ``make dist`` in the instructions above::
+
+    # Build
+    make dist UUID="my_uuid@my.domain"
+
+The rest of the build procedure is like above, except that you have to replace
+``contact@projecthamster.org`` by your new UUID everywhere.
