@@ -78,4 +78,7 @@ Installing directly from file::
     # Unpack build
     tar xfz dist/contact@projecthamster.org.tar.gz -C ~/.local/share/gnome-shell/extensions/contact@projecthamster.org
 
-Afterwards, enable the extension and change the preferences using Tweak Tool, or on ``https://extensions.gnome.org/local/``
+Afterwards, enable the extension and change the preferences using Tweak Tool,
+or on ``https://extensions.gnome.org/local/``. On GNOME 3.36 and later, you
+can also use the GNOME "Extensions" tool.
+
