@@ -45,7 +45,7 @@ class TodaysFactsWidget extends St.ScrollView {
         this.factsBox.set_vertical(true);
         this.facts_widget = new St.Widget({
             style_class: 'hamster-activities',
-            layout_manager: new Clutter.TableLayout(),
+            layout_manager: new Clutter.GridLayout(),
             reactive: true
         });
         this.factsBox.add(this.facts_widget);
@@ -177,7 +177,7 @@ class TodaysFactsWidget extends St.ScrollView {
         for (let fact of facts) {
             let rowComponents = constructRow.bind(this)(fact, ongoingFact, this._controller, this._panelWidget.menu);
             for (let component of rowComponents) {
-                layout.pack(component, rowComponents.indexOf(component), rowCount);
+                layout.attach(component, rowComponents.indexOf(component), rowCount, 1, 1);
             }
             rowCount += 1;
         }
