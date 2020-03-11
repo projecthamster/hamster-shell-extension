@@ -43,7 +43,7 @@ const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget
  * well as todays facts.
  * @class
  */
-const FactsBox = GObject.registerClass(
+var FactsBox = GObject.registerClass(
 class FactsBox extends PopupMenu.PopupBaseMenuItem {
     _init(controller, panelWidget) {
         super._init({reactive: false});
