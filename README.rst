@@ -65,12 +65,17 @@ Build a fresh distribution package::
 
     make dist
 
-This will create a distributable archive.
-You can now use the ``tweaktool`` (at the bottom of the ``extensions`` tab)
-to install and activate the new ``zip`` file located in the ``dist`` directory.
+This will create a distributable archive located in the ``dist/`` folder.
 
-Alternatively you just can unpack the tar archive to ``~/.local/share/gnome-shell/extensions/``.
-As a result, a directory named ``contact@projecthamster.org`` should be there now.
+Installing directly from file::
 
-After that you can enable the extension and change the preferences using Tweak
-Tool, or on ``https://extensions.gnome.org/local/``
+    # Build
+    make dist
+    # Remove any old installation
+    rm -rf ~/.local/share/gnome-shell/extensions/contact@projecthamster.org
+    # Create directory
+    mkdir -p ~/.local/share/gnome-shell/extensions/contact@projecthamster.org
+    # Unpack build
+    tar xfz dist/contact@projecthamster.org.tar.gz -C ~/.local/share/gnome-shell/extensions/contact@projecthamster.org
+
+Afterwards, enable the extension and change the preferences using Tweak Tool, or on ``https://extensions.gnome.org/local/``

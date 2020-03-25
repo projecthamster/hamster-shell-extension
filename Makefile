@@ -52,11 +52,15 @@ clean-docs:
 clean-test-docs:
 	$(MAKE) -C docs clean SPHINX_BUILDDIR=$(SPHINX_TEST_SPHINX_BUILDDIR)
 
-collect:
-	mkdir -p $(BUILDDIR)
+$(BUILDDIR):
+	mkdir -p $@
+
+$(BUILDDIR)/convenience.js:	$(BUILDDIR)
+	wget https://gitlab.gnome.org/GNOME/gnome-shell-extensions/raw/gnome-3-30/lib/convenience.js -O $@
+
+collect:	$(BUILDDIR)/convenience.js
 	cp -R extension/* $(BUILDDIR)
 	cp -R data/* $(BUILDDIR)
-	wget https://gitlab.gnome.org/GNOME/gnome-shell-extensions/raw/master/lib/convenience.js -O $(BUILDDIR)/convenience.js
 
 compile: collect
 	glib-compile-schemas $(BUILDDIR)/schemas
@@ -71,12 +75,12 @@ develop:
 	pip install -U pip setuptools wheel
 	pip install -U -r requirements.pip
 
-dist: clean-build compile
+dist: compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(DISTDIR);
 	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./*
-	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tgz *
+	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tar.gz *
 	@ls -l dist
 
 docs:
