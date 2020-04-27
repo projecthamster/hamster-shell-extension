@@ -102,3 +102,9 @@ test-docs:
 
 test-style:
 	jshint --config .jshint.cfg extension/
+
+.PHONY: install-user
+install-user: dist
+	rm -rf ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
+	mkdir -p ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
+	tar xfz dist/$(UUID).tar.gz -C ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
