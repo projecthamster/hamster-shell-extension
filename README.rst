@@ -30,10 +30,11 @@ hamster`` which should bring up ``hamster-service`` and
 ``hamster-windows-service``.
 
 Install For Production
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 The extension is available on `the central extension repository <https://extensions.gnome.org/extension/425/project-hamster-extension>`_.
 
-Current compatible Gnome shell version: 3.28
+Current compatible Gnome shell version: 3.34. *This version is not compatible
+with Gnome shell 3.32 and earlier.*
 For previous shell versions check `releases <https://github.com/projecthamster/hamster-shell-extension/tags>`_.
 
 Creating a development environment
