@@ -88,7 +88,7 @@ class OngoingFactEntry extends St.Entry {
          * Check if the passed key is on our list of keys to be ignored.
          */
         function checkIfIgnoredKey(key) {
-            let ignoreKeys = [Clutter.BackSpace, Clutter.Delete, Clutter.Escape];
+            let ignoreKeys = [Clutter.KEY_BackSpace, Clutter.KEY_Delete, Clutter.KEY_Escape];
             // Looks like there is realy no ``Array.includes()`` available as
             // of now.
             let result = ignoreKeys.indexOf(key);
