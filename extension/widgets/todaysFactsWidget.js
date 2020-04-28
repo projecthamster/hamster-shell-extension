@@ -21,10 +21,10 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
@@ -33,12 +33,10 @@ const Stuff = Me.imports.stuff;
 /**
  * A widget that lists all facts for *today*.
  */
-var TodaysFactsWidget = new Lang.Class({
-    Name: 'TodaysFactsWidget',
-    Extends: St.ScrollView,
-
-    _init: function(controller, panelWidget) {
-        this.parent({style_class: 'hamster-scrollbox'});
+var TodaysFactsWidget = GObject.registerClass(
+class TodaysFactsWidget extends St.ScrollView {
+    _init(controller, panelWidget) {
+        super._init({style_class: 'hamster-scrollbox'});
         this._controller = controller;
         this._panelWidget = panelWidget;
 
@@ -53,12 +51,12 @@ var TodaysFactsWidget = new Lang.Class({
         this.factsBox.add(this.facts_widget);
         this.add_actor(this.factsBox);
 
-    },
+    }
 
     /**
      * Populate the widget with rows representing the passed facts.
      */
-    populateFactsWidget: function(facts, ongoingFact) {
+    populateFactsWidget(facts, ongoingFact) {
 
         /**
          * Construct an individual row within the widget - representing a single fact.
@@ -67,6 +65,7 @@ var TodaysFactsWidget = new Lang.Class({
             /**
              * Check if two facts have the same activity.
              */
+	    /* jshint validthis: true */
             function checkSameActivity(fact, otherFact) {
                 // Check if two facts have the same activity.
                 let result = true;
@@ -113,9 +112,10 @@ var TodaysFactsWidget = new Lang.Class({
                     factStr += " #" + fact.tags.join(", #");
                 }
 
-                controller.apiProxy.AddFactRemote(factStr, 0, 0, false, Lang.bind(this, function(response, err) {
+		/* jshint validthis: true */
+                controller.apiProxy.AddFactRemote(factStr, 0, 0, false, function(response, err) {
                     // not interested in the new id - this shuts up the warning
-                }));
+                }.bind(this));
                 menu.close();
             }
 
@@ -147,7 +147,7 @@ var TodaysFactsWidget = new Lang.Class({
             editButton.set_child(editIcon);
             // [FIXME]
             // Wouldn't it be cleaner to pass the fact as data payload to the callback binding?
-            editButton.connect('clicked', Lang.bind(this, onOpenEditDialog));
+            editButton.connect('clicked', onOpenEditDialog.bind(this));
 
             // Construct a 'start previous fact's activity as new' button.
             // This is only done if the *ongoing fact* activity is actually
@@ -159,7 +159,7 @@ var TodaysFactsWidget = new Lang.Class({
                 continueButton = new St.Button({style_class: 'clickable cell-button'});
                 continueButton.set_child(continueIcon);
                 continueButton.fact = fact;
-                continueButton.connect('clicked', Lang.bind(this, onContinueButton));
+                continueButton.connect('clicked', onContinueButton.bind(this));
             }
 
             //The order of the array will be the order in which they will be added to the row.
@@ -175,19 +175,19 @@ var TodaysFactsWidget = new Lang.Class({
         let rowCount = 0;
         let layout = this.facts_widget.layout_manager;
         for (let fact of facts) {
-            let rowComponents = constructRow(fact, ongoingFact, this._controller, this._panelWidget.menu);
+            let rowComponents = constructRow.bind(this)(fact, ongoingFact, this._controller, this._panelWidget.menu);
             for (let component of rowComponents) {
                 layout.pack(component, rowComponents.indexOf(component), rowCount);
             }
             rowCount += 1;
         }
-    },
+    }
 
     /**
      * Clear the widget and populate it anew.
      */
-    refresh: function(facts, ongoingFact) {
+    refresh(facts, ongoingFact) {
         this.facts_widget.remove_all_children();
         this.populateFactsWidget(facts, ongoingFact);
-    },
+    }
 });

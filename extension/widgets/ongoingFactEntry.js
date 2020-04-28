@@ -21,7 +21,7 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 
@@ -39,12 +39,10 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
  *
  *
  */
-var OngoingFactEntry = new Lang.Class({
-    Name: 'OngoingFactEntry',
-    Extends: St.Entry,
-
-    _init: function(controller) {
-        this.parent({
+var OngoingFactEntry = GObject.registerClass(
+class OngoingFactEntry extends St.Entry {
+    _init(controller) {
+        super._init({
             name: 'searchEntry',
             can_focus: true,
             track_hover: true,
@@ -57,9 +55,9 @@ var OngoingFactEntry = new Lang.Class({
         // Seems to be populate by GetActivities.
         this._autocompleteActivities = [];
         this._runningActivitiesQuery = null;
-        this.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
-        this.clutter_text.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
-    },
+        this.clutter_text.connect('activate', this._onEntryActivated.bind(this));
+        this.clutter_text.connect('key-release-event', this._onKeyReleaseEvent.bind(this));
+    }
 
     /**
      * Callback for when ``ongoingFactEntry`` gets activated.
@@ -70,13 +68,13 @@ var OngoingFactEntry = new Lang.Class({
      *
      * @callback FactsBox~_onEntryActivated
      */
-    _onEntryActivated: function() {
+    _onEntryActivated() {
         let text = this.get_text();
-        this._controller.apiProxy.AddFactRemote(text, 0, 0, false, Lang.bind(this, function(response, error) {
+        this._controller.apiProxy.AddFactRemote(text, 0, 0, false, function(response, error) {
             // not interested in the new id - this shuts up the warning
-        }));
+	}.bind(this));
         this.set_text('');
-    },
+    }
 
     /**
      * Callback triggered after key release.
@@ -85,7 +83,7 @@ var OngoingFactEntry = new Lang.Class({
      *
      * @callback FactsBox~_onKeyReleaseEvent
      */
-    _onKeyReleaseEvent: function(textItem, evt) {
+    _onKeyReleaseEvent(textItem, evt) {
         /**
          * Check if the passed key is on our list of keys to be ignored.
          */
@@ -185,5 +183,5 @@ var OngoingFactEntry = new Lang.Class({
                 this._prevText = completion.toLowerCase();
             }
         }
-    },
+    }
 });
