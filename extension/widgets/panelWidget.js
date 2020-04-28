@@ -76,8 +76,10 @@ class PanelWidget extends PanelMenu.Button {
         // Setup the main layout container for the part of the extension
         // visible in the panel.
         let panelContainer = new St.BoxLayout({style_class: "panel-box"});
-        this.actor.add_actor(panelContainer);
-        this.actor.add_style_class_name('panel-status-button');
+
+	let _actor = (this instanceof Clutter.Actor ? this : this.actor);
+        _actor.add_actor(panelContainer);
+        _actor.add_style_class_name('panel-status-button');
 
         this.panelLabel = new St.Label({
             text: _("Loading..."),
