@@ -14,5 +14,5 @@
         "3.36"
     ],
     "url": "https://github.com/projecthamster/hamster-shell-extension.git",
-    "uuid": @UUID@,
+    "uuid": @UUID@
 }
