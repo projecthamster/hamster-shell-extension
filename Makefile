@@ -6,6 +6,8 @@ SPHINX_TEST_SPHINX_BUILDDIR = _test_build
 BUILDDIR = build
 # Directory to save a 'ready to deploy extension' archive
 DISTDIR = dist
+# Extension "UUID" to use, default: contact@projecthamster.org
+UUID := contact@projecthamster.org
 
 # Script to lauch a browser in order to open passed path.
 define BROWSER_PYSCRIPT
@@ -40,8 +42,11 @@ help:
 	@echo "						(Requires JSHint)."
 	@echo "   test-docs			to run automated tests on the documentation."
 
-clean: clean-build clean-docs clean-test-docs
+clean: clean-build clean-docs clean-test-docs clean-data
 	rm -f dist/*
+
+clean-data:
+	rm -f data/metadata.json
 
 clean-build:
 	rm -fr build
@@ -55,9 +60,13 @@ clean-test-docs:
 $(BUILDDIR):
 	mkdir -p $@
 
-collect:	$(BUILDDIR)
+data/metadata.json:	data/metadata.json.in
+	sed 's/@UUID@/"$(UUID)"/' $< >$@
+
+collect:	$(BUILDDIR) data/metadata.json
 	cp -R extension/* $(BUILDDIR)
 	cp -R data/* $(BUILDDIR)
+	rm -f $(BUILDDIR)/metadata.json.in
 
 compile: collect
 	glib-compile-schemas $(BUILDDIR)/schemas
@@ -76,8 +85,8 @@ dist: compile
 # We need to do this like this as 'zip' always uses the cwd as archive root.
 # And for the extension to work extension.js etc. need to be at the root.
 	mkdir -p $(DISTDIR);
-	cd $(BUILDDIR); zip -rq ../dist/contact@projecthamster.org.zip ./* || true
-	cd $(BUILDDIR); tar -czf ../dist/contact@projecthamster.org.tar.gz *
+	cd $(BUILDDIR); zip -rq ../dist/$(UUID).zip ./* || true
+	cd $(BUILDDIR); tar -czf ../dist/$(UUID).tar.gz *
 	@ls -l dist
 
 docs:
