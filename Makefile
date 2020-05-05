@@ -4,6 +4,8 @@ SPHINX_TEST_SPHINX_BUILDDIR = _test_build
 
 # Directory to collect all sourc file to in order to build.
 BUILDDIR = build
+# Distination installation directory
+DESTDIR := /usr/local
 # Directory to save a 'ready to deploy extension' archive
 DISTDIR = dist
 # Extension "UUID" to use, default: contact@projecthamster.org
@@ -103,8 +105,12 @@ test-docs:
 test-style:
 	jshint --config .jshint.cfg extension/
 
-.PHONY: install-user
-install-user: dist
-	rm -rf ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
-	mkdir -p ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
-	tar xfz dist/$(UUID).tar.gz -C ${HOME}/.local/share/gnome-shell/extensions/$(UUID)
+.PHONY: install install-user
+install-user: DESTDIR="${HOME}/.local"
+install-user: install
+
+install: dist
+	[ -n "$(DESTDIR)" ]
+	rm -rf $(DESTDIR)/share/gnome-shell/extensions/$(UUID)
+	mkdir -p $(DESTDIR)/share/gnome-shell/extensions/$(UUID)
+	tar xfz dist/$(UUID).tar.gz -C $(DESTDIR)/share/gnome-shell/extensions/$(UUID)
