@@ -69,7 +69,7 @@ Build a fresh distribution package::
 This will create a distributable archive located in the ``dist/`` folder.
 
 
-*Shortcut on ``develop``*
+**Shortcut on** `develop`
 
 If you are using the ``develop`` branch since May 2020, you can run ``make
 install-user`` to install your current working branch in your user environment
