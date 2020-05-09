@@ -68,7 +68,17 @@ Build a fresh distribution package::
 
 This will create a distributable archive located in the ``dist/`` folder.
 
-Installing directly from file::
+
+**Shortcut on** ``develop``
+
+If you are using the ``develop`` branch since May 2020, you can run ``make
+install-user`` to install your current working branch in your user environment
+or ``make install`` for a system-wide installation. The ``DESTDIR`` variable
+can be provided to ``make install`` to adjust the base installation path (it
+defaults to ``DESTDIR=/usr/local``).
+
+Otherwise, on other branches, follow the steps below to manually install the
+distribution archive::
 
     # Build
     make dist
