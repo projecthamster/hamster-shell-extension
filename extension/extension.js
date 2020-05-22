@@ -80,8 +80,17 @@ const WindowsProxyIface = ['',
 
 let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
 
+const ScreenSaverProxyIface = ['',
+  '<node>',
+  '  <interface name="org.gnome.ScreenSaver">',
+  '    <signal name="ActiveChanged">',
+  '      <arg name="new_value" type="b"/>',
+  '    </signal>',
+  '  </interface>',
+  '</node>',
+].join('');
 
-
+let ScreenSaverProxy = Gio.DBusProxy.makeProxyWrapper(ScreenSaverProxyIface);
 
 /**
  * Create the controller instance that handles extension context.
@@ -102,6 +111,7 @@ class Controller {
         this.placement = 0;
         this.apiProxy = null;
         this.windowsProxy = null;
+        this.screenSaverProxy = null;
         // ``shouldEnable`` indicates if the 'magic' enable function has been called or not.
         // for details please see: https://github.com/projecthamster/hamster-shell-extension/pull/239
         this.shouldEnable = false;
@@ -130,12 +140,18 @@ class Controller {
 			     this.windowsProxy = proxy;
 			     this.deferred_enable();
 			 }.bind(this));
+        new ScreenSaverProxy(Gio.DBus.session, "org.gnome.ScreenSaver",
+			 "/org/gnome/ScreenSaver",
+			 function(proxy) {
+			     this.screenSaverProxy = proxy;
+			     this.deferred_enable();
+			 }.bind(this));
     }
 
     deferred_enable() {
         // Make sure ``enable`` is 'finished' and ``disable`` has not been
         // called in between.
-        if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
+        if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy || !this.screenSaverProxy)
             return;
 
         this.settings = ExtensionUtils.getSettings();
@@ -185,6 +201,11 @@ class Controller {
 			      Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
 			      this.panelWidget.toggle.bind(this.panelWidget)
 			     );
+
+	let dbus_screen_saver_watcher = Gio.bus_watch_name(Gio.BusType.SESSION, 'org.gnome.ScreenSaver',
+							   Gio.BusNameWatcherFlags.NONE, apiProxy_appeared_callback.bind(this),
+							   apiProxy_vanished_callback.bind(this));
+        this.screenSaverProxy.connectSignal('ActiveChanged', this.screenSaverUpdate.bind(this));
     }
 
     disable() {
@@ -198,6 +219,7 @@ class Controller {
         this.panelWidget = null;
         this.apiProxy = null;
         this.windowsProxy = null;
+        this.screenSaverProxy = null;
     }
 
     /**
@@ -214,6 +236,30 @@ class Controller {
             this.activities = response;
             // global.log('ACTIVITIES HAMSTER: ', this.activities);
         }.bind(this));
+    }
+
+    /**
+     * Screen saver status has changed
+     */
+    screenSaverUpdate(enabled) {
+        if (enabled) {
+            this.stopTracking();
+        }
+    }
+
+    /**
+     * Stop the current activity as of now
+     */
+    stopTracking() {
+        let now = new Date();
+        let epochSeconds = Date.UTC(now.getFullYear(),
+                                    now.getMonth(),
+                                    now.getDate(),
+                                    now.getHours(),
+                                    now.getMinutes(),
+                                    now.getSeconds());
+        epochSeconds = Math.floor(epochSeconds / 1000);
+        this.apiProxy.StopTrackingRemote(GLib.Variant.new('i', [epochSeconds]));
     }
 
     /**

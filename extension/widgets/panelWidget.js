@@ -285,15 +285,7 @@ class PanelWidget extends PanelMenu.Button {
      * method call to the dbus interface.
      */
     _onStopTracking() {
-        let now = new Date();
-        let epochSeconds = Date.UTC(now.getFullYear(),
-                                    now.getMonth(),
-                                    now.getDate(),
-                                    now.getHours(),
-                                    now.getMinutes(),
-                                    now.getSeconds());
-        epochSeconds = Math.floor(epochSeconds / 1000);
-        this._controller.apiProxy.StopTrackingRemote(GLib.Variant.new('i', [epochSeconds]));
+        this._controller.stopTracking();
     }
 
     /**
