@@ -201,13 +201,6 @@ class PanelWidget extends PanelMenu.Button {
     }
 
     /**
-     * Open 'popup menu' containing the bulk of the extension widgets.
-     */
-    show() {
-        this.menu.open();
-    }
-
-    /**
      * Close/Open the 'popup menu' depending on previous state.
      */
     toggle() {
