@@ -31,25 +31,28 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const HamsterSettingsWidget = GObject.registerClass(
-class HamsterSettingsWidget extends Gtk.VBox {
+class HamsterSettingsWidget extends Gtk.Grid {
     _init(params) {
         super._init(params);
 
         this.name = 'ProjectHamster.Prefs.HamsterSettingsWidget';
 
-        this.margin = 10;
+        this.set_margin_bottom(18);
+        this.set_margin_end(18);
+        this.set_margin_start(18);
+        this.set_margin_top(18);
+        this.set_column_spacing(12);
+        this.set_row_spacing(12);
+        this.visible = true;
 
         this._settings = ExtensionUtils.getSettings();
 
-        let vbox, label;
-
-        label = new Gtk.Label();
-        label.set_markup("<b>Positioning</b>");
-        label.set_alignment(0, 0.5);
-        this.add(label);
-
-        vbox = new Gtk.VBox({margin: 10});
-        this.add(vbox);
+        let label = new Gtk.Label({
+            label: "Positioning:",
+            halign: Gtk.Align.START,
+            visible: true
+        });
+        this.attach(label, 0, 0, 1, 1);
 
         let placementOptions = new Gtk.ListStore();
         placementOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
@@ -65,16 +68,14 @@ class HamsterSettingsWidget extends Gtk.VBox {
         placementCombo.add_attribute(placementComboRenderer, 'text', 0);
         placementCombo.connect('changed', this._onPlacementChange.bind(this));
         placementCombo.set_active(this._settings.get_int("panel-placement"));
+        this.attach(placementCombo, 1, 0, 1, 1);
 
-        vbox.add(placementCombo);
-
-        label = new Gtk.Label({margin_top: 20});
-        label.set_markup("<b>Appearance in panel</b>");
-        label.set_alignment(0, 0.5);
-        this.add(label);
-
-        vbox = new Gtk.VBox({margin: 10});
-        this.add(vbox);
+        label = new Gtk.Label({
+            label: "Appearance in panel:",
+            halign: Gtk.Align.START,
+            visible: true
+        });
+        this.attach(label, 0, 1, 1, 1);
 
         let appearanceOptions = new Gtk.ListStore();
         appearanceOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
@@ -90,29 +91,39 @@ class HamsterSettingsWidget extends Gtk.VBox {
         appearanceCombo.add_attribute(appearanceComboRenderer, 'text', 0);
         appearanceCombo.connect('changed', this._onAppearanceChange.bind(this));
         appearanceCombo.set_active(this._settings.get_int("panel-appearance"));
+        this.attach(appearanceCombo, 1, 1, 1, 1);
 
-        vbox.add(appearanceCombo);
+        label = new Gtk.Label({
+            label: "Global hotkey:",
+            halign: Gtk.Align.START,
+            visible: true
+        });
+        this.attach(label, 0, 2, 1, 1);
 
-
-        label = new Gtk.Label({margin_top: 20});
-        label.set_markup("<b>Global hotkey</b>");
-        label.set_alignment(0, 0.5);
-        this.add(label);
-
-        vbox = new Gtk.VBox({margin: 10});
-        this.add(vbox);
-        let entry = new Gtk.Entry({margin_bottom: 10,
-                                   margin_top: 5,
-                                   text: this._settings.get_strv("show-hamster-dropdown")[0]});
-        vbox.add(entry);
+        let entry = new Gtk.Entry({
+            margin_bottom: 10,
+            margin_top: 5,
+            text: this._settings.get_strv("show-hamster-dropdown")[0]
+        });
         entry.connect('changed', this._onHotkeyChange.bind(this));
+        this.attach(entry, 1, 2, 1, 1);
 
-        vbox.add(new Gtk.Label({label: "Reload gnome shell after updating prefs (alt+f2 > r)",
-                                margin_top: 70}));
+        label = new Gtk.Label({
+            label: "Reload gnome shell after updating prefs (alt+f2 > r)",
+            halign: Gtk.Align.CENTER,
+            visible: true,
+            margin_top: 70
+        });
+        this.attach(label, 0, 3, 2, 1);
 
-        let version_text = ExtensionUtils.getCurrentExtension().metadata.version;
-        let version_label_text = "You are running hamster-shell-extension version " + version_text;
-        vbox.add(new Gtk.Label({label: version_label_text, margin_top: 10}));
+        let version_text = Me.metadata.version;
+        label = new Gtk.Label({
+            label: "You are running hamster-shell-extension version " + version_text,
+            halign: Gtk.Align.CENTER,
+            visible: true,
+            margin_top: 10
+        });
+        this.attach(label, 0, 4, 2, 1);
     }
 
     _onPlacementChange(widget) {
@@ -158,8 +169,5 @@ function init() {
 }
 
 function buildPrefsWidget() {
-    let widget = new HamsterSettingsWidget();
-    widget.show_all();
-
-    return widget;
+    return new HamsterSettingsWidget();
 }
