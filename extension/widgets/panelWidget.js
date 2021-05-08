@@ -203,7 +203,7 @@ class PanelWidget extends PanelMenu.Button {
     /**
      * Close/Open the 'popup menu' depending on previous state.
      */
-    toggle() {
+    toggle_menu() {
         this.menu.toggle();
     }
 
