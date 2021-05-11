@@ -183,7 +183,7 @@ class Controller {
 			      Meta.KeyBindingFlags.NONE,
 			      // Since Gnome 3.16, Shell.KeyBindingMode is replaced by Shell.ActionMode
 			      Shell.KeyBindingMode ? Shell.KeyBindingMode.ALL : Shell.ActionMode.ALL,
-			      this.panelWidget.toggle.bind(this.panelWidget)
+			      this.panelWidget.toggle_menu.bind(this.panelWidget)
 			     );
     }
 
