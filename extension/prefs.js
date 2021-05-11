@@ -61,7 +61,10 @@ class HamsterSettingsWidget extends Gtk.Grid {
         placementOptions.set(placementOptions.append(), [0, 1], ["Replace calendar", 1]);
         placementOptions.set(placementOptions.append(), [0, 1], ["Replace activities", 2]);
 
-        let placementCombo = new Gtk.ComboBox({model: placementOptions});
+        let placementCombo = new Gtk.ComboBox({
+            model: placementOptions,
+            visible: true
+        });
 
         let placementComboRenderer = new Gtk.CellRendererText();
         placementCombo.pack_start(placementComboRenderer, true);
@@ -84,7 +87,10 @@ class HamsterSettingsWidget extends Gtk.Grid {
         appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Icon", 1]);
         appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Label and icon", 2]);
 
-        let appearanceCombo = new Gtk.ComboBox({model: appearanceOptions});
+        let appearanceCombo = new Gtk.ComboBox({
+            model: appearanceOptions,
+            visible: true
+        });
 
         let appearanceComboRenderer = new Gtk.CellRendererText();
         appearanceCombo.pack_start(appearanceComboRenderer, true);
@@ -103,7 +109,8 @@ class HamsterSettingsWidget extends Gtk.Grid {
         let entry = new Gtk.Entry({
             margin_bottom: 10,
             margin_top: 5,
-            text: this._settings.get_strv("show-hamster-dropdown")[0]
+            text: this._settings.get_strv("show-hamster-dropdown")[0],
+            visible: true
         });
         entry.connect('changed', this._onHotkeyChange.bind(this));
         this.attach(entry, 1, 2, 1, 1);
