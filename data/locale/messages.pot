@@ -26,11 +26,11 @@ msgid "Today's activities"
 msgstr ""
 
 #: extension/widgets/ongoingFactEntry.js:51
-msgid "Enter activity..."
+msgid "Enter activity…"
 msgstr ""
 
 #: extension/widgets/panelWidget.js:85
-msgid "Loading..."
+msgid "Loading…"
 msgstr ""
 
 #: extension/widgets/panelWidget.js:106

@@ -24,11 +24,11 @@ msgid "Today's activities"
 msgstr "Dnešní aktivity"
 
 #: widgets/ongoingFactEntry.js:48
-msgid "Enter activity..."
+msgid "Enter activity…"
 msgstr "Zadejte aktivitu…"
 
 #: widgets/panelWidget.js:82
-msgid "Loading..."
+msgid "Loading…"
 msgstr "Načítání…"
 
 #: widgets/panelWidget.js:103
