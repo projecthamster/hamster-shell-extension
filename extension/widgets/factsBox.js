@@ -35,6 +35,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
 const OngoingFactEntry = Me.imports.widgets.ongoingFactEntry.OngoingFactEntry;
 const CategoryTotalsWidget = Me.imports.widgets.categoryTotalsWidget.CategoryTotalsWidget;
+const TotalTimeWidget = Me.imports.widgets.totalTimeWidget.TotalTimeWidget;
 const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget;
 
 
@@ -78,6 +79,10 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         // Setup category summery
         this.summaryLabel = new CategoryTotalsWidget();
         main_box.add(this.summaryLabel);
+
+        // Setup total time
+        this.totalTimeLabel = new TotalTimeWidget();
+        main_box.add(this.totalTimeLabel);
     }
 
     // [FIXME]
@@ -86,6 +91,7 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
     // simpler version.
     refresh(facts, ongoingFact) {
         this.todaysFactsWidget.refresh(facts, ongoingFact);
+        this.totalTimeLabel.refresh(facts);
         this.summaryLabel.refresh(facts);
 
     }
