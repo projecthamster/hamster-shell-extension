@@ -14,7 +14,7 @@
         </key>
 
         <key type="as" name="show-hamster-dropdown">
-            <default><![CDATA[['<Super>h']]]></default>
+            <default><![CDATA[['<Super>t']]]></default>
             <summary>Global key combination to show the drop-down.</summary>
         </key>
     </schema>
