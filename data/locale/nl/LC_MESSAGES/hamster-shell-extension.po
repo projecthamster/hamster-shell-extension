@@ -21,12 +21,12 @@ msgid "Today's activities"
 msgstr "Huidige activiteiten"
 
 #: widgets/ongoingFactEntry.js:48
-msgid "Enter activity..."
-msgstr "Activiteit starten..."
+msgid "Enter activity…"
+msgstr "Activiteit starten…"
 
 #: widgets/panelWidget.js:82
-msgid "Loading..."
-msgstr "Laden..."
+msgid "Loading…"
+msgstr "Laden…"
 
 #: widgets/panelWidget.js:103
 msgid "Show Overview"
