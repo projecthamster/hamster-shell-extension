@@ -161,9 +161,15 @@ class HamsterSettingsWidget extends Gtk.Grid {
     }
 
     _onHotkeyChange(widget, bananas) {
-        //global.log(widget, bananas);
         let hotkey = widget.get_text();
-        let [key, mods] = Gtk.accelerator_parse(hotkey);
+        let [key, mods] = [null, null];
+
+        if (Gtk.MAJOR_VERSION >= 4) {
+            let _r = null;
+            [_r, key, mods] = Gtk.accelerator_parse(hotkey);
+        } else {
+            [key, mods] = Gtk.accelerator_parse(hotkey);
+        }
 
         if (key != 0) {
             let parsedName = Gtk.accelerator_name(key, mods);
