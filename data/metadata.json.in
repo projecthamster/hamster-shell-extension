@@ -15,7 +15,8 @@
         "3.38",
         "40",
         "41",
-        "42"
+        "42",
+        "43"
     ],
     "url": "https://github.com/projecthamster/hamster-shell-extension.git",
     "uuid": @UUID@
