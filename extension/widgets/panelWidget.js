@@ -196,7 +196,9 @@ class PanelWidget extends PanelMenu.Button {
     // This should really be a synchronous call fetching the facts.
     // Once this is done, the actual code from the callback should follow
     // here.
-    this._controller.apiProxy.GetTodaysFactsRemote(_refresh.bind(this));
+    if (this._controller.apiProxy) {
+        this._controller.apiProxy.GetTodaysFactsRemote(_refresh.bind(this));
+    }
     return GLib.SOURCE_CONTINUE;
     }
 
@@ -268,6 +270,7 @@ class PanelWidget extends PanelMenu.Button {
      */
     _disableRefreshTimer() {
         GLib.source_remove(this.timeout);
+        this._onStopTracking();
     }
 
     /**
