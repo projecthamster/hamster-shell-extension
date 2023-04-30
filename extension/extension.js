@@ -210,10 +210,28 @@ class Controller {
 
         this.runningActivitiesQuery = true;
         this.apiProxy.GetActivitiesRemote("", function([response], err) {
+            this.reportIfError(_("Failed to get activities"), err);
             this.runningActivitiesQuery = false;
             this.activities = response;
             // global.log('ACTIVITIES HAMSTER: ', this.activities);
         }.bind(this));
+    }
+
+    /**
+     * Report an error if one is passed. If error is falsey (e.g.
+     * null), nothing is reported.
+     */
+    reportIfError(msg, error) {
+        if (error) {
+            // Use toString, error can be a string, exception, etc.
+            global.log("error: Hamster: " + msg + ": " + error.toString());
+            // Prefix msg to details (second argument), since the
+            // details are word-wrapped and the title is not.
+            Main.notify("Hamster: " + msg, msg + "\n" + error.toString());
+            // Close menu so notification can be seen
+            if (this.panelWidget)
+                this.panelWidget.close_menu();
+        }
     }
 
     /**

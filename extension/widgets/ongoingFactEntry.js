@@ -71,6 +71,7 @@ class OngoingFactEntry extends St.Entry {
     _onEntryActivated() {
         let text = this.get_text();
         this._controller.apiProxy.AddFactRemote(text, 0, 0, false, function(response, error) {
+            this._controller.reportIfError(_("Failed to add activity"), error);
             // not interested in the new id - this shuts up the warning
 	}.bind(this));
         this.set_text('');
