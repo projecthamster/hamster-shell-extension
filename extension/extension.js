@@ -148,23 +148,21 @@ class Controller {
 
         // Callbacks that handle appearing/vanishing dbus services.
         function apiProxy_appeared_callback() {
+            if (this.shouldEnable)
+                this.panelWidget.show();
         }
 
         function apiProxy_vanished_callback() {
 	    /* jshint validthis: true */
-            global.log(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
-            Main.notify(_("hamster-shell-extension: 'hamster-service' not running. Shutting down."));
-            this.disable();
+            this.reportIfError(_("DBUS proxy disappeared"), _("Disabling extension until it comes back"));
+            if (this.shouldEnable)
+                this.panelWidget.hide();
         }
 
         function windowsProxy_appeared_callback() {
         }
 
         function windowsProxy_vanished_callback() {
-	    /* jshint validthis: true */
-            global.log(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
-            Main.notify(_("hamster-shell-extension: 'hamster-windows-service' not running. Shutting down."));
-            this.disable();
         }
 
         // Set-up watchers that watch for required dbus services.
