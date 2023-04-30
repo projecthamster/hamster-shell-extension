@@ -120,13 +120,15 @@ class Controller {
     enable() {
         this.shouldEnable = true;
         new ApiProxy(Gio.DBus.session, 'org.gnome.Hamster', '/org/gnome/Hamster',
-                     function(proxy) {
+                     function(proxy, err) {
+                         this.reportIfError(_("Connection to DBUS service failed"), err);
 			 this.apiProxy = proxy;
 			 this.deferred_enable();
                      }.bind(this));
         new WindowsProxy(Gio.DBus.session, "org.gnome.Hamster.WindowServer",
 			 "/org/gnome/Hamster/WindowServer",
-			 function(proxy) {
+			 function(proxy, err) {
+                             this.reportIfError(_("Connection to DBUS window service failed"), err);
 			     this.windowsProxy = proxy;
 			     this.deferred_enable();
 			 }.bind(this));
