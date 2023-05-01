@@ -178,10 +178,8 @@ class PanelWidget extends PanelMenu.Button {
 
 		let facts = [];
 
-        // [FIXME]
-        // This seems a rather naive way to handle potential errors.
 		if (err) {
-		    log(err);
+                    this._controller.reportIfError(_("Failed to get activities"), err);
 		} else if (response.length > 0) {
 		    facts = Stuff.fromDbusFacts(response);
 		}
@@ -207,6 +205,12 @@ class PanelWidget extends PanelMenu.Button {
         this.menu.toggle();
     }
 
+    /**
+     * Close the 'popup menu'
+     */
+    close_menu() {
+        this.menu.close();
+    }
 
     /**
      * Update the rendering of the PanelWidget in the panel itself.
@@ -286,7 +290,9 @@ class PanelWidget extends PanelMenu.Button {
                                     now.getMinutes(),
                                     now.getSeconds());
         epochSeconds = Math.floor(epochSeconds / 1000);
-        this._controller.apiProxy.StopTrackingRemote(GLib.Variant.new('i', [epochSeconds]));
+        this._controller.apiProxy.StopTrackingRemote(GLib.Variant.new('i', [epochSeconds]), function(response, err) {
+            this._controller.reportIfError(_("Failed to stop tracking"), err);
+        }.bind(this));
     }
 
     /**
@@ -295,7 +301,11 @@ class PanelWidget extends PanelMenu.Button {
      * @callback panelWidget~_onOpenOverview
      */
     _onOpenOverview() {
-        this._controller.windowsProxy.overviewSync();
+        try {
+            this._controller.windowsProxy.overviewSync();
+        } catch (error) {
+            this._controller.reportIfError(_("Failed to open overview window"), error);
+        }
     }
 
     /**
@@ -304,7 +314,11 @@ class PanelWidget extends PanelMenu.Button {
      * @callback panelWidget~_onOpenAddFact
      */
     _onOpenAddFact() {
-        this._controller.windowsProxy.editSync(GLib.Variant.new('i', [0]));
+        try {
+            this._controller.windowsProxy.editSync(GLib.Variant.new('i', [0]));
+        } catch (error) {
+            this._controller.reportIfError(_("Failed to open add window"), error);
+        }
     }
 
     /**
@@ -315,6 +329,10 @@ class PanelWidget extends PanelMenu.Button {
      * Note: This will open the GUI settings, not the extension settings!
      */
     _onOpenSettings() {
-        this._controller.windowsProxy.preferencesSync();
+        try {
+            this._controller.windowsProxy.preferencesSync();
+        } catch (error) {
+            this._controller.reportIfError(_("Failed to open settings window"), error);
+        }
     }
 });

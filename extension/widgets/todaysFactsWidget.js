@@ -26,6 +26,9 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 
+const Gettext = imports.gettext.domain('hamster-shell-extension');
+const _ = Gettext.gettext;
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Stuff = Me.imports.stuff;
 
@@ -114,6 +117,7 @@ class TodaysFactsWidget extends St.ScrollView {
 
 		/* jshint validthis: true */
                 controller.apiProxy.AddFactRemote(factStr, 0, 0, false, function(response, err) {
+                    controller.reportIfError(_("Failed to continue activity"), err);
                     // not interested in the new id - this shuts up the warning
                 }.bind(this));
                 menu.close();
