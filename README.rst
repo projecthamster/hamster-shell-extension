@@ -93,6 +93,17 @@ Afterwards, enable the extension and change the preferences using Tweak Tool,
 or on ``https://extensions.gnome.org/local/``. On GNOME 3.36 and later, you
 can also use the GNOME "Extensions" tool.
 
+Reloading the Extension
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If the Hamster GNOME shell extension is already loaded and you change some code, 
+the GNOME shell needs to be restarted in order to update and restart the extension.
+The easiest way to do this is to run GNOME under X11 and use the key combination
+``Alt-F2`` followed by ``r``. If you run GNOME under Wayland, either re-login, or 
+start a `nested session <https://wiki.gnome.org/Initiatives/Wayland/GnomeShell/Testing>`_::
+    
+    dbus-run-session -- gnome-shell --nested --wayland
+
 Changing the extension UUID
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
