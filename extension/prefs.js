@@ -25,10 +25,7 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
-
-
 const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
 
 const HamsterSettingsWidget = GObject.registerClass(
 class HamsterSettingsWidget extends Gtk.Grid {
@@ -124,14 +121,6 @@ class HamsterSettingsWidget extends Gtk.Grid {
         });
         this.attach(label, 0, 3, 2, 1);
 
-        let version_text = Me.metadata.version;
-        label = new Gtk.Label({
-            label: "You are running hamster-shell-extension version " + version_text,
-            halign: Gtk.Align.CENTER,
-            visible: true,
-            margin_top: 10
-        });
-        this.attach(label, 0, 4, 2, 1);
     }
 
     _onPlacementChange(widget) {
