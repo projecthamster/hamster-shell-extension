@@ -88,11 +88,11 @@ let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
  *
  * @class
  */
-class Controller {
+export default class Controller extends Extension {
     constructor(extensionMeta) {
 	let dateMenu = Main.panel.statusArea.dateMenu;
 
-        this.extensionMeta = extensionMeta;
+        super(extensionMeta);
         this.panelWidget = null;
         this.settings = null;
         this.placement = 0;
@@ -136,7 +136,7 @@ class Controller {
         if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
             return;
 
-        this.settings = ExtensionUtils.getSettings();
+        this.settings = this.getSettings();
         this.panelWidget = new PanelWidget(this);
         this.placement = this.settings.get_int("panel-placement");
 
@@ -281,8 +281,3 @@ class Controller {
     }
 }
 
-
-function init(extensionMeta) {
-    ExtensionUtils.initTranslations();
-    return new Controller(extensionMeta);
-}

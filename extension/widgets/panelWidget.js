@@ -62,7 +62,7 @@ class PanelWidget extends PanelMenu.Button {
         this._controller = controller;
         // [FIXME]
         // Still needed?
-        this._extensionMeta = controller.extensionMeta;
+        this._extensionMeta = controller.metadata;
         this._settings = controller.settings;
         this._windowsProxy = controller.windowsProxy;
 
