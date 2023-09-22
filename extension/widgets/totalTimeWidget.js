@@ -21,13 +21,11 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 Copyright (c) 2018 Thibaut Madelaine <madtibo_git@tribu-ml.fr>
 */
 
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Stuff = Me.imports.stuff;
-
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import * as Stuff from '../stuff.js';
 
 /**
  * Custom Label widget that displays total time.
@@ -58,3 +56,5 @@ var TotalTimeWidget = GObject.registerClass(
         this.set_text(getString(facts));
     }
 });
+
+export default TotalTimeWidget;

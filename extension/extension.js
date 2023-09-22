@@ -21,18 +21,14 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const GLib = imports.gi.GLib;
-const Shell = imports.gi.Shell;
-const Meta = imports.gi.Meta;
-const Main = imports.ui.main;
-const Gio = imports.gi.Gio;
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import Meta from 'gi://Meta';
+import Gio from 'gi://Gio';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
+import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import PanelWidget from './widgets/panelWidget.js';
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
 const ApiProxyIface = ['',

@@ -21,11 +21,10 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const GObject = imports.gi.GObject;
-const ExtensionUtils = imports.misc.extensionUtils;
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import Gtk from 'gi://Gtk';
+import GObject from 'gi://GObject';
 
 const HamsterSettingsWidget = GObject.registerClass(
 class HamsterSettingsWidget extends Gtk.Grid {
