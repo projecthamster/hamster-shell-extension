@@ -21,155 +21,132 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
+import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 import GObject from 'gi://GObject';
+import GLib from 'gi://GLib';
 
-const HamsterSettingsWidget = GObject.registerClass(
-class HamsterSettingsWidget extends Gtk.Grid {
-    _init(params) {
-        super._init(params);
+import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-        this.name = 'ProjectHamster.Prefs.HamsterSettingsWidget';
 
-        this.set_margin_bottom(18);
-        this.set_margin_end(18);
-        this.set_margin_start(18);
-        this.set_margin_top(18);
-        this.set_column_spacing(12);
-        this.set_row_spacing(12);
-        this.visible = true;
+class HotkeyRow extends Adw.EntryRow {
+  static {
+    GObject.registerClass(this);
+  }
 
-        this._settings = ExtensionUtils.getSettings();
+  constructor({ title, settings, bind }) {
+    super({
+      title: title,
+    });
 
-        let label = new Gtk.Label({
-            label: "Positioning:",
-            halign: Gtk.Align.START,
-            visible: true
-        });
-        this.attach(label, 0, 0, 1, 1);
+    this.connect("apply", () => {
+      const hotkeys = this.get_text();
 
-        let placementOptions = new Gtk.ListStore();
-        placementOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
+      const mappings = hotkeys.split(",").map((x) => {
+        const [, key, mods] = Gtk.accelerator_parse(x);
+        return Gtk.accelerator_valid(key, mods) && Gtk.accelerator_name(key, mods);
+      });
 
-        placementOptions.set(placementOptions.append(), [0, 1], ["Default", 0]);
-        placementOptions.set(placementOptions.append(), [0, 1], ["Replace calendar", 1]);
-        placementOptions.set(placementOptions.append(), [0, 1], ["Replace activities", 2]);
-        placementOptions.set(placementOptions.append(), [0, 1], ["Center, next to calendar", 3]);
+      if (mappings.every((x) => !!x)) {
+	console.log("HotkeyRow: good hotkey value ", hotkeys);
+	this.current = mappings;
+	settings.set_strv(bind, this.current);
+      } else {
+	console.log("invalid hotkey value ", hotkeys);
+	this.set_text(this.current.join(","));
+      }
+    });
 
-        let placementCombo = new Gtk.ComboBox({
-            model: placementOptions,
-            visible: true
-        });
-
-        let placementComboRenderer = new Gtk.CellRendererText();
-        placementCombo.pack_start(placementComboRenderer, true);
-        placementCombo.add_attribute(placementComboRenderer, 'text', 0);
-        placementCombo.connect('changed', this._onPlacementChange.bind(this));
-        placementCombo.set_active(this._settings.get_int("panel-placement"));
-        this.attach(placementCombo, 1, 0, 1, 1);
-
-        label = new Gtk.Label({
-            label: "Appearance in panel:",
-            halign: Gtk.Align.START,
-            visible: true
-        });
-        this.attach(label, 0, 1, 1, 1);
-
-        let appearanceOptions = new Gtk.ListStore();
-        appearanceOptions.set_column_types([GObject.TYPE_STRING, GObject.TYPE_INT]);
-
-        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Label", 0]);
-        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Icon", 1]);
-        appearanceOptions.set(appearanceOptions.append(), [0, 1], ["Label and icon", 2]);
-
-        let appearanceCombo = new Gtk.ComboBox({
-            model: appearanceOptions,
-            visible: true
-        });
-
-        let appearanceComboRenderer = new Gtk.CellRendererText();
-        appearanceCombo.pack_start(appearanceComboRenderer, true);
-        appearanceCombo.add_attribute(appearanceComboRenderer, 'text', 0);
-        appearanceCombo.connect('changed', this._onAppearanceChange.bind(this));
-        appearanceCombo.set_active(this._settings.get_int("panel-appearance"));
-        this.attach(appearanceCombo, 1, 1, 1, 1);
-
-        label = new Gtk.Label({
-            label: "Global hotkey:",
-            halign: Gtk.Align.START,
-            visible: true
-        });
-        this.attach(label, 0, 2, 1, 1);
-
-        let entry = new Gtk.Entry({
-            margin_bottom: 10,
-            margin_top: 5,
-            text: this._settings.get_strv("show-hamster-dropdown")[0],
-            visible: true
-        });
-        entry.connect('changed', this._onHotkeyChange.bind(this));
-        this.attach(entry, 1, 2, 1, 1);
-
-        label = new Gtk.Label({
-            label: "Reload gnome shell after updating prefs (alt+f2 > r)",
-            halign: Gtk.Align.CENTER,
-            visible: true,
-            margin_top: 70
-        });
-        this.attach(label, 0, 3, 2, 1);
-
-    }
-
-    _onPlacementChange(widget) {
-        let [success, iter] = widget.get_active_iter();
-        if (!success)
-            return;
-
-        let newPlacement = widget.get_model().get_value(iter, 1);
-
-        if (this._settings.get_int("panel-placement") == newPlacement)
-            return;
-
-        this._settings.set_int("panel-placement", newPlacement);
-    }
-
-    _onAppearanceChange(widget) {
-        let [success, iter] = widget.get_active_iter();
-        if (!success)
-            return;
-
-        let newAppearance = widget.get_model().get_value(iter, 1);
-
-        if (this._settings.get_int("panel-appearance") == newAppearance)
-            return;
-
-        this._settings.set_int("panel-appearance", newAppearance);
-    }
-
-    _onHotkeyChange(widget, bananas) {
-        let hotkey = widget.get_text();
-        let [key, mods] = [null, null];
-
-        if (Gtk.MAJOR_VERSION >= 4) {
-            let _r = null;
-            [_r, key, mods] = Gtk.accelerator_parse(hotkey);
-        } else {
-            [key, mods] = Gtk.accelerator_parse(hotkey);
-        }
-
-        if (key != 0) {
-            let parsedName = Gtk.accelerator_name(key, mods);
-            this._settings.set_strv("show-hamster-dropdown", [parsedName]);
-        }
-
-    }
-});
-
-function init() {
+    this.show_apply_button = true,
+    this.current = settings.get_strv(bind);
+    console.log("HotkeyRow current: ", bind, this.current);
+    this.set_text(this.current.join(","));
+  }
 }
 
-function buildPrefsWidget() {
-    return new HamsterSettingsWidget();
+class HamsterPrefsWidget extends Adw.PreferencesPage {
+
+  static {
+    GObject.registerClass(this);
+  }
+
+  constructor(settings) {
+    super();
+    this._settings = settings;
+
+    this._actionGroup = new Gio.SimpleActionGroup();
+    this.insert_action_group('hamster', this._actionGroup);
+    this._actionGroup.add_action(
+      this._settings.create_action('panel-placement'));
+    this._actionGroup.add_action(
+      this._settings.create_action('panel-appearance'));
+
+    const placementGroup = new Adw.PreferencesGroup({
+      title: _('Panel Placement'),
+    });
+    this.add(placementGroup);
+
+    const placements = [
+      { p: 0, title: _("Default") },
+      { p: 1, title: _("Replace calendar") },
+      { p: 2, title: _("Replace activities") },
+      { p: 3, title: _("Center, next to calendar") },
+    ];
+
+    for (const {p, title} of placements) {
+      const btn = new Gtk.CheckButton({
+	action_name:   'hamster.panel-placement',
+	action_target: new GLib.Variant('i', p),
+      });
+      const row = new Adw.ActionRow({
+	activatable_widget: btn,
+	title,
+      });
+      row.add_prefix(btn);
+      placementGroup.add(row);
+    }
+
+    const appearanceGroup = new Adw.PreferencesGroup({
+      title: _('Panel Appearance'),
+    });
+    this.add(appearanceGroup);
+
+    const appearances = [
+      { a: 0, title: _("Label") },
+      { a: 1, title: _("Icon") },
+      { a: 2, title: _("Label and icon") },
+    ];
+
+    for (const {a, title} of appearances) {
+      const btn = new Gtk.CheckButton({
+	action_name:   'hamster.panel-appearance',
+	action_target: new GLib.Variant('i', a),
+      });
+      const row = new Adw.ActionRow({
+	activatable_widget: btn,
+	title,
+      });
+      row.add_prefix(btn);
+      appearanceGroup.add(row);
+    }
+
+    const miscGroup = new Adw.PreferencesGroup();
+    this.add(miscGroup);
+
+    let row = new HotkeyRow({
+      title: _("Global hotkey"),
+      settings: this._settings,
+      bind: "show-hamster-dropdown",
+    });
+
+    miscGroup.add(row);
+  }
+}
+
+export default class HamsterPrefs extends ExtensionPreferences {
+    getPreferencesWidget() {
+      return new HamsterPrefsWidget(this.getSettings());
+    }
 }
