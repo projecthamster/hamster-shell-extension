@@ -125,6 +125,11 @@ class PanelWidget extends PanelMenu.Button {
         SettingMenuItem.connect('activate', this._onOpenSettings.bind(this));
         this.menu.addMenuItem(SettingMenuItem);
 
+        let ExtSettingMenuItem = new PopupMenu.PopupMenuItem(_("Extension Settings"));
+        ExtSettingMenuItem.connect('activate',
+				   () => this._controller.openPreferences());
+        this.menu.addMenuItem(ExtSettingMenuItem);
+
         // focus menu upon display
         this.menu.connect('open-state-changed',
             function(menu, open) {
