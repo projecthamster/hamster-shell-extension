@@ -187,7 +187,7 @@ export default class Controller extends Extension {
         this.shouldEnable = false;
         Main.wm.removeKeybinding("show-hamster-dropdown");
 
-        global.log('Shutting down hamster-shell-extension.');
+        console.log('Shutting down hamster-shell-extension.');
         this._removeWidget(this.placement);
         Main.panel.menuManager.removeMenu(this.panelWidget.menu);
         this.panelWidget.destroy();
@@ -209,7 +209,6 @@ export default class Controller extends Extension {
             this.reportIfError(_("Failed to get activities"), err);
             this.runningActivitiesQuery = false;
             this.activities = response;
-            // global.log('ACTIVITIES HAMSTER: ', this.activities);
         }.bind(this));
     }
 
@@ -220,7 +219,7 @@ export default class Controller extends Extension {
     reportIfError(msg, error) {
         if (error) {
             // Use toString, error can be a string, exception, etc.
-            global.log("error: Hamster: " + msg + ": " + error.toString());
+            console.log("error: Hamster: " + msg + ": " + error.toString());
             // Prefix msg to details (second argument), since the
             // details are word-wrapped and the title is not.
             Main.notify("Hamster: " + msg, msg + "\n" + error.toString());
