@@ -21,20 +21,17 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Clutter = imports.gi.Clutter;
-const PanelMenu = imports.ui.panelMenu;
-const St = imports.gi.St;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
+import GLib from 'gi://GLib';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const FactsBox = Me.imports.widgets.factsBox.FactsBox;
-const Stuff = Me.imports.stuff;
+import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import FactsBox from './factsBox.js';
+import * as Stuff from '../stuff.js';
 
 /**
  * Class that defines the actual extension widget to be shown in the panel.
@@ -65,7 +62,7 @@ class PanelWidget extends PanelMenu.Button {
         this._controller = controller;
         // [FIXME]
         // Still needed?
-        this._extensionMeta = controller.extensionMeta;
+        this._extensionMeta = controller.metadata;
         this._settings = controller.settings;
         this._windowsProxy = controller.windowsProxy;
 
@@ -124,6 +121,11 @@ class PanelWidget extends PanelMenu.Button {
         let SettingMenuItem = new PopupMenu.PopupMenuItem(_("Tracking Settings"));
         SettingMenuItem.connect('activate', this._onOpenSettings.bind(this));
         this.menu.addMenuItem(SettingMenuItem);
+
+        let ExtSettingMenuItem = new PopupMenu.PopupMenuItem(_("Extension Settings"));
+        ExtSettingMenuItem.connect('activate',
+				   () => this._controller.openPreferences());
+        this.menu.addMenuItem(ExtSettingMenuItem);
 
         // focus menu upon display
         this.menu.connect('open-state-changed',
@@ -336,3 +338,5 @@ class PanelWidget extends PanelMenu.Button {
         }
     }
 });
+
+export default PanelWidget;

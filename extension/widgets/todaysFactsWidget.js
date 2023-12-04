@@ -21,17 +21,13 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Stuff = Me.imports.stuff;
-
+import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Stuff from '../stuff.js';
 
 /**
  * A widget that lists all facts for *today*.
@@ -195,3 +191,5 @@ class TodaysFactsWidget extends St.ScrollView {
         this.populateFactsWidget(facts, ongoingFact);
     }
 });
+
+export default TodaysFactsWidget;

@@ -21,18 +21,14 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const GLib = imports.gi.GLib;
-const Shell = imports.gi.Shell;
-const Meta = imports.gi.Meta;
-const Main = imports.ui.main;
-const Gio = imports.gi.Gio;
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import Meta from 'gi://Meta';
+import Gio from 'gi://Gio';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const PanelWidget = Me.imports.widgets.panelWidget.PanelWidget;
+import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import PanelWidget from './widgets/panelWidget.js';
 
 // dbus-send --session --type=method_call --print-reply --dest=org.gnome.Hamster /org/gnome/Hamster org.freedesktop.DBus.Introspectable.Introspect
 const ApiProxyIface = ['',
@@ -92,11 +88,11 @@ let WindowsProxy = Gio.DBusProxy.makeProxyWrapper(WindowsProxyIface);
  *
  * @class
  */
-class Controller {
+export default class Controller extends Extension {
     constructor(extensionMeta) {
 	let dateMenu = Main.panel.statusArea.dateMenu;
 
-        this.extensionMeta = extensionMeta;
+        super(extensionMeta);
         this.panelWidget = null;
         this.settings = null;
         this.placement = 0;
@@ -140,7 +136,7 @@ class Controller {
         if (!this.shouldEnable || !this.apiProxy || !this.windowsProxy)
             return;
 
-        this.settings = ExtensionUtils.getSettings();
+        this.settings = this.getSettings();
         this.panelWidget = new PanelWidget(this);
         this.placement = this.settings.get_int("panel-placement");
 
@@ -191,7 +187,7 @@ class Controller {
         this.shouldEnable = false;
         Main.wm.removeKeybinding("show-hamster-dropdown");
 
-        global.log('Shutting down hamster-shell-extension.');
+        console.log('Shutting down hamster-shell-extension.');
         this._removeWidget(this.placement);
         Main.panel.menuManager.removeMenu(this.panelWidget.menu);
         this.panelWidget.destroy();
@@ -213,7 +209,6 @@ class Controller {
             this.reportIfError(_("Failed to get activities"), err);
             this.runningActivitiesQuery = false;
             this.activities = response;
-            // global.log('ACTIVITIES HAMSTER: ', this.activities);
         }.bind(this));
     }
 
@@ -224,7 +219,7 @@ class Controller {
     reportIfError(msg, error) {
         if (error) {
             // Use toString, error can be a string, exception, etc.
-            global.log("error: Hamster: " + msg + ": " + error.toString());
+            console.log("error: Hamster: " + msg + ": " + error.toString());
             // Prefix msg to details (second argument), since the
             // details are word-wrapped and the title is not.
             Main.notify("Hamster: " + msg, msg + "\n" + error.toString());
@@ -285,8 +280,3 @@ class Controller {
     }
 }
 
-
-function init(extensionMeta) {
-    ExtensionUtils.initTranslations();
-    return new Controller(extensionMeta);
-}

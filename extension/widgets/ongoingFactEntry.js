@@ -21,15 +21,11 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-
+import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 /**
  * Custom Entry widget that allows entering a *raw fact* string for a new ongoing fact.
@@ -186,3 +182,5 @@ class OngoingFactEntry extends St.Entry {
         }
     }
 });
+
+export default OngoingFactEntry;

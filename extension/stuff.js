@@ -29,7 +29,7 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
  *
  * @param {int} - Total amount of seconds to represent.
  */
-function formatDuration(total_seconds) {
+export function formatDuration(total_seconds) {
     let hours = total_seconds / 3600;
     let remaining_seconds = total_seconds % 3600;
     // We only care for "full minutes".
@@ -45,7 +45,7 @@ function formatDuration(total_seconds) {
  *
  * @param {int} - Total amount of seconds to represent.
  */
-function formatDurationHuman(total_seconds) {
+export function formatDurationHuman(total_seconds) {
     let hours = total_seconds / 3600;
     let remaining_seconds = total_seconds % 3600;
     // We only care for "full minutes".
@@ -75,7 +75,7 @@ function formatDurationHuman(total_seconds) {
  *
  * @param {int} - Total amount of seconds to represent.
  */
-function formatDurationHours(seconds) {
+export function formatDurationHours(seconds) {
     // We shift by one decimal place to the left in order to round properly.
     let hours = Math.round((seconds/3600)*10);
     // Shift right after rounding.
@@ -85,7 +85,7 @@ function formatDurationHours(seconds) {
 
 // Other helper functions
 
-function fromDbusFact(fact) {
+export function fromDbusFact(fact) {
     // converts a fact coming from dbus into a usable object
     function UTCToLocal(timestamp) {
         // TODO - is this really the way?!
@@ -108,7 +108,7 @@ function fromDbusFact(fact) {
     return result;
 }
 
-function fromDbusFacts(facts) {
+export function fromDbusFacts(facts) {
     let res = [];
     for (var fact of facts) {
         res.push(fromDbusFact(fact));

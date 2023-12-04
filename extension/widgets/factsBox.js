@@ -21,23 +21,18 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
-const St = imports.gi.St;
-const PopupMenu = imports.ui.popupMenu;
-const Clutter = imports.gi.Clutter;
-const Mainloop = imports.mainloop;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 
-const Gettext = imports.gettext.domain('hamster-shell-extension');
-const _ = Gettext.gettext;
-
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Stuff = Me.imports.stuff;
-const OngoingFactEntry = Me.imports.widgets.ongoingFactEntry.OngoingFactEntry;
-const CategoryTotalsWidget = Me.imports.widgets.categoryTotalsWidget.CategoryTotalsWidget;
-const TotalTimeWidget = Me.imports.widgets.totalTimeWidget.TotalTimeWidget;
-const TodaysFactsWidget = Me.imports.widgets.todaysFactsWidget.TodaysFactsWidget;
-
+import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Stuff from '../stuff.js';
+import OngoingFactEntry from './ongoingFactEntry.js';
+import CategoryTotalsWidget from './categoryTotalsWidget.js';
+import TotalTimeWidget from './totalTimeWidget.js';
+import TodaysFactsWidget from './todaysFactsWidget.js';
 
 /**
  * Create the widget that ``PanelWidget`` will use to dispay the *raw fact entry* as
@@ -79,7 +74,6 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         // Setup category summery
         this.summaryLabel = new CategoryTotalsWidget();
         main_box.add(this.summaryLabel);
-
         // Setup total time
         this.totalTimeLabel = new TotalTimeWidget();
         main_box.add(this.totalTimeLabel);
@@ -100,7 +94,7 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
      * Focus the fact entry and make sure todaysFactsWidget are scrolled to the bottom.
      */
     focus() {
-        Mainloop.timeout_add(20, function() {
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 20, function() {
             this._scrollAdjustment.value = this._scrollAdjustment.upper;
             global.stage.set_key_focus(this.ongoingFactEntry);
         }.bind(this));
@@ -113,3 +107,5 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         global.stage.set_key_focus(null);
     }
 });
+
+export default FactsBox;
