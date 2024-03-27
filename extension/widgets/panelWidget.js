@@ -75,7 +75,7 @@ class PanelWidget extends PanelMenu.Button {
         let panelContainer = new St.BoxLayout({style_class: "panel-box"});
 
 	let _actor = (this instanceof Clutter.Actor ? this : this.actor);
-        _actor.add_actor(panelContainer);
+        _actor.add_child(panelContainer);
         _actor.add_style_class_name('panel-status-button');
 
         this.panelLabel = new St.Label({
@@ -93,8 +93,8 @@ class PanelWidget extends PanelMenu.Button {
                                  icon_size: 16,
                                  style_class: "panel-icon"});
 
-        panelContainer.add(this.icon);
-        panelContainer.add(this.panelLabel);
+        panelContainer.add_child(this.icon);
+        panelContainer.add_child(this.panelLabel);
 
         this.factsBox = new FactsBox(controller, this);
         this.menu.addMenuItem(this.factsBox);

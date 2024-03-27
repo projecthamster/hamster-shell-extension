@@ -10,7 +10,7 @@
     "gettext-domain": "hamster-shell-extension",
     "settings-schema": "org.gnome.shell.extensions.project-hamster",
     "shell-version": [
-        "45"
+        "46"
     ],
     "url": "https://github.com/projecthamster/hamster-shell-extension.git",
     "uuid": @UUID@

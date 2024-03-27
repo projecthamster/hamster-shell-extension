@@ -54,29 +54,29 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         // Setup *ongoing fact* label and widget
         let _ongoingFactLabel = new St.Label({style_class: 'hamster-box-label'});
         _ongoingFactLabel.set_text(_("What are you doing?"));
-        main_box.add(_ongoingFactLabel);
+        main_box.add_child(_ongoingFactLabel);
 
         this.ongoingFactEntry = new OngoingFactEntry(this._controller);
         //this.ongoingFactEntry.clutter_text.connect('key-release-event', this._onKeyReleaseEvent.bind(this));
-        main_box.add(this.ongoingFactEntry);
+        main_box.add_child(this.ongoingFactEntry);
 
         let fact_list_label = new St.Label({style_class: 'hamster-box-label'});
         fact_list_label.set_text(_("Today's activities"));
-        main_box.add(fact_list_label);
+        main_box.add_child(fact_list_label);
 
         // Scrollbox that will house the list of todays facts
         // Since ``St.Table`` does not implement St.Scrollable, we create a
         // container object that does.
         this.todaysFactsWidget = new TodaysFactsWidget(this._controller, panelWidget);
         this._scrollAdjustment = this.todaysFactsWidget.vscroll.adjustment;
-        main_box.add(this.todaysFactsWidget);
+        main_box.add_child(this.todaysFactsWidget);
 
         // Setup category summery
         this.summaryLabel = new CategoryTotalsWidget();
-        main_box.add(this.summaryLabel);
+        main_box.add_child(this.summaryLabel);
         // Setup total time
         this.totalTimeLabel = new TotalTimeWidget();
-        main_box.add(this.totalTimeLabel);
+        main_box.add_child(this.totalTimeLabel);
     }
 
     // [FIXME]

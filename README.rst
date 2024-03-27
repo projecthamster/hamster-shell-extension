@@ -34,8 +34,7 @@ Install For Production
 
 Please follow the instructions under
 `Manual Installation For Testing and Development`_ below to install from git.
-The code in this branch is compatible with *GNOME shell 45 and newer* only.
-See also `metadata.json.in`_.
+See `metadata.json.in`_ for GNOME shell compatibility status of the current branch.
 
 *Important:* The "Hamster Time Tracker" extension on
 `extensions.gnome.org https://extensions.gnome.org/extension/425/project-hamster-extension/`_
