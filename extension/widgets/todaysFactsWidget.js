@@ -47,8 +47,8 @@ class TodaysFactsWidget extends St.ScrollView {
             layout_manager: new Clutter.GridLayout(),
             reactive: true
         });
-        this.factsBox.add(this.facts_widget);
-        this.add_actor(this.factsBox);
+        this.factsBox.add_child(this.facts_widget);
+        this.add_child(this.factsBox);
 
     }
 
