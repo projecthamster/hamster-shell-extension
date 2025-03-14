@@ -68,7 +68,6 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
         // Since ``St.Table`` does not implement St.Scrollable, we create a
         // container object that does.
         this.todaysFactsWidget = new TodaysFactsWidget(this._controller, panelWidget);
-        this._scrollAdjustment = this.todaysFactsWidget.vscroll.adjustment;
         main_box.add_child(this.todaysFactsWidget);
 
         // Setup category summery
@@ -95,7 +94,8 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
      */
     focus() {
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, 20, function() {
-            this._scrollAdjustment.value = this._scrollAdjustment.upper;
+            let _vAdjustment = this.todaysFactsWidget.vadjustment;
+            _vAdjustment.value = _vAdjustment.upper;
             global.stage.set_key_focus(this.ongoingFactEntry);
         }.bind(this));
     }
