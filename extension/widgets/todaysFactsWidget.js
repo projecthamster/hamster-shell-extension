@@ -49,11 +49,7 @@ class TodaysFactsWidget extends St.ScrollView {
             reactive: true
         });
         this.factsBox.add_child(this.facts_widget);
-        if (Config.PACKAGE_VERSION.substring(0, 2) == "45")
-            this.add_actor(this.factsBox);
-        else
-            this.add_child(this.factsBox);
-
+        this.add_child(this.factsBox);
     }
 
     /**
