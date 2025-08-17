@@ -242,13 +242,8 @@ export default class Controller extends Extension {
             Main.panel._addToPanelBox('dateMenu', dateMenu, -1, Main.panel._rightBox);
         } else if (placement == 2) {
             // 'Replace activities'
-            let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0];
-            // If our widget replaces the 'Activities' menu in the panel,
-            // this property stores the original text so we can restore it
-            // on ``this.disable``.
-            this._activitiesText = activitiesMenu.get_text();
-            activitiesMenu.set_text('');
-            Main.panel.addToStatusArea("hamster", this.panelWidget, 1, "left");
+            Main.panel?.statusArea?.activities?.container?.hide?.();
+            Main.panel.addToStatusArea("hamster", this.panelWidget, 10, "left");
         } else if (placement == 3) {
             // 'Center'
             Main.panel.addToStatusArea("hamster", this.panelWidget, 1, "center");
@@ -271,8 +266,7 @@ export default class Controller extends Extension {
             Main.panel._centerBox.remove_child(this.panelWidget.container);
         } else if (placement == 2) {
             // We replaced the 'Activities' menu
-            let activitiesMenu = Main.panel._leftBox.get_children()[0].get_children()[0].get_children()[0].get_children()[0];
-            activitiesMenu.set_text(this._activitiesText);
+            Main.panel?.statusArea?.activities?.container?.show?.();
             Main.panel._leftBox.remove_child(this.panelWidget.container);
         } else {
             Main.panel._rightBox.remove_child(this.panelWidget.container);
