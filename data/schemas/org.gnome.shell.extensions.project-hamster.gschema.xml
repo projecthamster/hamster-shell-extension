@@ -13,6 +13,12 @@
             <description>Sets the panel appearance. 0 - label, 1 - icon, 2 - label and icon.</description>
         </key>
 
+        <key name="show-summary" type="b">
+            <default>true</default>
+            <summary>Display categories summary.</summary>
+            <description>Whether to display a summary of today's categories.</description>
+        </key>
+
         <key type="as" name="show-hamster-dropdown">
             <default><![CDATA[['<Super>t']]]></default>
             <summary>Global key combination to show the drop-down.</summary>
