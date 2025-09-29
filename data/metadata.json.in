@@ -12,7 +12,8 @@
     "shell-version": [
       "46",
       "47",
-      "48"
+      "48",
+      "49"
     ],
     "url": "https://github.com/projecthamster/hamster-shell-extension.git",
     "uuid": @UUID@
