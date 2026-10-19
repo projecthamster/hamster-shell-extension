@@ -21,6 +21,8 @@ Copyright (c) 2016 - 2018 Eric Goller / projecthamster <elbenfreund@projecthamst
 */
 
 
+import Clutter from 'gi://Clutter';
+
 // Time formatting helpers
 
 /* @function formatDuration
@@ -115,4 +117,18 @@ export function fromDbusFacts(facts) {
     }
 
     return res;
+}
+
+/* @function setVertical
+ *
+ * Make a St.BoxLayout vertical. GNOME 48 deprecated the 'vertical' property
+ * in favour of 'orientation', and GNOME 51 removed it.
+ *
+ * @param {St.BoxLayout} - The box to modify.
+ */
+export function setVertical(box) {
+    if ('orientation' in box)
+        box.orientation = Clutter.Orientation.VERTICAL;
+    else
+        box.vertical = true;
 }

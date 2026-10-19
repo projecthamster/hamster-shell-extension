@@ -48,7 +48,7 @@ class FactsBox extends PopupMenu.PopupBaseMenuItem {
 
         // Setup main layout box
         let main_box = new St.BoxLayout({style_class: 'hamster-box'});
-        main_box.set_vertical(true);
+        Stuff.setVertical(main_box);
         this.actor.add_child(main_box);
 
         // Setup *ongoing fact* label and widget
