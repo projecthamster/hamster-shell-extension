@@ -42,7 +42,7 @@ class TodaysFactsWidget extends St.ScrollView {
 
 
         this.factsBox = new St.BoxLayout({});
-        this.factsBox.set_vertical(true);
+        Stuff.setVertical(this.factsBox);
         this.facts_widget = new St.Widget({
             style_class: 'hamster-activities',
             layout_manager: new Clutter.GridLayout(),
